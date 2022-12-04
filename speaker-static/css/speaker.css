@@ -1,0 +1,57 @@
+
+body {
+    margin: 0;
+    background-color: #888;
+}
+
+#nav-tree {
+    font-size: 25px;
+    box-sizing: border-box;
+    position: fixed;
+    overflow-y: scroll;
+    background-color: #aaa;
+    width: 500px;
+    padding: 32px;
+}
+
+#nav-tree .section {
+    font-weight: bold;
+    padding-top: 16px;
+}
+
+#nav-tree .slide {
+    cursor: pointer;
+}
+
+#nav-tree .slide.current {
+    font-weight: bold;
+    color: red;
+}
+
+#nav-tree .step {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#nav-tree .step.current {
+    color: red;
+}
+
+#speaker-notes {
+    margin-left: 500px;
+    padding: 20px;
+}
+
+#speaker-notes h3 {
+    padding: 8px;
+    font-size: 40px;
+    background-color: #bbb;
+    margin-bottom: 0;
+}
+
+#speaker-notes pre {
+    padding: 16px;
+    font-size: 30px;
+    font-family: TeX Gyre Sans;
+    background-color: #ddd;
+}

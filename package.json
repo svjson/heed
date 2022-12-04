@@ -1,0 +1,16 @@
+{
+  "name": "heed",
+  "version": "0.0.1",
+  "description": "Browser-based presentations",
+  "main": "heed.js",
+  "author": "svjson",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "express-ws": "^3.0.0"
+  },
+  "bin": {
+    "heed": "heed.js"
+  }
+}
