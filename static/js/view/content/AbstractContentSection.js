@@ -17,6 +17,10 @@
         el.style.visibility = 'hidden';
       }
 
+      if (this.section.class) {
+        el.setAttribute('class', this.section.class);
+      }
+
       if (typeof this.section.styles === 'object') {
         Object.assign(el.style, this.section.styles);
       }

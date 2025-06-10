@@ -9,6 +9,9 @@
     }
 
     static resolve(typeId) {
+      if (typeId === undefined) {
+        return sectionTypes['text'];
+      }
       if (!sectionTypes[typeId]) {
         console.warn('No content type registered: ' + typeId);
         console.warn('Available types', Object.keys(sectionTypes));

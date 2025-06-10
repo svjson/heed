@@ -3,6 +3,7 @@
   class Presentation {
     constructor(json) {
       this.json = json;
+      this.css = json.css;
       this.name = json.name;
       this.slides = [];
       this.sections = [];
@@ -10,10 +11,12 @@
       if (this.json.slide) {
         this.slides.push(new Heed.Slide(this.json.slide));
       }
-      this.json.sections.forEach((section) => {
-        let _section = new Heed.Section(section);
-        this.sections.push(_section);
-      });
+      if (this.json.sections) {
+        this.json.sections.forEach((section) => {
+          let _section = new Heed.Section(section);
+          this.sections.push(_section);
+        });
+      }
       if (this.json.plugins) {
         Object.keys(this.json.plugins).forEach((pluginId) => {
           this.plugins.push(new Heed.Plugin(pluginId, this.json.plugins[pluginId]));

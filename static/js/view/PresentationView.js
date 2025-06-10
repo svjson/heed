@@ -11,11 +11,23 @@
           slideIndex = parts[1] ? parseInt(parts[1]) : 0;
       this.showSlide(slideIndex);
 
+      if (this.presentation.css) {
+        Heed.loadStylesheet(this.presentation.css);
+      }
+
       document.addEventListener('keydown', e => {
         if (e.keyCode === 39) {
-          this.forward();
+          if (e.ctrlKey) {
+            this.nextSlide();
+          } else {
+            this.forward();
+          }
         } else if (e.keyCode === 37) {
-          this.back();
+          if (e.ctrlKey) {
+            this.prevSlide();
+          } else {
+            this.back();
+          }
         }
       });
 
@@ -41,7 +53,7 @@
         this.slideView.destroy();
       }
       this.slideView = slideView;
-      
+
       this.reportNavigation();
 
       let preHooks = [];

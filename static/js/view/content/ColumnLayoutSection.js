@@ -28,10 +28,11 @@
             slide: this.slide
           });
 
-          this.applyCommonProperties.call({ section: col }, sectionEl);
+          this.applyCommonProperties.call({ section: col }, colEl);
 
           if (col.id) {
-            this.slide.namespace[col.id] = sectionEl;
+            this.slide.namespace[col.id] = colEl;
+            colEl.id = col.id;
           }
 
           colEl.appendChild(sectionEl);

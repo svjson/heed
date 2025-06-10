@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
     ctxResp.json().then((ctx) => {
       Heed.context = ctx;
       Heed.Presentation.load().then((instance) => {
-        let hooks = Heed.HookRegistry.resolveByType('init'),
-            promises = hooks.map((hookId) => Heed.Hooks.createHook(hookId).applyHook());
+        const hooks = Heed.HookRegistry.resolveByType('init'),
+              promises = hooks.map((hookId) => Heed.Hooks.createHook(hookId).applyHook());
 
         Promise.all(promises).then(() => {
           let navigator = new Heed.WebSocketNavigator({ actor: "presentation" });

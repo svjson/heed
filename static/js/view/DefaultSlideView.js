@@ -33,6 +33,10 @@
         Object.keys(step.transitions).forEach((sectionId) => {
           let sectionTransition = step.transitions[sectionId],
               targetEl = this.slide.namespace[sectionId];
+          if (!targetEl) {
+            console.error(`Section '${sectionId}' not in namespace: `, this.slide.namespace);
+            return;
+          }
           Object.assign(targetEl.style, sectionTransition[dir]);
         });
       }
@@ -64,10 +68,15 @@
       if (appearance.padding) style += `padding: ${appearance.padding}; `;
       if (appearance.paddingTop) style += `padding-top: ${appearance.paddingTop}; `;
       if (appearance.color) style += `color: ${appearance.color}; `;
+      if (appearance.fontSize) style += `font-size: ${appearance.fontSize}`;
 
       el.style = style;
 
       let slideEl = document.createElement('slide');
+
+      if (this.slideData.class) {
+        slideEl.setAttribute('class', this.slideData.class);
+      }
 
       let h1 = document.createElement('h1');
       let title = this.slideData.title,

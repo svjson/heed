@@ -9,7 +9,7 @@
 
     connect() {
       return new Promise((resolve, reject) => {
-        this.connection = new WebSocket('ws://localhost:4000/navigation');
+        this.connection = new WebSocket(`ws://${document.location.host}/navigation`);
         this.connection.onopen = () => {
           this.connection.onmessage = (msg) => {
             this.receiveMessage(JSON.parse(msg.data));
