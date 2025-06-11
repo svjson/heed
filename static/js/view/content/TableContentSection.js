@@ -6,27 +6,24 @@
     }
 
     renderTo(el) {
-      let tableEl = document.createElement('table'),
-          namespace = {};
-
-      namespace[this.section.id] = tableEl;
+      const [tableEl, namespace] = this.createMainElement('table');
 
       this.applyCommonProperties(tableEl);
       if (this.section.border && this.section.border.type === 'inner') {
         tableEl.classList.add('table-inner-border');
       }
 
-      let cellStyles = this.section.cellStyles || {};
+      const cellStyles = this.section.cellStyles || {};
 
       this.section.rows.forEach((row, rowIndex) => {
-        let rowEl = document.createElement('tr'),
+        const rowEl = this.createElement('tr'),
             rowData = row;
 
         if (this.section.rowStyles) {
           Object.assign(rowEl.style, this.section.rowStyles);
         }
         if (Array.isArray(this.section.rowIndexStyles)) {
-          let rowIndexStyle = this.section.rowIndexStyles[rowIndex];
+          const rowIndexStyle = this.section.rowIndexStyles[rowIndex];
           if (rowIndexStyle) {
             Object.assign(rowEl.style, rowIndexStyle);
           }
@@ -41,16 +38,16 @@
         }
 
         rowData.forEach((cell, index) => {
-          let cellEl = document.createElement('td');
+          const cellEl = this.createElement('td');
           Object.assign(cellEl.style, cellStyles);
           if (Array.isArray(this.section.cellIndexStyles)) {
-            let cellIndexStyle = this.section.cellIndexStyles[index];
+            const cellIndexStyle = this.section.cellIndexStyles[index];
             if (cellIndexStyle) {
               Object.assign(cellEl.style, cellIndexStyle);
             }
           }
 
-          let cellValue = cell;
+          const cellValue = cell;
           if (typeof cell === 'object') {
             cellValue = cell.value;
             namespace[cell.id] = cellEl;

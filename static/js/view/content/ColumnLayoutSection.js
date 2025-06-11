@@ -6,24 +6,19 @@
     }
 
     renderTo(el) {
-      let tableEl = document.createElement('table'),
-          rowEl = document.createElement('tr'),
-          namespace = {};
-
+      const [tableEl, namespace] = this.createMainElement('table', {
+        class: 'column-layout-table'
+      });
       this.applyCommonProperties(tableEl);
 
-      if (this.section.id) {
-        namespace[this.section.id] = tableEl;
-      }
-
-      tableEl.setAttribute("class", "column-layout-table");
+      const rowEl = this.createElement('tr');
 
       this.section.columns.forEach((col) => {
-        let colEl = document.createElement('td');
+        const colEl = this.createElement('td');
         if (col.styles) Object.assign(colEl.style, col.styles);
         col.contents.forEach((section) => {
 
-          let sectionEl = Heed.ContentSectionFactory.buildSection({
+          const sectionEl = Heed.ContentSectionFactory.buildSection({
             section: section,
             slide: this.slide
           });

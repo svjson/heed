@@ -9,22 +9,16 @@
       if (window.videoListener) {
         document.removeEventListener('keydown', window.videoListener);
       }
+      const autoplay = this.section.autoplay === false ? false : true;
 
+      const [videoEl, namespace] = document.createElement('video', {
+        autoplay: autoplay,
+        isVideoPlaying: autoplay,
+        width: this.section.width ? '' + this.section.width : '900'
+      });
+      const sourceTag = document.createElement('source');
 
-      let videoEl = document.createElement('video'),
-          sourceTag = document.createElement('source'),
-          namespace = {};
-
-      if (this.section.id) {
-        namespace[this.section.id] = videoEl;
-      }
-
-      let autoplay = this.section.autoplay === false ? false : true;
-      videoEl.autoplay = autoplay;
-      window.isVideoPlaying = autoplay;
-      videoEl.width = this.section.width ? '' + this.section.width : '900';
-
-      let videoSrc = this.slide.path + this.section.source;
+      const videoSrc = this.slide.path + this.section.source;
       if (this.section.startTime) {
         videoSrc += '#t=' + this.section.startTime;
         videoEl._startTime = this.section.startTime;

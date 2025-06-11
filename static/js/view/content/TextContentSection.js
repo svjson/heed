@@ -3,18 +3,12 @@
   class TextContentSection extends Heed.AbstractContentSection {
 
     renderTo(el) {
-      let textEl = document.createElement('div'),
-          namespace = {};
-
-      if (this.section.id) {
-        namespace[this.section.id] = textEl;
-      }
+      const [textEl, namespace] = this.createMainElement('div');
 
       this.applyCommonProperties(textEl);
       textEl.innerText = this.section.text;
 
       el.appendChild(textEl);
-
       return namespace;
     }
 

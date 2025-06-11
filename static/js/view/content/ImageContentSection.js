@@ -6,23 +6,14 @@
     }
 
     renderTo(el) {
-      let imageEl = document.createElement('img'),
-          namespace = {};
+      const [imageEl, namespace] = this.createMainElement('img', {
+        id: this.section.id,
+        src: `${this.slide.path}${this.section.source}`,
+        width: this.section.width,
+        height: this.section.height
+      });
 
       this.applyCommonProperties(imageEl);
-
-      if (this.section.id) {
-        namespace[this.section.id] = imageEl;
-        imageEl.id = this.section.id;
-      }
-
-      imageEl.src = this.slide.path + this.section.source;
-      if (this.section.width) {
-        imageEl.width = this.section.width;
-      }
-      if (this.section.height) {
-        imageEl.height = this.section.height;
-      }
 
       el.appendChild(imageEl);
       return namespace;
