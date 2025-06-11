@@ -1,21 +1,26 @@
 #!/bin/node
-const express = require('express'),
-      childProcess = require('child_process'),
-      fs = require('fs');
+import express from 'express';
+import expressWs from 'express-ws';
+import childProcess from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-let expressWs = require('express-ws');
-expressWs = expressWs(express());
-const app = expressWs.app;
+import { loadSlide } from './lib/slide.js';
 
-router = express.Router();
+const ws = expressWs(express());
+const app = ws.app;
+const router = express.Router();
 
-var args = process.argv.slice(2),
-    presentationRoot = process.env.PWD + '/';
+const args = process.argv.slice(2);
+const presentationRoot = process.env.PWD + '/';
+
+const heedRoot = path.dirname(fileURLToPath(import.meta.url));
 
 app.use(router);
-app.use(express.static(__dirname + '/static/'));
+app.use(express.static(heedRoot + '/static/'));
 app.use('/presentation/', express.static(presentationRoot));
-app.use('/speaker/', express.static(__dirname + '/speaker-static/'));
+app.use('/speaker/', express.static(heedRoot + '/speaker-static/'));
 app.get('/plugins/:pluginId/:fileName', function(req, res, next) {
   var pluginDef = fs.readFileSync(`${presentationRoot}/plugins/${req.params.pluginId}/${req.params.fileName}`);
   res.send(pluginDef);
@@ -35,8 +40,18 @@ app.get('/context', function(req, res, next) {
   });
 });
 
+app.get('/slide/*', async function(req, res, next) {
+  const slide = await loadSlide(presentationRoot, req.params[0]);
+  if (slide) {
+    res.send(slide);
+  } else {
+    console.log('404 - ' + req.params[0]);
+    res.status(404).send();
+  }
+})
+
 app.ws('/navigation', function(ws, req) {
-  let channel = expressWs.getWss('/navigation');
+  let channel = ws.getWss('/navigation');
 
   ws.on('open', req => {
     console.log('Connect', req)

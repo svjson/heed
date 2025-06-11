@@ -21,19 +21,23 @@
 
     load(path, opts) {
       if (!opts) opts = {};
-      this.path = '/presentation/' + path;
+      this.path = path;
+      this.staticPath = '/presentations/' + path;
       if (!this.id) {
         return this.createDefault();
       }
       return new Promise((resolve, reject) => {
-        let fileName = this.path + this.id + '.json';
-        fetch(this.path + this.id + '.json').then((res) => {
+        let fileName = '/slide/' + this.path + this.id;
+        fetch(fileName).then((res) => {
+          if (res.status !== 200) {
+            throw new Error(`Could not load slide: '${this.path + this.id}`)
+          }
           res.json().then((slideData) => {
             this.data = slideData;
             this.configureHooks();
             this.configureSteps();
             if (opts.notes && slideData.notes) {
-              fetch(this.path + slideData.notes).then((res) => {
+              fetch(this.staticPath + slideData.notes).then((res) => {
                 res.text().then((notesText) => {
                   this.notes = notesText;
                   resolve();
