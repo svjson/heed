@@ -7,13 +7,15 @@
   "description": "Browser-based presentations",
   "main": "heed.js",
   "bin": {
-    "heed": "heed.js"
+    "heed": "heed.js",
+    "heed-cli": "heed-cli.js"
   },
   "scripts": {
     "test": "playwright test",
     "test:unit": "playwright test test/unit"
   },
   "dependencies": {
+    "commander": "^13.0.0",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "express-ws": "^3.0.0"
