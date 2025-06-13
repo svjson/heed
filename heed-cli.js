@@ -4,15 +4,21 @@ import path from 'path';
 import process from 'process';
 import fs from 'fs';
 
+import { findRoot } from './lib/presentation.js'
 import { showIndex } from './lib/command/show-index.js';
+import { showRoot } from './lib/command/show-root.js';
 
 const program = new Command();
 
 const runPresentationPathCommand = async (presentationRoot, command, opts) => {
   const presentationFile = path.join(presentationRoot, 'presentation.json');
   if (!fs.existsSync(presentationFile)) {
-    console.error('No presentation.json found in', presentationRoot);
-    process.exit(1);
+    const [_, relative] = await findRoot(presentationRoot);
+    if (!relative) {
+      console.error(`No presentation.json found in '${presentationRoot}' or any of its parent directories.`);
+      process.exit(1);
+    }
+    presentationRoot = relative;
   }
   await command(presentationRoot, presentationFile, opts);
 }
@@ -31,6 +37,14 @@ showCommand
   .action(async (presentationPath = '.', options) => {
     await runPresentationPathCommand(presentationPath, showIndex, { json: options.json })
   });
+
+showCommand
+  .command('root [dir]')
+  .description('Display the root directory path of the presentation.')
+  .option('--json', 'Output paths as JSON.')
+  .action(async (dir = '.', options) => {
+    await showRoot(dir, options);
+  })
 
 program.parse(process.argv);
 
