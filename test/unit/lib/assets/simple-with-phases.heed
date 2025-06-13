@@ -1,0 +1,24 @@
+---
+title: How to fail - main steps
+---
+
+:: text { id=step1 }
+1. Trying
+--
+
+:: text { id=finish }
+@style=color: red;
+2. FAILURE achieved!!
+--
+
+== phases
+!! initial
+
+!! trying
+#step1 --> opacity: 1;
+#step1 <-- opacity: 0;
+
+!! failure
+#finish --> opacity: 1;
+#finish <-- opacity: 0;
+--
