@@ -8,13 +8,13 @@ import { showIndex } from './lib/command/show-index.js';
 
 const program = new Command();
 
-const runPresentationPathCommand = async (presentationRoot, command) => {
+const runPresentationPathCommand = async (presentationRoot, command, opts) => {
   const presentationFile = path.join(presentationRoot, 'presentation.json');
   if (!fs.existsSync(presentationFile)) {
     console.error('No presentation.json found in', presentationRoot);
     process.exit(1);
   }
-  await command(presentationRoot, presentationFile);
+  await command(presentationRoot, presentationFile, opts);
 }
 
 program
@@ -27,8 +27,9 @@ const showCommand = program.command('show');
 showCommand
   .command('index [presentationPath]')
   .description('Display a table of slides defined in presentation.json')
-  .action(async (presentationPath = '.') => {
-    await runPresentationPathCommand(presentationPath, showIndex)
+  .option('--json', 'Output index as JSON.')
+  .action(async (presentationPath = '.', options) => {
+    await runPresentationPathCommand(presentationPath, showIndex, { json: options.json })
   });
 
 program.parse(process.argv);
