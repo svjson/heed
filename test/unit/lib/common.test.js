@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 
 import { parseStyle } from '../../../lib/common.js'
 
-test.describe('parseStyles', () => {
+test.describe('parseStyle', () => {
 
   test('parse a single style property', () => {
     expect(parseStyle('opacity: 1;')).toEqual({ opacity: '1'});
