@@ -14,6 +14,15 @@
     "test": "playwright test",
     "test:unit": "playwright test test/unit"
   },
+  "files": [
+    "heed.js",
+    "heed-cli.js",
+    "lib/",
+    "static/",
+    "speaker-static/",
+    "LICENSE",
+    "README.md"
+  ],
   "dependencies": {
     "commander": "^13.0.0",
     "express": "^4.16.3",
