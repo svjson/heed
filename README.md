@@ -178,7 +178,7 @@ like in the example is favorable and much less verbose.
 ### .json files
 
 As mentioned earlier, the .heed files are transpiled to the legacy JSON format for use by the slide viewer,
-but the can also be expressed directly in this format if preferred.
+but they can also be expressed directly in this format if preferred.
 
 The same slide expressed as JSON would look like this:
 
@@ -328,4 +328,4 @@ during a talk.
 
 ## License
 
-© 2025 Sven Johansson. [MIT Licensed](./LICENSE).  
+© 2025 Sven Johansson. [MIT Licensed](./LICENSE).
