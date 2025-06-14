@@ -1,14 +1,14 @@
 # Heed
 
-Heed is a presentation tool for writing slides as code - **pure HTML, CSS, and JavaScript** - that runs directly in the browser. 
+Heed is a presentation tool for writing slides as code - leveraging **HTML, CSS, and JavaScript** - that runs directly in the browser. 
 It supports a simplistic plugin architecture for embedding rich content and JavaScript-driven components.
 
 ## What is this?
 
 Heed is a slide deck engine that treats **presentations as structured data** and **programmable layouts**. Slides are defined in a 
-**JSON format** and rendered using a small JavaScript runtime with layout primitives like `text`, `html`, `image` and `column-layout`, 
-live demos, and external content embedding. It’s served via a lightweight Express-based backend and comes with a very rudimentary
-**WebSocket-based speaker notes system**. Batteries are most certainly **not** included.
+custom **.heed file format** or **JSON format** and rendered using a small JavaScript runtime with layout primitives like `text`, 
+`html`, `image` and `column-layout`, live demos, and external content embedding. It’s served via a lightweight Express-based backend 
+and comes with a very rudimentary **WebSocket-based speaker notes system**. Batteries are most certainly **not** included.
 
 ## Why does this exist?
 
@@ -26,6 +26,223 @@ less favorable on the rather cumbersome layout-via-JSON and **fragile** presenta
 And so I just had a presentation to make, and while digging up Heed I noticed that it's actually public on Github, so I figure I 
 might as well take an evening or two and polish it and *make my little boo-boo shine* and make producing slides more ergonomic, get 
 error handling sorted out and just generally modernize things and touch up some rather hastily thrown together features.
+
+## Slide Format
+
+The original version exclusively used JSON files for slides, which quickly turned out be cumbersome and non-premium to work with.
+Embedding HTML or code - or any kind of formatting - flattened into a JSON string is not ideal. Who knew?
+
+For this reason, I invented a fairly simply format specifically for heed, which is the canon format, even though it
+"transpiles" to the JSON format for use in the slide viewer.
+
+Heed presentations operate directly in the browser, embracing HTML markup and stylesheets rather than abstracting them away. 
+As a slide author, you benefit from and rely on your basic(or advanced) knowledge of these concepts.
+
+### .heed files
+
+Heed slide files, .heed, consists of a few types of structured blocks. A <b>frontmatter</b> header block, <b>content blocks</b> and 
+<b>aside blocks</b>, which are all optional. Yes, an empty file is a valid .heed file.
+
+An empty file does not accomplish much, though.
+
+For syntax highlighting and some minor helpful features, see the [heed-mode](https://github.com/svjson/heed-mode) for Emacs.
+
+An example slide that has a title and three points that appear one at a time, could look like this:
+
+<img src="./readme-assets/cat-slide.png" align="right" style="padding-top: 1em;"/>
+
+```
+---
+title: The Benefits of Cats
+---
+
+:: html { id=point1 class=point }
+@style=opacity: 0;
+@phase{1}.style=opacity: 1 | 0;
+<b>1.</b> They are fuzzy.
+--
+
+:: html { id=point2 class=point }
+@style=opacity: 0;
+@phase{2}.style=opacity: 1 | 0;
+<b>2.</b> They are furry.
+--
+
+:: html { id=point3 class=point }
+@style=opacity: 0;
+@phase{3}.style=opacity: 1 | 0;
+<b>3.</b> They are fuzzy.
+--
+```
+
+This file produces a slide that looks like this:
+
+External to the slide, and defined globally for this presentation, is a minimal custom stylesheet 
+that defines the `.point` class and that **absolutely atrocious** background image:
+
+
+```css
+body {
+  background: url('cat-background.png');
+}
+
+.point {
+  font-size: 70px;
+  margin: 100px 0;
+  transition: opacity 0.5s;
+}
+```
+
+The transition property works together with the phase-attributes in the html content blocks,
+to make each point fade in one at a time.
+
+At this point there is no built-in feature to vertically place and center the points, which
+is why we are using the hack of adding margin to the bullets. This would be an obvious feature 
+that obviously will make it in at some point.
+
+
+#### The Frontmatter header-block
+
+The frontmatter block serves a header for the file. There are a small number of properties
+that are recognized by Heed, the most obvious one being `title`.
+
+```
+---
+title: The Benefits of Cats
+---
+```
+
+`title` is a shortcut for adding a slide title, as seen in the screenshot above.
+As of right now, Heed provides the style and "layout" for the title, but customizing this
+can also be counted among the obvious features to add with time.
+
+#### Content blocks
+
+Content blocks follow this syntax, with an `::` opener followed by its type, and is closed
+with `--`.
+
+```
+:: html { id=point2 class=point }
+@style=opacity: 0;
+@phase{2}.style=opacity: 1 | 0;
+<b>2.</b> They are furry.
+--
+```
+
+Attributes may be specified inline within the block using the format `@style=opacity: 0;`, 
+or they can be defined as attributes on the opening line, such as `{ id=point2 }`. Both methods 
+are functionally equivalent. However, for improved readability, common properties like 
+`id` and `class` may be more suitable on the opening line, while properties specific to the 
+block type may be better suited as `@`-properties.
+
+Included block types are `text`, `html`, `image`, `video`, `table` and `column-layout`.
+
+
+#### Aside blocks
+
+Aside blocks are structurally similar to content blocks, but describe properties or behavior
+of the slide without being actual content.
+
+The inline phase-attributes in the cat-slide example are functionally equivalent to the
+following `phases` aside block:
+
+```
+== phases
+!! initial
+
+!! phase1
+#point1 --> opacity: 1;
+#point1 <-- opacity: 0;
+
+!! phase2
+#point2 --> opacity: 1;
+#point2 <-- opacity: 0;
+
+!! phase3
+#point3 --> opacity: 1;
+#point3 <-- opacity: 0;
+```
+
+Heed utilizes "phases" to define transitions and animations as modifications and progress within
+a slide.
+
+To define a phase, use the `!!` syntax. Instructions for actions to be performed during that phase 
+follow this identifier.
+
+The concept is fairly straightforward. In this example, content sections are referred to by their 
+IDs. 
+Use `-->` to specify actions applied when entering a phase, and `<--` to detail actions executed 
+when reverting to the previous step.
+
+For simple phases, like making one block appear at a time, inlining phase directives as attributes
+like in the example is favorable and much less verbose.
+
+### .json files
+
+As mentioned earlier, the .heed files are transpiled to the legacy JSON format for use by the slide viewer,
+but the can also be expressed directly in this format if preferred.
+
+The same slide expressed as JSON would look like this:
+
+```
+{
+  "title": "The Benefits of Cats",
+  "contents": [
+    {
+      "type": "html",
+      "id": "point1",
+      "class": "point",
+      "styles": {
+        "opacity": "0"
+      },
+      "contents": [],
+      "html": "<b>1.</b> They are fuzzy."
+    },
+    {
+      "type": "html",
+      "id": "point2",
+      "class": "point",
+      "styles": {
+        "opacity": "0"
+      },
+      "contents": [],
+      "html": "<b>2.</b> They are furry."
+    },
+    {
+      "type": "html",
+      "id": "point3",
+      "class": "point",
+      "styles": {
+        "opacity": "0"
+      },
+      "contents": [],
+      "html": "<b>3.</b> They are fluffy."
+    }
+  ],
+  "steps": [
+    { "id": "initial" },
+    { "id": "phase1",
+      "transitions": {
+        "point1": [{ "opacity": "1" }, { "opacity": "0" }]
+      }
+    },
+    {
+      "id": "phase2",
+      "transitions": {
+        "point2": [{ "opacity": "1" }, { "opacity": "0" }]
+      }
+    },
+    { "id": "phase3",
+      "transitions": {
+        "point3": [{ "opacity": "1" }, { "opacity": "0" }]
+      }
+    }
+  ]
+}
+```
+
+Despite being cumbersome and less ergonomic to edit as well as being less expressive than the .heed format,
+it still has one thing going for it: At least it's not XML. ¯\\\_(ツ)_/¯
 
 ## Design goals
 
