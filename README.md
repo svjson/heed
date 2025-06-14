@@ -75,8 +75,6 @@ title: The Benefits of Cats
 --
 ```
 
-This file produces a slide that looks like this:
-
 External to the slide, and defined globally for this presentation, is a minimal custom stylesheet 
 that defines the `.point` class and that **absolutely atrocious** background image:
 
