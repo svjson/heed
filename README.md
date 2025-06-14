@@ -71,7 +71,7 @@ title: The Benefits of Cats
 :: html { id=point3 class=point }
 @style=opacity: 0;
 @phase{3}.style=opacity: 1 | 0;
-<b>3.</b> They are fuzzy.
+<b>3.</b> They are fluffy.
 --
 ```
 
