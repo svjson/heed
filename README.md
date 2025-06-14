@@ -45,7 +45,7 @@ Heed slide files, .heed, consists of a few types of structured blocks. A <b>fron
 
 An empty file does not accomplish much, though.
 
-For syntax highlighting and some minor helpful features, see the [heed-mode](https://github.com/svjson/heed-mode) for Emacs.
+For syntax highlighting and some minor helpful features, see [heed-mode.el](https://github.com/svjson/heed-mode) for Emacs.
 
 An example slide that has a title and three points that appear one at a time, could look like this:
 
@@ -241,6 +241,64 @@ The same slide expressed as JSON would look like this:
 
 Despite being cumbersome and less ergonomic to edit as well as being less expressive than the .heed format,
 it still has one thing going for it: At least it's not XML. ¯\\\_(ツ)_/¯
+
+## Command: heed
+
+This command for serving up a presentation and the speaker notes.
+
+### Usage:
+
+#### Serving a presentation:
+
+```bash
+$ heed <path/to/presentation>
+```
+
+This will serve the Heed presentation at [http://localhost:4000](http://localhost:4000) and the speaker notes
+at [http://localhost:4000/speaker](http://localhost:4000/speaker).
+
+### Speaker Notes
+
+The speaker notes are still in the extremely basic shape they were when initially hobbled together an hour 
+before a presentation (which of course left me with no time to write the actual notes...).
+
+The Speaker Notes UI and the presentation both connect to a WebSocket, allowing them to synchronize the current 
+slide. This ensures that with the presentation displayed on a projector or large screen and the speaker notes on a 
+laptop screen, the notes UI remains up to date with the slide being shown.
+
+## Command: heed-cli
+
+This command is for interacting with the presentation on your file-system, providing scaffolding commands
+like `new`, `add slide` as well as providing features that supports [heed-mode](https://github.com/svjson/heed-mode) for Emacs.
+
+### Usage:
+
+#### Creating a new presentation in the current directory:
+
+```bash
+$ heed-cli new "I spent a year pretending to be a cow"
+```
+
+#### ...or creating it in a target directory, and also creating that if required:
+
+```bash
+$ heed-cli new "I spent a year pretending to be a cow" ./my-year-as-a-cow
+```
+This also creates a first slide with the presentation name under `<presentation root>/slides/front.heed`.
+
+#### Adding a slide
+
+```bash
+$ heed-cli add slide initial-reactions
+```
+
+This creates an empty slide and places it at the back of your slide index.
+
+
+## Installation
+
+Heed has not been published to the npm repository, so if you want to try it out you'll have to clone
+this repository.
 
 ## Design goals
 
