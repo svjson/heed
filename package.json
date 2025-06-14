@@ -12,7 +12,8 @@
   },
   "scripts": {
     "test": "playwright test",
-    "test:unit": "playwright test test/unit"
+    "test:unit": "playwright test test/unit",
+    "test:cli": "playwright test test/cli"
   },
   "files": [
     "heed.js",
