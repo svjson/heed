@@ -11,6 +11,9 @@
       if (this.json.slide) {
         this.slides.push(new Heed.Slide(this.json.slide));
       }
+      this.json.slides?.forEach(slide => {
+        this.slides.push(new Heed.Slide(slide));
+      });
       if (this.json.sections) {
         this.json.sections.forEach((section) => {
           let _section = new Heed.Section(section);
@@ -45,7 +48,6 @@
       let promises = this.sections.map((sect) => sect.load('sections/', opts));
       promises = promises.concat(this.slides.map((slide) => slide.load('slides/', opts)));
       promises = promises.concat(this.plugins.map((plugin) => plugin.load()));
-      console.log(promises);
       return Promise.all(promises);
     }
 
@@ -55,11 +57,8 @@
         fetch('/presentation/presentation.json').then(function(pres) {
           pres.json().then((presentation) => {
             let instance = new Heed.Presentation(presentation);
-            console.log('Got instance');
             instance.load(opts).then(() => {
-              console.log('Loaded instance');
               resolve(instance);
-              console.log('Resolved');
             });
           }).catch((e) => {
             console.error('Error parsing "presentation.json"');

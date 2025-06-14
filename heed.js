@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import { loadPresentation } from './lib/presentation.js';
 import { loadSlide } from './lib/slide.js';
 
 const ws = expressWs(express());
@@ -19,6 +20,11 @@ const heedRoot = path.dirname(fileURLToPath(import.meta.url));
 
 app.use(router);
 app.use(express.static(heedRoot + '/static/'));
+
+app.get('/presentation/presentation.json', async function(req, res, next) {
+  res.send((await loadPresentation('.', { resolve: true })));
+});
+
 app.use('/presentation/', express.static(presentationRoot));
 app.use('/speaker/', express.static(heedRoot + '/speaker-static/'));
 app.get('/plugins/:pluginId/:fileName', function(req, res, next) {
