@@ -2,9 +2,11 @@
 import { Command } from 'commander';
 import process from 'process';
 
-import { runCommand } from './lib/command/command-runner.js';
-import { newPresentation } from './lib/command/new.js';
 import { findRoot } from './lib/presentation.js'
+import { runCommand } from './lib/command/command-runner.js';
+
+import { addSlide } from './lib/command/add-slide.js';
+import { newPresentation } from './lib/command/new.js';
 import { showIndex } from './lib/command/show-index.js';
 import { showRoot } from './lib/command/show-root.js';
 
@@ -15,7 +17,24 @@ program
   .description('Command-line tool for managing Heed presentations')
   .version('0.1.0');
 
-const showCommand = program.command('show');
+const addCommand = program.command('add');
+
+addCommand
+  .command('slide [slideId] [path]')
+  .description('Add a slide to the presentation.')
+  .option('--json', 'Output result as JSON')
+  .action(async (slideId, contextPath = '.', options) => {
+    await runCommand({
+      cmd: addSlide,
+      cmdArgs: [
+        { __type: 'root-required', value: contextPath },
+        { __type: 'presentation-file' },
+        { __type: 'string', __name: 'Slide ID', __required: true, value: slideId },
+        { __type: 'context-dir', value: contextPath }
+      ],
+      cmdOpts: options
+    })
+  });
 
 program
   .command('new [presentationName] [presentationPath]')
@@ -31,6 +50,8 @@ program
       cmdOpts: options
     });
   });
+
+const showCommand = program.command('show');
 
 showCommand
   .command('index [presentationPath]')
