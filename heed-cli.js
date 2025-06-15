@@ -11,6 +11,7 @@ import {
 
   addPlugin,
   addSlide,
+  linkPlugin,
   newPresentation,
   removePlugin,
   showIndex,
@@ -60,6 +61,28 @@ addCommand
   .action(async (pluginName, source, options) => {
     await runCommand({
       cmd: addPlugin,
+      cmdArgs: [
+        { __type: 'root-required', value: '.' },
+        { __type: 'string', __name: 'Plugin name', __required: true, value: pluginName },
+        source
+      ],
+      cmdOpts: options
+    })
+  })
+
+/**
+ * "link"-command and subcommands
+ * 
+ */
+const linkCommand = program.command('link');
+
+linkCommand
+  .command('plugin [pluginName] [source]')
+  .description('Add a plugin by symlink from a local folder')
+  .option('--json', 'Output result as JSON')
+  .action(async (pluginName, source, options) => {
+    await runCommand({
+      cmd: linkPlugin,
       cmdArgs: [
         { __type: 'root-required', value: '.' },
         { __type: 'string', __name: 'Plugin name', __required: true, value: pluginName },
