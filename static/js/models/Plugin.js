@@ -9,13 +9,14 @@
 
     load() {
       return new Promise((resolve, reject) => {
-        fetch(`/plugins/${this.pluginId}/${this.pluginId}.json`).then((resp) => {
+        fetch(`/plugins/${this.pluginId}/plugin.json`).then((resp) => {
           resp.json().then((pluginJson) => {
             pluginJson.requires.js = pluginJson.requires.js || [];
             pluginJson.requires.css = pluginJson.requires.css || [];
             pluginJson.requires.pluginCss = pluginJson.requires.pluginCss || [];
             pluginJson.provides = pluginJson.provides || {};
             this.json = pluginJson;
+            this.pluginBase = pluginJson.pluginBase;
             this.initializePlugin().then(() => {
               resolve();
             });

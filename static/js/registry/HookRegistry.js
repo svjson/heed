@@ -1,7 +1,7 @@
 (function() {
 
-  var hooks = {},
-      byType = {};
+  const hooks = {},
+        byType = {};
 
   class HookRegistry {
 
@@ -28,4 +28,3 @@
   Heed.HookRegistry = HookRegistry;
 
 })();
-

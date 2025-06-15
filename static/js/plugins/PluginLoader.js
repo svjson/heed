@@ -8,6 +8,7 @@
             pluginDir = '/plugins/' + pluginSpec.pluginId;
         if (pluginBase) pluginBase = pluginBase.substring(0, pluginBase.length-1);
         window[`${pluginSpec.pluginId}Base`] = pluginBase;
+        window.Heed.plugins[pluginSpec.pluginId] = pluginSpec;
 
         var promises = [];
 

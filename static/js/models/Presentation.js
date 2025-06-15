@@ -27,6 +27,10 @@
       }
     }
 
+    getPluginConfig(pluginId) {
+      return this.json.plugins?.[pluginId];
+    }
+
     getOrderedSlides() {
       let slides = [];
 
