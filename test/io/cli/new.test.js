@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test, tree, presentationAt, frontmatterOf } from '../fixture.js';
+import { test, tree, presentationAt, frontmatterOf } from '../../fixture.js';
 import path from 'path';
 
 import { heedCli } from './cli-runner.js';

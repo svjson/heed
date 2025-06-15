@@ -13,7 +13,7 @@
   "scripts": {
     "test": "playwright test",
     "test:unit": "playwright test test/unit",
-    "test:cli": "playwright test test/cli"
+    "test:io": "playwright test test/io"
   },
   "files": [
     "heed.js",

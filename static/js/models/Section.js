@@ -43,7 +43,7 @@
       if (!opts) opts = {};
       var promises = [];
       this.slides.forEach((slide) => {
-        promises.push(slide.load(path + this.id + '/', opts));
+        promises.push(slide.load(path + this.id + '/slides/', opts));
       });
       this.sections.forEach((section) => {
         promises.push(section.load(path + this.id + '/sections/', opts));
