@@ -3,9 +3,8 @@ import path from 'path';
 import process from 'process';
 import { fileURLToPath } from 'url';
 
-import { Command } from 'commander';
+import { Command, Option } from 'commander';
 
-import { findRoot } from './lib/presentation.js'
 import {
   runCommand,
 
@@ -13,6 +12,7 @@ import {
   addSlide,
   linkPlugin,
   newPresentation,
+  pack,
   removePlugin,
   showIndex,
   showRoot
@@ -20,7 +20,7 @@ import {
 
 const program = new Command();
 
-program.hook('preAction', (thisCommand, actionCommand) => {
+program.hook('preAction', (_thisCommand, actionCommand) => {
   const opts = actionCommand.opts();
   opts.heedRoot = path.dirname(fileURLToPath(import.meta.url));
 });
@@ -99,7 +99,7 @@ linkCommand
 
 program
   .command('new [presentationName] [presentationPath]')
-  .description('Create a new presentation in the current or provided folder')
+  .description('Create a new presentation in the current or provided folder.')
   .option('--json', 'Output index as JSON.')
   .action(async (presentationName, presentationPath = '.', options) => {
     await runCommand({
@@ -111,6 +111,25 @@ program
       cmdOpts: options
     });
   });
+
+/**
+ * "pack" command
+ */
+program
+  .command('pack [presentationPath]')
+  .description('Pack/compress the presentation into a distributable archive.')
+  .option('--json', 'Output result as JSON.')
+  .addOption(new Option('-t, --type [type]').choices(['zip', 'tar', 'tgz']).default('tgz'))
+  .action(async (presentationPath=".", options) => {
+    await runCommand({
+      cmd: pack,
+      cmdArgs: [
+        { __type: 'root-required', value: presentationPath },
+        options
+      ]
+    })
+  });
+
 
 /**
  * "remove"-command and subcommands
