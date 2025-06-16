@@ -76,7 +76,13 @@ app.ws('/navigation', function(ws, req) {
   console.log(channel.clients.size + ' connected');
 });
 
-app.listen(4000, function() {
-  console.log('Listening on port 4000');
+let port = 4000;
+let portArg = args.indexOf('-p');
+if (portArg !== -1) {
+  port = parseInt(args[portArg+1]);
+}
+
+app.listen(port, function() {
+  console.log(`Listening on port ${port}`);
   console.log('Serving presentation from: ', presentationRoot);
 });
