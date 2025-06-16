@@ -269,7 +269,7 @@ laptop screen, the notes UI remains up to date with the slide being shown.
 ## Command: heed-cli
 
 This command is for interacting with the presentation on your file-system, providing scaffolding commands
-like `new`, `add slide` as well as providing features that supports [heed-mode](https://github.com/svjson/heed-mode) for Emacs.
+like `new`, `add slide` as well as providing features that support [heed-mode](https://github.com/svjson/heed-mode) for Emacs.
 
 ### Usage:
 
@@ -294,6 +294,21 @@ $ heed-cli add slide initial-reactions
 
 This creates an empty slide and places it at the back of your slide index.
 
+### Commands
+
+| Command           | Arguments     | Optional               | Description                                                           |
+|-------------------|---------------|------------------------|-----------------------------------------------------------------------|
+| `add plugin`      | (plugin name) | <path/url>             | Add a plugin to the presentation                                      |
+| `add slide`       | (slide id)    | (path/context)         | Add a slide to the presentation                                       |
+| `install plugins` |               |                        | Install configured plugins that are not present in the plugins folder |
+| `link plugin`     | (plugin name) | (path)                 | (For plugin development) Add a plugin by symlink                      |
+| `new`             | (title/name)  | (path)                 | Create/Initialize a new presentation                                  |
+| `pack`            | (path)        | --type [tar, tgz, zip] | Create a distributable archive from the presentation folder           |
+| `remove plugin`   | (plugin name) |                        | Remove/uninstall a plugin from this presentation                      |
+| `show index`      |               | (path)                 | Show the presentation slide index                                     |
+| `show root`       |               | (path)                 | Locate the presentation root folder at <path>(implcitly ./)           |
+
+For the benefit of tooling, all commands accept a `--json` flag that outputs the command result as JSON
 
 ## Installation
 
