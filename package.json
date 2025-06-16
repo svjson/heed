@@ -1,11 +1,11 @@
 {
-  "name": "heed",
+  "name": "heedjs",
   "version": "0.1.0",
   "license": "MIT",
   "author": "Sven Johansson",
   "type": "module",
-  "description": "Browser-based presentations",
-  "main": "heed.js",
+  "description": "Heed: Slides as code, presentations in the browser.",
+  "keywords": ["slides", "presentations", "cli", "javascript", "deck"],
   "bin": {
     "heed": "heed.js",
     "heed-cli": "heed-cli.js"
