@@ -15,7 +15,8 @@ import {
   pack,
   removePlugin,
   showIndex,
-  showRoot
+  showRoot,
+  installPlugins
 } from './lib/command/index.js';
 
 const program = new Command();
@@ -69,6 +70,25 @@ addCommand
       cmdOpts: options
     })
   })
+
+/**
+ * "install"-command and subcommands
+ * 
+ */
+const installCommand = program.command('install');
+
+installCommand
+  .command('plugins')
+  .option('--json', 'Output result as JSON')
+  .action(async (options) => {
+    await runCommand({
+      cmd: installPlugins,
+      cmdArgs: [
+        { __type: 'root-required', value: '.' },
+      ],
+      cmdOpts: options
+    })
+  });
 
 /**
  * "link"-command and subcommands
