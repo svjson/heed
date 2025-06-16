@@ -1,0 +1,6 @@
+:: prism:code-block { lang=clojure }
+@style=font-size: 40px
+(defn evens [xs] (filter even? xs))
+
+(->> (range) evens (take 10)) ;=> (0 2 4 6 8 10 12 14 16 18)
+--
