@@ -312,8 +312,17 @@ For the benefit of tooling, all commands accept a `--json` flag that outputs the
 
 ## Installation
 
-Heed has not been published to the npm repository, so if you want to try it out you'll have to clone
-this repository.
+### npm
+
+```bash
+ npm install -g heedjs
+```
+
+### yarn (v1)
+
+```
+ yarn global add heedjs
+```
 
 ## Design goals
 
