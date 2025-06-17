@@ -1,5 +1,13 @@
 # Heed
 
+[![npm version](https://img.shields.io/npm/v/heedjs.svg)](https://www.npmjs.com/package/heedjs)
+[![npm downloads](https://img.shields.io/npm/dm/heedjs.svg)](https://www.npmjs.com/package/heedjs)
+[![GitHub repo](https://img.shields.io/badge/github-svjson%2Fheed-blue?logo=github)](https://github.com/svjson/heed)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Node](https://img.shields.io/node/v/heedjs)](https://www.npmjs.com/package/heedjs)
+
+> Slides as code. Presentations in the browser. Bring your HTML, CSS or mild-to-severe chaos.
+
 Heed is a presentation tool for writing slides as code - leveraging **HTML, CSS, and JavaScript** - that runs directly in the browser. 
 It supports a simplistic plugin architecture for embedding rich content and JavaScript-driven components.
 
