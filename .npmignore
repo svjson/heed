@@ -1,0 +1,9 @@
+.git
+node_modules
+*.log
+*.tgz
+.vscode
+.idea
+test/
+docs/
+plugins/

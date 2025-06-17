@@ -18,6 +18,7 @@
   "files": [
     "heed.js",
     "heed-cli.js",
+    "plugins.json",
     "lib/",
     "static/",
     "speaker-static/",
