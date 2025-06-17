@@ -6,6 +6,9 @@
   "type": "module",
   "description": "Heed: Slides as code, presentations in the browser.",
   "keywords": ["slides", "presentations", "cli", "javascript", "deck"],
+  "engines": {
+    "node": ">=18"
+  },
   "bin": {
     "heed": "heed.js",
     "heed-cli": "heed-cli.js"
