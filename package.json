@@ -1,11 +1,19 @@
 {
   "name": "heedjs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "author": "Sven Johansson",
   "type": "module",
   "description": "Heed: Slides as code, presentations in the browser.",
-  "keywords": ["slides", "presentations", "cli", "javascript", "deck"],
+  "repository": "svjson/heed",
+  "homepage": "https://github.com/svjson/heed#readme",
+  "keywords": [
+    "slides",
+    "presentations",
+    "cli",
+    "javascript",
+    "deck"
+  ],
   "engines": {
     "node": ">=18"
   },
@@ -16,7 +24,10 @@
   "scripts": {
     "test": "playwright test",
     "test:unit": "playwright test test/unit",
-    "test:io": "playwright test test/io"
+    "test:io": "playwright test test/io",
+    "bump:patch": "npm version patch --no-git-tag-version",
+    "bump:minor": "npm version minor --no-git-tag-version",
+    "bump:major": "npm version major --no-git-tag-version"
   },
   "files": [
     "heed.js",
