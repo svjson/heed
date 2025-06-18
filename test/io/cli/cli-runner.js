@@ -10,13 +10,13 @@ export const heedCli = async (args, { cwd, env={} } = {}) => {
       cwd,
       env: { ...process.env, ...env},
       stdio: ['ignore', 'pipe', 'pipe']
-    })
+    });
 
     let stdout = '';
     let stderr = '';
 
-    proc.stdout.on('data', chunk => { stdout += chunk });
-    proc.stderr.on('data', chunk => { stderr += chunk });
+    proc.stdout.on('data', chunk => { stdout += chunk; });
+    proc.stderr.on('data', chunk => { stderr += chunk; });
 
     proc.on('close', code => {
       resolve({ code, stdout, stderr });
@@ -26,4 +26,4 @@ export const heedCli = async (args, { cwd, env={} } = {}) => {
       resolve({ code: -1, stdout, stderr, error });
     });
   });
-}
+};

@@ -7,7 +7,7 @@
     }
 
     createMainElement(lmntName, props = {}) {
-      const el = this.createElement(lmntName, Object.assign({ id: this.section.id }, props))
+      const el = this.createElement(lmntName, Object.assign({ id: this.section.id }, props));
       const namespace = {};
       if (this.section.id) {
         namespace[this.section.id] = el;
@@ -45,7 +45,7 @@
       if (!this.section.position) return;
       if (this.section.position.type === 'overlay') {
         const sectionEl = this.slide.namespace[this.section.id],
-              targetEl = this.slide.namespace[this.section.position.target];
+          targetEl = this.slide.namespace[this.section.position.target];
         if (this.section.visible === false) {
           sectionEl.style.display = 'none';
         }

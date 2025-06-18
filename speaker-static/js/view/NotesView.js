@@ -10,8 +10,8 @@
     renderNotes() {
       this.slides.forEach((slide, index) => {
         let slideEl = document.createElement('div'),
-            slideTitle = document.createElement('h3'),
-            preEl = document.createElement('pre');
+          slideTitle = document.createElement('h3'),
+          preEl = document.createElement('pre');
 
         slideEl.setAttribute('data-slide-index', index);
 

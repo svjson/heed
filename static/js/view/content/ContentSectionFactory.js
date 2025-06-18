@@ -4,13 +4,13 @@
 
     static buildSection(cfg) {
       const slide = cfg.slide,
-          section = cfg.section;
+        section = cfg.section;
       try {
         const sectionEl = document.createElement('div');
-        sectionEl.setAttribute("class", "content-section");
+        sectionEl.setAttribute('class', 'content-section');
 
         const sectionType = Heed.ContentSectionRegistry.resolve(section.type);
-        if (!sectionType) throw "Unknown content section type: " + section.type;
+        if (!sectionType) throw 'Unknown content section type: ' + section.type;
         const contentSection = new sectionType(section, slide);
 
         const sectionNamespace = contentSection.renderTo(sectionEl);
@@ -18,7 +18,7 @@
         contentSection.applyPosition();
         return sectionEl;
       } catch (e) {
-        console.error("Could not render: ", section);
+        console.error('Could not render: ', section);
         throw e;
       }
     }

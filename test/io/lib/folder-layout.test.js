@@ -21,7 +21,7 @@ test.describe('NumberedSections', () => {
       // Then
       expect(index).toEqual(
         { slides: [{ id: 'front' }] }
-      )
+      );
     });
 
     test('it finds a slide in numbered section folder', async({ tmpDir }) => {
@@ -43,7 +43,7 @@ test.describe('NumberedSections', () => {
             slides: [{ id: '01-towards-awesome'}]
           }]
         }
-      )
+      );
     });
 
 

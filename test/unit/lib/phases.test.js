@@ -15,7 +15,7 @@ test.describe('extractPhaseDirectives', () => {
         'phase{1}.style': 'opacity: 1 | 0',
         'phase[final].style': 'color: red | black'
       }
-    }
+    };
 
     // When
     const phaseDirectives = extractPhaseDirectives(block);
@@ -57,7 +57,7 @@ test.describe('extractPhaseDirectives', () => {
         'phase{1}.style': 'opacity: 1 | 0; color: black | purple',
         'phase[final].style': 'color: red | black'
       }
-    }
+    };
 
     // When
     const phaseDirectives = extractPhaseDirectives(block);
@@ -94,7 +94,7 @@ test.describe('extractPhaseDirectives', () => {
       id: 'the-incredible-hulk',
       style: 'color: green;'
     });
-  })
+  });
 
 });
 
@@ -176,8 +176,8 @@ test.describe('applyPhaseAttributes', () => {
           }
         }
       }]
-    })
-  })
+    });
+  });
 
   test('phases are created from id references', () => {
     // Given
@@ -254,7 +254,7 @@ test.describe('applyPhaseAttributes', () => {
           }
         }
       }]
-    })
-  })
+    });
+  });
 
 });

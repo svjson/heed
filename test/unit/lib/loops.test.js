@@ -21,7 +21,7 @@ test('simple repeating loop is unrolled', () => {
     children: [],
     content:
       '<h1>Bullet {n}</h1>'
-  }]
+  }];
 
   // When
   const result = expandLoops(blocks);
@@ -52,6 +52,6 @@ test('simple repeating loop is unrolled', () => {
     },
     content: '<h1>Bullet 3</h1>',
     children: []
-  }])
+  }]);
 
-})
+});

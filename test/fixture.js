@@ -12,7 +12,7 @@ import { parseFrontmatter } from '../lib/heed-file';
  */
 export const readAsset = async (meta, relativePath) => {
   return await readFile(path.resolve(path.dirname(fileURLToPath(meta)), relativePath), 'utf-8');
-}
+};
 
 /**
  * Extend Playwright by adding a fixture that sets up a temporary directory

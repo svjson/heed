@@ -45,7 +45,7 @@ test.describe('parseHeedFile()', () => {
         content:
           'I have a song.\n' +
             "It's really, really good.\n" +
-            "I have to sing it twice.\n" +
+            'I have to sing it twice.\n' +
             "It's understood."
       }]
     });
@@ -74,7 +74,7 @@ test.describe('parseHeedFile()', () => {
             '\n' +
             '(->> (range) evens (take 10)) ;=> (0 2 4 6 8 10 12 14 16 18)'
       }]
-    })
+    });
   });
 
   test('parse .heed-file with %for-macro block', async () => {
@@ -118,7 +118,7 @@ test.describe('parseHeedFile()', () => {
         children: [],
         content: ''
       }]
-    })
+    });
 
   });
 

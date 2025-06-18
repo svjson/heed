@@ -7,7 +7,7 @@
         id: 'hookId',
         applyHook: function() {
           let hookClass = Heed.HookRegistry.resolve(id),
-              hookInstance = new hookClass(this.hookConfig, slide);
+            hookInstance = new hookClass(this.hookConfig, slide);
           return hookInstance.applyHook();
         },
         hookConfig: cfg

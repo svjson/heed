@@ -24,7 +24,7 @@
         videoEl._startTime = this.section.startTime;
       }
       sourceTag.src = videoSrc;
-      sourceTag.type = "video/webm";
+      sourceTag.type = 'video/webm';
 
       videoEl.appendChild(sourceTag);
       el.appendChild(videoEl);

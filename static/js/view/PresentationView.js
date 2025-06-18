@@ -8,7 +8,7 @@
       this.navigator = config.navigator;
 
       let parts = document.location.href.split('#'),
-          slideIndex = parts[1] ? parseInt(parts[1]) : 0;
+        slideIndex = parts[1] ? parseInt(parts[1]) : 0;
       this.showSlide(slideIndex);
 
       if (this.presentation.css) {

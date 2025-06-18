@@ -53,11 +53,11 @@ test.describe('heed-cli new cats-are-great', () => {
     expect(await presentationAt(tmpDir)).toMatchObject({
       name: 'cats-are-great',
       folderLayout: 'numbered-sections'
-    })
+    });
 
     expect(await frontmatterOf(`${tmpDir}/slides/front.heed`)).toEqual({
       title: 'cats-are-great',
-    })
+    });
   });
 
   test('heed-cli new cats-are-great --json', async ({ tmpDir }) => {
@@ -79,11 +79,11 @@ test.describe('heed-cli new cats-are-great', () => {
     expect(await presentationAt(tmpDir)).toMatchObject({
       name: 'cats-are-great',
       folderLayout: 'numbered-sections'
-    })
+    });
 
     expect(await frontmatterOf(`${tmpDir}/slides/front.heed`)).toEqual({
       title: 'cats-are-great',
-    })
+    });
   });
 
 });
@@ -117,7 +117,7 @@ test.describe('heed-cli new cats-are-great ./cats-pres', () => {
     expect(await frontmatterOf(`${tmpDir}/cats-pres/slides/front.heed`))
       .toEqual({
         title: 'cats-are-great',
-      })
+      });
   });
 
   test('heed-cli new cats-are-great ./cats-pres --json', async ({ tmpDir }) => {
@@ -150,7 +150,7 @@ test.describe('heed-cli new cats-are-great ./cats-pres', () => {
     expect(await frontmatterOf(`${tmpDir}/cats-pres/slides/front.heed`))
       .toEqual({
         title: 'cats-are-great',
-      })
+      });
   });
 
 });

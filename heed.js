@@ -54,13 +54,13 @@ app.get('/slide/*', async function(req, res, next) {
     console.log('404 - ' + req.params[0]);
     res.status(404).send();
   }
-})
+});
 
 app.ws('/navigation', function(ws, req) {
   let channel = ws.getWss('/navigation');
 
   ws.on('open', req => {
-    console.log('Connect', req)
+    console.log('Connect', req);
   });
 
   ws.on('close', req => {
@@ -71,7 +71,7 @@ app.ws('/navigation', function(ws, req) {
   ws.on('message', (msg) => {
     channel.clients.forEach((client) => {
       client.send(msg);
-    })
+    });
   });
   console.log(channel.clients.size + ' connected');
 });

@@ -1,7 +1,7 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 
-import { parseStyle } from '../../../lib/common.js'
+import { parseStyle } from '../../../lib/common.js';
 
 test.describe('parseStyle', () => {
 
@@ -24,4 +24,4 @@ test.describe('parseStyle', () => {
     });
   });
 
-})
+});

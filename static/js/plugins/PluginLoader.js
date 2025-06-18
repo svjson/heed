@@ -5,7 +5,7 @@
     static loadPlugin(pluginSpec) {
       return new Promise((resolve, reject) => {
         let pluginBase = pluginSpec.json.pluginBase,
-            pluginDir = '/plugins/' + pluginSpec.pluginId;
+          pluginDir = '/plugins/' + pluginSpec.pluginId;
         if (pluginBase) pluginBase = pluginBase.substring(0, pluginBase.length-1);
         window[`${pluginSpec.pluginId}Base`] = pluginBase;
         window.Heed.plugins[pluginSpec.pluginId] = pluginSpec;

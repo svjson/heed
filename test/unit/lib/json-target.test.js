@@ -3,8 +3,6 @@ import { test, expect } from '@playwright/test';
 import { emitSlide } from '../../../lib/emitter.js';
 import { createJSONTarget } from '../../../lib/json-target.js';
 
-import { readAsset } from '../../fixture.js';
-
 test('parse simple intermediary representation into json presentation', () => {
   // Given
   const ir = {
@@ -19,10 +17,10 @@ test('parse simple intermediary representation into json presentation', () => {
       content:
         'I have a song.\n' +
         "It's really, really good.\n" +
-        "I have to sing it twice.\n" +
+        'I have to sing it twice.\n' +
         "It's understood."
     }]
-  }
+  };
 
   // When
   const target = createJSONTarget();
@@ -40,14 +38,14 @@ test('parse simple intermediary representation into json presentation', () => {
       type: 'text',
       text: 'I have a song.\n' +
         "It's really, really good.\n" +
-        "I have to sing it twice.\n" +
+        'I have to sing it twice.\n' +
         "It's understood.",
       styles: {
         color: 'red'
       }
     }]
-  })
-})
+  });
+});
 
 test('parse intermediary representation with phases into json presentation', () => {
   // Given
@@ -96,7 +94,7 @@ test('parse intermediary representation with phases into json presentation', () 
         }
       }
     }]
-  }
+  };
 
   // When
   const target = createJSONTarget();
@@ -125,9 +123,9 @@ test('parse intermediary representation with phases into json presentation', () 
     }],
     steps: [
       { id: 'initial' },
-      { id: 'trying', transitions: { step1: [{ opacity: "1" }, { opacity: "0" }]} },
-      { id: 'failure', transitions: { finish: [{ opacity: "1" }, { opacity: "0" }]} },
+      { id: 'trying', transitions: { step1: [{ opacity: '1' }, { opacity: '0' }]} },
+      { id: 'failure', transitions: { finish: [{ opacity: '1' }, { opacity: '0' }]} },
     ]
-  })
-})
+  });
+});
 

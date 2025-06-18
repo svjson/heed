@@ -28,8 +28,8 @@
     }
 
     slideClicked(slideEl) {
-      let slideId = slideEl.getAttribute("data-slide-id"),
-          slideIndex = parseInt(slideEl.getAttribute("data-slide-index"));
+      let slideId = slideEl.getAttribute('data-slide-id'),
+        slideIndex = parseInt(slideEl.getAttribute('data-slide-index'));
       this.clearCurrentStep();
       this.markCurrentSlide(slideId, slideIndex);
       this.navigator.navigate({
@@ -56,9 +56,9 @@
     }
 
     stepClicked(stepEl) {
-      let slideId = stepEl.getAttribute("data-slide-id"),
-          slideIndex = parseInt(stepEl.getAttribute('data-slide-index')),
-          stepId = parseInt(stepEl.getAttribute("data-step-index"));
+      let slideId = stepEl.getAttribute('data-slide-id'),
+        slideIndex = parseInt(stepEl.getAttribute('data-slide-index')),
+        stepId = parseInt(stepEl.getAttribute('data-step-index'));
 
       this.clearCurrentStep();
       this.markCurrentSlide(slideId, slideIndex);
@@ -108,7 +108,7 @@
 
     renderSlide(slide, level) {
       let slideEl = document.createElement('div'),
-          slideIndex = this.slides.indexOf(slide);
+        slideIndex = this.slides.indexOf(slide);
 
       slideEl.classList.add('slide');
       slideEl.innerText = slide.name || slide.id;
@@ -127,10 +127,10 @@
 
     renderStep(slide, step, stepIndex, level) {
       let stepEl = document.createElement('div'),
-          slideIndex = this.slides.indexOf(slide);
+        slideIndex = this.slides.indexOf(slide);
 
       stepEl.classList.add('step');
-      stepEl.innerText = "- " + step.id;
+      stepEl.innerText = '- ' + step.id;
       stepEl.style.marginLeft = level*16;
       stepEl.setAttribute('data-slide-id', slide.id);
       stepEl.setAttribute('data-slide-index', slideIndex);

@@ -32,7 +32,7 @@
       if (step.transitions) {
         Object.keys(step.transitions).forEach((sectionId) => {
           let sectionTransition = step.transitions[sectionId],
-              targetEl = this.slide.namespace[sectionId];
+            targetEl = this.slide.namespace[sectionId];
           if (!targetEl) {
             console.error(`Section '${sectionId}' not in namespace: `, this.slide.namespace);
             return;
@@ -43,7 +43,7 @@
       if (step.innerText) {
         Object.keys(step.innerText).forEach((sectionId) => {
           let sectionText = step.innerText[sectionId],
-              targetEl = this.slide.namespace[sectionId];
+            targetEl = this.slide.namespace[sectionId];
           targetEl.innerText = sectionText[dir];
         });
       }
@@ -53,11 +53,11 @@
       el.innerHTML = '';
 
       let config = JSON.parse(JSON.stringify(defaults)),
-          appearance = Object.assign(
-            config.appearance || {},
-            this.slideData.appearance || {}
-          ),
-          style = "";
+        appearance = Object.assign(
+          config.appearance || {},
+          this.slideData.appearance || {}
+        ),
+        style = '';
 
       if (appearance.backgroundImage) {
         if (appearance.backgroundMode === 'cover') {
@@ -80,7 +80,7 @@
 
       let h1 = document.createElement('h1');
       let title = this.slideData.title,
-          titleStyles = {};
+        titleStyles = {};
 
       if (typeof title === 'object') {
         titleStyles = title.styles;

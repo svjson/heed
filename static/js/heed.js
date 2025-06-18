@@ -33,7 +33,7 @@ window.Heed = {
       ? Promise.resolve()
       : new Promise((resolve, reject) => {
         const tag = document.createElement('script');
-        tag.type = "text/javascript";
+        tag.type = 'text/javascript';
         tag.src = url;
         tag.onload = function() {
           resolve();
@@ -45,7 +45,7 @@ window.Heed = {
 
   appendScript: function(script) {
     const tag = document.createElement('script');
-    tag.type = "text/javascript";
+    tag.type = 'text/javascript';
     tag.innerHTML = script;
     document.body.appendChild(tag);
   },

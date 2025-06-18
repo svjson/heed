@@ -17,7 +17,7 @@
 
       this.section.rows.forEach((row, rowIndex) => {
         const rowEl = this.createElement('tr'),
-            rowData = row;
+          rowData = row;
 
         if (this.section.rowStyles) {
           Object.assign(rowEl.style, this.section.rowStyles);

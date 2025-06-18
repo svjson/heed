@@ -1,7 +1,7 @@
 (function() {
 
   const hooks = {},
-        byType = {};
+    byType = {};
 
   class HookRegistry {
 

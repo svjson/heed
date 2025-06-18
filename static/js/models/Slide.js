@@ -30,7 +30,7 @@
         let fileName = '/slide/' + this.path + this.id;
         fetch(fileName).then((res) => {
           if (res.status !== 200) {
-            throw new Error(`Could not load slide: '${this.path + this.id}`)
+            throw new Error(`Could not load slide: '${this.path + this.id}`);
           }
           res.json().then((slideData) => {
             this.data = slideData;

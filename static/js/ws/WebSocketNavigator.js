@@ -14,7 +14,7 @@
           this.connection.onmessage = (msg) => {
             this.receiveMessage(JSON.parse(msg.data));
           };
-          this.sendMessage({ command: "register", actor: this.actor});
+          this.sendMessage({ command: 'register', actor: this.actor});
           resolve();
         };
       });

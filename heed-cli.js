@@ -52,7 +52,7 @@ addCommand
         { __type: 'context-dir', value: contextPath }
       ],
       cmdOpts: options
-    })
+    });
   });
 
 addCommand
@@ -68,8 +68,8 @@ addCommand
         source
       ],
       cmdOpts: options
-    })
-  })
+    });
+  });
 
 /**
  * "install"-command and subcommands
@@ -87,7 +87,7 @@ installCommand
         { __type: 'root-required', value: '.' },
       ],
       cmdOpts: options
-    })
+    });
   });
 
 /**
@@ -109,8 +109,8 @@ linkCommand
         source
       ],
       cmdOpts: options
-    })
-  })
+    });
+  });
 
 /**
  * "new" command
@@ -140,14 +140,14 @@ program
   .description('Pack/compress the presentation into a distributable archive.')
   .option('--json', 'Output result as JSON.')
   .addOption(new Option('-t, --type [type]').choices(['zip', 'tar', 'tgz']).default('tgz'))
-  .action(async (presentationPath=".", options) => {
+  .action(async (presentationPath='.', options) => {
     await runCommand({
       cmd: pack,
       cmdArgs: [
         { __type: 'root-required', value: presentationPath },
         options
       ]
-    })
+    });
   });
 
 
@@ -170,7 +170,7 @@ removeCommand
         { __type: 'string', __name: 'Plugin name', __required: true, value: pluginName }
       ],
       cmdOpts: options
-    })
+    });
   });
 
 /**
@@ -205,7 +205,7 @@ showCommand
       cmdArgs: [dir],
       cmdOpts: options,
     });
-  })
+  });
 
 
 /** Parse arguments and run command */

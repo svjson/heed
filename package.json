@@ -22,6 +22,7 @@
     "heed-cli": "heed-cli.js"
   },
   "scripts": {
+    "lint": "eslint",
     "test": "playwright test",
     "test:unit": "playwright test test/unit",
     "test:io": "playwright test test/io",
@@ -48,6 +49,7 @@
     "unzipper": "^0.12.3"
   },
   "devDependencies": {
-    "@playwright/test": "^1.44.0"
+    "@playwright/test": "^1.44.0",
+    "eslint": "^9.29.0"
   }
 }
