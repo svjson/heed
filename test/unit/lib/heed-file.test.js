@@ -77,6 +77,51 @@ test.describe('parseHeedFile()', () => {
     })
   });
 
+  test('parse .heed-file with %for-macro block', async () => {
+    // Given
+    const fileData = await readAsset(import.meta.url, './assets/for-macro-block.heed');
+
+    // When
+    const ir = parseHeedFile(fileData);
+
+    // Then
+    expect(ir).toEqual({
+      frontmatter: {},
+      contents: [{
+        type: 'image',
+        depth: 0,
+        attributes: {
+          id: 'block1',
+          source: 'image1.png',
+          style: 'opacity: 1;',
+        },
+        children: [],
+        content: ''
+      }, {
+        type: 'image',
+        depth: 0,
+        attributes: {
+          id: 'block2',
+          source: 'image2.png',
+          style: 'opacity: 1;',
+        },
+        children: [],
+        content: ''
+      }, {
+        type: 'image',
+        depth: 0,
+        attributes: {
+          id: 'block3',
+          source: 'image3.png',
+          style: 'opacity: 1;',
+        },
+        children: [],
+        content: ''
+      }]
+    })
+
+  });
+
   test('parse .heed-file with a phases aside-block', async () => {
     // Given
     const fileData = await readAsset(import.meta.url, './assets/simple-with-phases.heed');

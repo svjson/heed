@@ -9,14 +9,16 @@ test.describe('extractPhaseDirectives', () => {
     const block = {
       attributes: {
         id: 'the-incredible-hulk',
-        style: 'color: green;',
+        style: 'color: green;'
+      },
+      macroAttributes: {
         'phase{1}.style': 'opacity: 1 | 0',
         'phase[final].style': 'color: red | black'
       }
     }
 
     // When
-    const [attributes, phaseDirectives] = extractPhaseDirectives(block);
+    const phaseDirectives = extractPhaseDirectives(block);
 
     // Then
     expect(phaseDirectives).toEqual([
@@ -38,7 +40,7 @@ test.describe('extractPhaseDirectives', () => {
       }
     ]);
 
-    expect(attributes).toEqual({
+    expect(block.attributes).toEqual({
       id: 'the-incredible-hulk',
       style: 'color: green;'
     });
@@ -50,13 +52,15 @@ test.describe('extractPhaseDirectives', () => {
       attributes: {
         id: 'the-incredible-hulk',
         style: 'color: green;',
+      },
+      macroAttributes: {
         'phase{1}.style': 'opacity: 1 | 0; color: black | purple',
         'phase[final].style': 'color: red | black'
       }
     }
 
     // When
-    const [attributes, phaseDirectives] = extractPhaseDirectives(block);
+    const phaseDirectives = extractPhaseDirectives(block);
 
     // Then
     expect(phaseDirectives).toEqual([
@@ -86,7 +90,7 @@ test.describe('extractPhaseDirectives', () => {
       }
     ]);
 
-    expect(attributes).toEqual({
+    expect(block.attributes).toEqual({
       id: 'the-incredible-hulk',
       style: 'color: green;'
     });
@@ -105,14 +109,18 @@ test.describe('applyPhaseAttributes', () => {
         type: 'text',
         attributes: {
           id: 'hello-dave',
-          'phase{1}.style': 'opacity: 1 | 0',
           style: 'color: green;'
+        },
+        macroAttributes: {
+          'phase{1}.style': 'opacity: 1 | 0',
         },
         content: 'Hello'
       }, {
         type: 'text',
         attributes: {
           id: 'world-text',
+        },
+        macroAttributes: {
           'phase{2}.style': 'color: red | black'
         },
         content: 'World'
@@ -131,11 +139,17 @@ test.describe('applyPhaseAttributes', () => {
           id: 'hello-dave',
           style: 'color: green;'
         },
+        macroAttributes: {
+          'phase{1}.style': 'opacity: 1 | 0',
+        },
         content: 'Hello'
       }, {
         type: 'text',
         attributes: {
           id: 'world-text'
+        },
+        macroAttributes: {
+          'phase{2}.style': 'color: red | black'
         },
         content: 'World'
       }],
@@ -173,14 +187,18 @@ test.describe('applyPhaseAttributes', () => {
         type: 'text',
         attributes: {
           id: 'hello-dave',
-          'phase[first].style': 'opacity: 1 | 0',
           style: 'color: green;'
+        },
+        macroAttributes: {
+          'phase[first].style': 'opacity: 1 | 0',
         },
         content: 'Hello'
       }, {
         type: 'text',
         attributes: {
-          id: 'world-text',
+          id: 'world-text'
+        },
+        macroAttributes: {
           'phase[second].style': 'color: red | black'
         },
         content: 'World'
@@ -199,11 +217,17 @@ test.describe('applyPhaseAttributes', () => {
           id: 'hello-dave',
           style: 'color: green;'
         },
+        macroAttributes: {
+          'phase[first].style': 'opacity: 1 | 0',
+        },
         content: 'Hello'
       }, {
         type: 'text',
         attributes: {
           id: 'world-text'
+        },
+        macroAttributes: {
+          'phase[second].style': 'color: red | black'
         },
         content: 'World'
       }],

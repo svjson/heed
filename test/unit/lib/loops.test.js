@@ -7,14 +7,16 @@ test('simple repeating loop is unrolled', () => {
   const blocks = [{
     type: 'for',
     attributes: {
-      each: 'n',
-      values: '1,2,3',
       id: 'bull{n}',
-      type: 'html',
       style: 'font-size: 20px',
       'style[n=1]': 'color:white',
       'style[n=2]': 'color:lightgray',
       'style[n=3]': 'color:darkgray',
+    },
+    macroAttributes: {
+      type: 'html',
+      each: 'n',
+      values: '1,2,3',
     },
     children: [],
     content:

@@ -43,4 +43,22 @@ test.describe('tokenize() - content blocks', () => {
     ]);
   });
 
+  test('tokenize a %for-macro block', async () => {
+    const fileData = await readAsset(import.meta.url, './assets/for-macro-block.heed');
+
+    // When
+    const tokens = tokenize(fileData, 0);
+
+    // Then
+    expect(tokens).toEqual([
+      { line: 1, type: 'macroBlockStart', blockType: 'for', depth: 0, attrText: '{ %type=image id=block{n} }' },
+      { line: 2, type: 'macroAttr', key: 'each', depth: 0, value: 'n' },
+      { line: 3, type: 'macroAttr', key: 'values', depth: 0, value: '1,2,3' },
+      { line: 4, type: 'attr', key: 'source', depth: 0, value: 'image{n}.png' },
+      { line: 5, type: 'attr', key: 'style', depth: 0, value: 'opacity: 1;' },
+      { line: 6, type: 'blockEnd', depth: 0, data: '--' }
+    ]);
+
+  });
+
 });
