@@ -1,9 +1,10 @@
-import { test as pwTest, expect } from '@playwright/test';
-import { readFile, readdir, rm } from 'fs/promises';
-import { fileURLToPath } from 'url';
 import fs from 'fs';
-import path from 'path';
+import { readFile, readdir, rm } from 'fs/promises';
 import { tmpdir } from 'os';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+import { test as pwTest, expect } from '@playwright/test';
 
 import { parseFrontmatter } from '../lib/heed-file';
 

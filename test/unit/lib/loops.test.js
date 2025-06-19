@@ -1,69 +1,70 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
+
 import { expandLoops } from '../../../lib/loops.js';
 
 test.describe('expandLoops()', () => {
 
-test('simple repeating loop is unrolled', () => {
-  // Given
-  const blocks = [{
-    type: 'for',
-    attributes: {
-      id: 'bull{n}',
-      style: 'font-size: 20px',
-      'style[n=1]': 'color:white',
-      'style[n=2]': 'color:lightgray',
-      'style[n=3]': 'color:darkgray',
-    },
-    macroAttributes: {
-      type: 'html',
-      each: 'n',
-      values: '1,2,3',
-    },
-    children: [],
-    depth: 0,
-    content:
+  test('simple repeating loop is unrolled', () => {
+    // Given
+    const blocks = [{
+      type: 'for',
+      attributes: {
+        id: 'bull{n}',
+        style: 'font-size: 20px',
+        'style[n=1]': 'color:white',
+        'style[n=2]': 'color:lightgray',
+        'style[n=3]': 'color:darkgray',
+      },
+      macroAttributes: {
+        type: 'html',
+        each: 'n',
+        values: '1,2,3',
+      },
+      children: [],
+      depth: 0,
+      content:
       '<h1>Bullet {n}</h1>'
-  }];
+    }];
 
-  // When
-  const result = expandLoops(blocks);
+    // When
+    const result = expandLoops(blocks);
 
-  // Then
-  expect(result.length).toBe(3);
-  expect(result).toEqual([{
-    type: 'html',
-    attributes: {
-      id: 'bull1',
-      style: ['font-size: 20px', 'color:white'],
-    },
-    macroAttributes: {},
-    content: '<h1>Bullet 1</h1>',
-    depth: 0,
-    children: []
-  }, {
-    type: 'html',
-    attributes: {
-      id: 'bull2',
-      style: ['font-size: 20px', 'color:lightgray']
-    },
-    macroAttributes: {},
-    content: '<h1>Bullet 2</h1>',
-    depth: 0,
-    children: []
-  }, {
-    type: 'html',
-    attributes: {
-      id: 'bull3',
-      style: ['font-size: 20px', 'color:darkgray']
-    },
-    macroAttributes: {},
-    content: '<h1>Bullet 3</h1>',
-    depth: 0,
-    children: []
-  }]);
+    // Then
+    expect(result.length).toBe(3);
+    expect(result).toEqual([{
+      type: 'html',
+      attributes: {
+        id: 'bull1',
+        style: ['font-size: 20px', 'color:white'],
+      },
+      macroAttributes: {},
+      content: '<h1>Bullet 1</h1>',
+      depth: 0,
+      children: []
+    }, {
+      type: 'html',
+      attributes: {
+        id: 'bull2',
+        style: ['font-size: 20px', 'color:lightgray']
+      },
+      macroAttributes: {},
+      content: '<h1>Bullet 2</h1>',
+      depth: 0,
+      children: []
+    }, {
+      type: 'html',
+      attributes: {
+        id: 'bull3',
+        style: ['font-size: 20px', 'color:darkgray']
+      },
+      macroAttributes: {},
+      content: '<h1>Bullet 3</h1>',
+      depth: 0,
+      children: []
+    }]);
 
-});
+  });
 
   test('Non-loop macro-attribute %phase{2} is preserved in output', () => {
     // Given
@@ -140,4 +141,4 @@ test('simple repeating loop is unrolled', () => {
     }]);
   });
 
-})
+});

@@ -1,6 +1,9 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 
+import columnLayoutBlockCase from './case/column-layout-block.case.js';
+import simpleWithPhasesCase from './case/simple-with-phases.case.js';
+import singleTextBlockCase from './case/single-text-block.case.js';
 import { emitSlide } from '../../../lib/emitter.js';
 import { createJSONTarget } from '../../../lib/json-target.js';
 
@@ -8,233 +11,37 @@ test.describe('createJSONTarget() - emitting JSON', () => {
 
   test('parse simple intermediary representation into json presentation', async () => {
     // Given
-    const ir = {
-      frontmatter: {},
-      contents: [{
-        type: 'text',
-        attributes: {
-          id: 'main-text',
-          style: 'color: red;'
-        },
-        children: [],
-        content:
-          'I have a song.\n' +
-            "It's really, really good.\n" +
-            'I have to sing it twice.\n' +
-            "It's understood."
-      }]
-    };
+    const ir = singleTextBlockCase.intermediate;
 
     // When
     const target = createJSONTarget();
     emitSlide(ir, target);
 
     // Then
-    expect(target.getJSON()).toEqual({
-      id: '',
-      name: '',
-      notes: '',
-      type: 'default',
-      contents: [{
-        id: 'main-text',
-        type: 'text',
-        text: 'I have a song.\n' +
-          "It's really, really good.\n" +
-          'I have to sing it twice.\n' +
-          "It's understood.",
-        styles: {
-          color: 'red'
-        }
-      }]
-    });
+    expect(target.getJSON()).toEqual(singleTextBlockCase.jsonSlide);
   });
 
   test('parse intermediary representation with phases into json presentation', () => {
     // Given
-    const ir = {
-      frontmatter: {
-        title: 'How to fail - main steps'
-      },
-      contents: [{
-        type: 'text',
-        depth: 0,
-        attributes: {
-          id: 'step1'
-        },
-        children: [],
-        content: '1. Trying'
-      }, {
-        type: 'text',
-        depth: 0,
-        attributes: {
-          id: 'finish',
-          style: 'color: red;'
-        },
-        children: [],
-        content: '2. FAILURE achieved!!'
-      }],
-      phases: [{
-        type: 'phase',
-        id: 'initial',
-        transitions: {}
-      }, {
-        type: 'phase',
-        id: 'trying',
-        transitions: {
-          step1: {
-            enter: { opacity: '1' },
-            rewind: { opacity: '0' }
-          }
-        }
-      }, {
-        type: 'phase',
-        id: 'failure',
-        transitions: {
-          finish: {
-            enter: { opacity: '1' },
-            rewind: { opacity: '0' }
-          }
-        }
-      }]
-    };
+    const ir = simpleWithPhasesCase.intermediateExpanded;
 
     // When
     const target = createJSONTarget();
     emitSlide(ir, target);
 
     // Then
-    expect(target.getJSON()).toEqual({
-      id: '',
-      name: '',
-      title: 'How to fail - main steps',
-      notes: '',
-      type: 'default',
-      contents: [{
-        id: 'step1',
-        type: 'text',
-        text: '1. Trying'
-      }, {
-        id: 'finish',
-        type: 'text',
-        styles: {
-          color: 'red'
-        },
-        text: '2. FAILURE achieved!!'
-      }],
-      steps: [
-        { id: 'initial' },
-        { id: 'trying', transitions: { step1: [{ opacity: '1' }, { opacity: '0' }]} },
-        { id: 'failure', transitions: { finish: [{ opacity: '1' }, { opacity: '0' }]} },
-      ]
-    });
+    expect(target.getJSON()).toEqual(simpleWithPhasesCase.jsonSlide);
   });
 
   test('parse intermediary representation with column layout into json presentation', () => {
-    const ir = {
-      frontmatter: {},
-      contents: [
-        {
-          type: 'column-layout',
-          attributes: {},
-          content: '',
-          children: [
-            {
-              type: 'column',
-              attributes: {},
-              content: '',
-              depth: 2,
-              children: [
-                {
-                  type: 'html',
-                  attributes: {
-                    style: 'font-size: 40px'
-                  },
-                  content: '<h1>This is column 1</h1>',
-                  depth: 3,
-                  children: []
-                },
-                {
-                  type: 'image',
-                  attributes: {
-                    src: 'column-one-image.jpg'
-                  },
-                  content: '',
-                  depth: 3,
-                  children: []
-                }
-              ]
-            },
-            {
-              type: 'column',
-              attributes: {},
-              content: '',
-              depth: 2,
-              children: [
-                {
-                  type: 'html',
-                  attributes: {
-                    style: 'font-size: 20px'
-                  },
-                  content: '<h2>This is column 2</h2>',
-                  depth: 3,
-                  children: []
-                },
-                {
-                  type: 'text',
-                  attributes: {
-                  },
-                  content: "This could be a long-winded tale about column 2,\nbut isn't.",
-                  depth: 3,
-                  children: [],
-                }
-              ]
-            }
-          ],
-          depth: 1
-        }
-      ]
-    };
+    const ir = columnLayoutBlockCase.intermediate;
 
     // When
     const target = createJSONTarget();
     emitSlide(ir, target);
 
     // Then
-    expect(target.getJSON()).toEqual({
-      id: '',
-      name: '',
-      notes: '',
-      type: 'default',
-      contents: [{
-        type: 'column-layout',
-        columns: [{
-          type: 'column',
-          contents: [{
-            type: 'html',
-            styles: {
-              'font-size': '40px',
-            },
-            html: '<h1>This is column 1</h1>'
-          }, {
-            type: 'image',
-            source: 'column-one-image.jpg'
-          }]
-        }, {
-          type: 'column',
-          contents: [{
-            type: 'html',
-            styles: {
-              'font-size': '20px',
-            },
-            html: '<h2>This is column 2</h2>'
-          }, {
-            type: 'text',
-            text: "This could be a long-winded tale about column 2,\nbut isn't."
-          }]
-        }]
-      }]
-    });
-
+    expect(target.getJSON()).toEqual(columnLayoutBlockCase.jsonSlide);
   });
 
 });

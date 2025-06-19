@@ -24,7 +24,7 @@ test.describe('sanitizeFilename', () => {
     ['   .hiddenfile   ', 'hiddenfile'],
     ['multilingual 漢字 русский язык عربى', 'multilingual-han-zi-russkii-iazyk-rb']
   ].forEach(([input, expected]) => {
-    test(`${input}`, () => {
+    test(`${input} --> ${expected}`, () => {
       expect(sanitizeFilename(input)).toBe(expected);
     });
   });
