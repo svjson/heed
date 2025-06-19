@@ -1,5 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
+
 import { emitSlide } from '../../../lib/emitter.js';
 import { createJSONTarget } from '../../../lib/json-target.js';
 
