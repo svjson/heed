@@ -66,19 +66,19 @@ title: The Benefits of Cats
 
 :: html { id=point1 class=point }
 @style=opacity: 0;
-@phase{1}.style=opacity: 1 | 0;
+%phase{1}.style=opacity: 1 | 0;
 <b>1.</b> They are fuzzy.
 --
 
 :: html { id=point2 class=point }
 @style=opacity: 0;
-@phase{2}.style=opacity: 1 | 0;
+%phase{2}.style=opacity: 1 | 0;
 <b>2.</b> They are furry.
 --
 
 :: html { id=point3 class=point }
 @style=opacity: 0;
-@phase{3}.style=opacity: 1 | 0;
+%phase{3}.style=opacity: 1 | 0;
 <b>3.</b> They are fluffy.
 --
 ```
@@ -130,27 +130,79 @@ with `--`.
 ```
 :: html { id=point2 class=point }
 @style=opacity: 0;
-@phase{2}.style=opacity: 1 | 0;
+%phase{2}.style=opacity: 1 | 0;
 <b>2.</b> They are furry.
 --
 ```
 
 Attributes may be specified inline within the block using the format `@style=opacity: 0;`, 
-or they can be defined as attributes on the opening line, such as `{ id=point2 }`. Both methods 
-are functionally equivalent. However, for improved readability, common properties like 
-`id` and `class` may be more suitable on the opening line, while properties specific to the 
-block type may be better suited as `@`-properties.
+or they can be defined as attributes on the opening line, such as `{ id=point2 }`. 
+Both methods are functionally equivalent. However, for improved readability, common 
+attributes like `id` and `class` may be more suitable on the opening line, while attributes 
+specific to the block type may be better suited as `@`-attributes or `%`-macro attributes
 
 Included block types are `text`, `html`, `image`, `video`, `table` and `column-layout`.
 
+
+#### Macros
+
+Macros and macro-attributes use a `%`-notation, and are pre-defined features that deal with
+common concerns, such as manipulating content blocks and their attributes as the phases of
+a slide is traversed.
+
+These are generative in their nature, and simply jack into the translation process of 
+.heed-files, turning the into the JSON format consumed by the slide viewer.
+
+##### The %for block
+
+The `%for`-macro is very similar to a a `for`-loop in any of Ye Olde Programming Languages,
+and produces a block for `%each` of `%values` provided.
+
+The following `%for`-macro block...
+
+```
+:: %for { %type=image class=decor }
+%each=n
+%values=1,2,3
+@src=image{n}.png
+@style=position: absolute;
+@style[n=1]=top:20%; left:20%
+@style[n=2]=top:80%; left:44%
+@style[n=3]=top:15%; left:83%
+--
+```
+...yields these three concrete `image`-content blocks:
+
+```
+:: image { class=decor }
+@src=image1.png
+@style=position: absolute,
+@style=top:20%; left:20%
+--
+
+:: image { class=decor }
+@src=image1.png
+@style=position: absolute,
+@style=top:80%; left:44%
+--
+
+:: image { class=decor }
+@src=image1.png
+@style=position: absolute,
+@style=top:15%; left:83%
+--
+```
+
+This is particularly helpful when adding repetetive content, in that it both allows for
+common definition of the properties and reduces the amount of code required.
 
 #### Aside blocks
 
 Aside blocks are structurally similar to content blocks, but describe properties or behavior
 of the slide without being actual content.
 
-The inline phase-attributes in the cat-slide example are functionally equivalent to the
-following `phases` aside block:
+The inline `%phase`-macro attributes in the cat-slide example are functionally equivalent 
+to the following `phases` aside block:
 
 ```
 == phases
@@ -334,13 +386,22 @@ For the benefit of tooling, all commands accept a `--json` flag that outputs the
 
 ## Design goals
 
-- **No frameworks.** No React, no Vue, no build tools. Just browser-native JavaScript, HTML, and CSS.
+- **No heavy frameworks in the browser.** No React, no Vue, no build tools. Just browser-native JavaScript, HTML, and CSS.
 - **Slides as data.** Presentations are defined in a structured JSON or plain text format and rendered dynamically together with their 
 assets.
 - **Plugin support.** Extensions can define new layout types, behaviors, and embedded components.
 - **Self-contained.** Everything is served locally with no external dependencies at runtime.
 - **Live demos.** Designed for talks where code, emulation, or simulation needs to run live inside the slides. Or just when slides as 
 code makes sense. Which it always does. ;)
+
+## Changelog
+
+### [v0.1.1]
+- Separation of regular `@`-attributes and `%`-macro attributes
+- Macro block types are now also clearly prefixed as macros (`:: for` --> `:: %for`)
+
+### [v0.1.0] - 2025-06-16
+- Initial version published to npm
 
 ## State of the code
 
