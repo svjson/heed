@@ -5,17 +5,19 @@ import codeBlockCase from './case/code-block.case.js';
 import columnLayoutBlockCase from './case/column-layout-block.case.js';
 import columnLayoutImplicitColumnsCase from './case/column-layout-implicit-columns.case.js';
 import forMacroBlockCase from './case/for-macro-block.case.js';
+import linearTextAccumulationCase from './case/linear-text-accumulation.case.js';
 import textBlockCase from './case/single-text-block.case.js';
 import { tokenize } from '../../../lib/tokenize.js';
 
 test.describe('tokenize() - content blocks', () => {
 
   [
-    textBlockCase,
     codeBlockCase,
-    forMacroBlockCase,
     columnLayoutBlockCase,
-    columnLayoutImplicitColumnsCase
+    columnLayoutImplicitColumnsCase,
+    forMacroBlockCase,
+    linearTextAccumulationCase,
+    textBlockCase
   ] .forEach(testCase => {
     test(`tokenize a ${testCase.tokenizeDescription ?? testCase.description}`, () => {
       // Given

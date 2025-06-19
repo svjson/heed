@@ -153,7 +153,7 @@ a slide is traversed.
 These are generative in their nature, and simply jack into the translation process of 
 .heed-files, turning the into the JSON format consumed by the slide viewer.
 
-##### The %for block
+##### %for-macro block
 
 The `%for`-macro is very similar to a a `for`-loop in any of Ye Olde Programming Languages,
 and produces a block for `%each` of `%values` provided.
@@ -176,25 +176,74 @@ The following `%for`-macro block...
 ```
 :: image { class=decor }
 @src=image1.png
-@style=position: absolute,
+@style=position: absolute
 @style=top:20%; left:20%
 --
 
 :: image { class=decor }
 @src=image1.png
-@style=position: absolute,
+@style=position: absolute
 @style=top:80%; left:44%
 --
 
 :: image { class=decor }
 @src=image1.png
-@style=position: absolute,
+@style=position: absolute
 @style=top:15%; left:83%
 --
 ```
 
 This is particularly helpful when adding repetetive content, in that it both allows for
 common definition of the properties and reduces the amount of code required.
+
+#### %phase-macro attribute
+
+The `%phase`-macro is a shorthand for defining phase transitions directly on a content block,
+as opposed to in the `== phases`-aside block.
+
+A common use-case is making blocks appear when a slide enters a certain phase (and disappearing
+if the slide reverts to an earlier phase):
+
+```
+%phase{2}.style=opacity: 1 | 0;
+```
+
+There is no requirement to define the phase referred to by the macro, as they will be 
+created as needed.
+
+#### %accumulate-macro attribute
+
+The `%accumulate`-macro is used to include properties from previous blocks in an accumulation
+group.
+
+This is particularly useful for certain block types, such as `prism:code-block` or `mermaid:diagram`, 
+to create the effect of gradually making content appear within them.
+
+While there is currently no support for actually modifying their contents, the same effect
+can be achieved by using multiple blocks where only one is shown during each phase:
+
+```
+:: mermaid:diagram { id=stage1 class=invisble }
+%accumulate.content=my-graph
+%phase{1}.style=opacity: 1 | 0;
+%phase{2}.style=opacity: 0;
+gitGraph:
+  checkout main
+  commit id: "Added sprinkles"
+  commit id: "And a cherry on top!"
+--
+
+:: mermaid:diagram
+%accumulate.content=my-graph
+%phase{1}.style=opacity: 1 | 0;
+%phase{2}.style=opacity: 0;
+  branch feature/eat-that-cake
+  checkout feature/eat-that-cake
+  commit id: "Took a giant bite"
+
+```
+
+...and so on.
 
 #### Aside blocks
 
@@ -396,10 +445,11 @@ code makes sense. Which it always does. ;)
 
 ## Changelog
 
-### [v0.1.1]
+### [v0.1.1] - (Next version)
 - Support for `column-layout` blocks in the heed file format
 - Separation of regular `@`-attributes and `%`-macro attributes
 - Macro block types are now also clearly prefixed as macros (`:: for` --> `:: %for`)
+- `%accumulate` macro attribute for accumulating values across multiple blocks
 
 ### [v0.1.0] - 2025-06-16
 - Initial public release to npm

@@ -4,6 +4,7 @@ import { test, expect } from '@playwright/test';
 import codeBlockCase from './case/code-block.case.js';
 import forMacroBlockCase from './case/for-macro-block.case.js';
 import frontmatterOnlyCase from './case/frontmatter-only.case.js';
+import linearTextAccumulationCase from './case/linear-text-accumulation.case.js';
 import simpleWithPhasesCase from './case/simple-with-phases.case.js';
 import textBlockCase from './case/single-text-block.case.js';
 import { parseHeedFile } from '../../../lib/heed-file.js';
@@ -14,6 +15,7 @@ test.describe('parseHeedFile()', () => {
     codeBlockCase,
     forMacroBlockCase,
     frontmatterOnlyCase,
+    linearTextAccumulationCase,
     simpleWithPhasesCase,
     textBlockCase,
   ].forEach(testCase => {
