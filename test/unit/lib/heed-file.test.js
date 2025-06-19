@@ -1,7 +1,7 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
-import { parseHeedFile } from '../../../lib/heed-file.js';
 
+import { parseHeedFile } from '../../../lib/heed-file.js';
 import { readAsset } from '../../fixture.js';
 
 test.describe('parseHeedFile()', () => {
@@ -36,7 +36,7 @@ test.describe('parseHeedFile()', () => {
       frontmatter: {},
       contents: [{
         type: 'text',
-        depth: 0,
+        depth: 1,
         attributes: {
           id: 'main-text',
           style: 'color: red;'
@@ -63,7 +63,7 @@ test.describe('parseHeedFile()', () => {
       frontmatter: {},
       contents: [{
         type: 'prism:code-block',
-        depth: 0,
+        depth: 1,
         attributes: {
           lang: 'clojure',
           style: 'font-size: 40px'
@@ -89,7 +89,7 @@ test.describe('parseHeedFile()', () => {
       frontmatter: {},
       contents: [{
         type: 'image',
-        depth: 0,
+        depth: 1,
         attributes: {
           id: 'block1',
           source: 'image1.png',
@@ -100,7 +100,7 @@ test.describe('parseHeedFile()', () => {
         content: ''
       }, {
         type: 'image',
-        depth: 0,
+        depth: 1,
         attributes: {
           id: 'block2',
           source: 'image2.png',
@@ -111,7 +111,7 @@ test.describe('parseHeedFile()', () => {
         content: ''
       }, {
         type: 'image',
-        depth: 0,
+        depth: 1,
         macroAttributes: {},
         attributes: {
           id: 'block3',
@@ -139,7 +139,7 @@ test.describe('parseHeedFile()', () => {
       },
       contents: [{
         type: 'text',
-        depth: 0,
+        depth: 1,
         attributes: {
           id: 'step1'
         },
@@ -147,7 +147,7 @@ test.describe('parseHeedFile()', () => {
         content: '1. Trying'
       }, {
         type: 'text',
-        depth: 0,
+        depth: 1,
         attributes: {
           id: 'finish',
           style: 'color: red;'

@@ -11,7 +11,6 @@
       el.appendChild(textEl);
       return namespace;
     }
-
   }
 
   Heed.ContentSectionRegistry.register('text', TextContentSection);

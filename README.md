@@ -397,11 +397,15 @@ code makes sense. Which it always does. ;)
 ## Changelog
 
 ### [v0.1.1]
+- Support for `column-layout` blocks in the heed file format
 - Separation of regular `@`-attributes and `%`-macro attributes
 - Macro block types are now also clearly prefixed as macros (`:: for` --> `:: %for`)
 
 ### [v0.1.0] - 2025-06-16
-- Initial version published to npm
+- Initial public release to npm
+- Supports content block types: `text`, `html`, `image`, `video`, `table`, `column-layout`
+- Plugin-system for adding custom content block types (`mermaid` and `prism` available).
+- Custom `.heed` slide format introduced.
 
 ## State of the code
 
