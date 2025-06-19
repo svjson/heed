@@ -1,13 +1,13 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 
-import { expandLoops } from '../../../lib/loops.js';
+import { expandForBlock } from '../../../../lib/macro/for-block-macro.js';
 
-test.describe('expandLoops()', () => {
+test.describe('expandForBlock()', () => {
 
   test('simple repeating loop is unrolled', () => {
     // Given
-    const blocks = [{
+    const block = {
       type: 'for',
       attributes: {
         id: 'bull{n}',
@@ -25,10 +25,10 @@ test.describe('expandLoops()', () => {
       depth: 0,
       content:
       '<h1>Bullet {n}</h1>'
-    }];
+    };
 
     // When
-    const result = expandLoops(blocks);
+    const result = expandForBlock(block);
 
     // Then
     expect(result.length).toBe(3);
@@ -68,7 +68,7 @@ test.describe('expandLoops()', () => {
 
   test('Non-loop macro-attribute %phase{2} is preserved in output', () => {
     // Given
-    const blocks = [{
+    const block = {
       type: 'for',
       attributes: {
         id: 'img{n}',
@@ -86,10 +86,10 @@ test.describe('expandLoops()', () => {
       },
       depth: 0,
       children: []
-    }];
+    };
 
     // When
-    const result = expandLoops(blocks);
+    const result = expandForBlock(block);
 
     // Then
     expect(result.length).toBe(3);
