@@ -95,6 +95,7 @@ test.describe('parseHeedFile()', () => {
           source: 'image1.png',
           style: 'opacity: 1;',
         },
+        macroAttributes: {},
         children: [],
         content: ''
       }, {
@@ -105,11 +106,13 @@ test.describe('parseHeedFile()', () => {
           source: 'image2.png',
           style: 'opacity: 1;',
         },
+        macroAttributes: {},
         children: [],
         content: ''
       }, {
         type: 'image',
         depth: 0,
+        macroAttributes: {},
         attributes: {
           id: 'block3',
           source: 'image3.png',
