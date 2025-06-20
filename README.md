@@ -450,6 +450,7 @@ code makes sense. Which it always does. ;)
 - Separation of regular `@`-attributes and `%`-macro attributes
 - Macro block types are now also clearly prefixed as macros (`:: for` --> `:: %for`)
 - `%accumulate` macro attribute for accumulating values across multiple blocks
+- Improved error-handling of `.heed`-file parsing, including an "Error-slide" for unparseable slides.
 
 ### [v0.1.0] - 2025-06-16
 - Initial public release to npm

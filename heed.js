@@ -47,7 +47,7 @@ app.get('/context', function(req, res, next) {
 });
 
 app.get('/slide/*', async function(req, res, next) {
-  const slide = await loadSlide(presentationRoot, req.params[0]);
+  const slide = await loadSlide(presentationRoot, req.params[0], true);
   if (slide) {
     res.send(slide);
   } else {
