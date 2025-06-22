@@ -1,0 +1,7 @@
+
+:: %for { %type=image id=block{n} }
+%each=n
+%values=1..3
+@source=image{n}.png
+@style=opacity: 1;
+--

@@ -3,6 +3,7 @@ import { test, expect } from '@playwright/test';
 
 import accumulateFromAsideContentCase from './case/accumulate-from-aside-content.case.js';
 import codeBlockCase from './case/code-block.case.js';
+import forMacroBlockWithRangeCase from './case/for-macro-block-with-range.case.js';
 import forMacroBlockCase from './case/for-macro-block.case.js';
 import frontmatterOnlyCase from './case/frontmatter-only.case.js';
 import linearTextAccumulationCase from './case/linear-text-accumulation.case.js';
@@ -16,6 +17,7 @@ test.describe('parseHeedFile()', () => {
     accumulateFromAsideContentCase,
     codeBlockCase,
     forMacroBlockCase,
+    forMacroBlockWithRangeCase,
     frontmatterOnlyCase,
     linearTextAccumulationCase,
     simpleWithPhasesCase,

@@ -5,6 +5,7 @@ import accumulateFromAsideContentCase from './case/accumulate-from-aside-content
 import codeBlockCase from './case/code-block.case.js';
 import columnLayoutBlockCase from './case/column-layout-block.case.js';
 import columnLayoutImplicitColumnsCase from './case/column-layout-implicit-columns.case.js';
+import forMacroBlockWithRangeCase from './case/for-macro-block-with-range.case.js';
 import forMacroBlockCase from './case/for-macro-block.case.js';
 import linearTextAccumulationCase from './case/linear-text-accumulation.case.js';
 import textBlockCase from './case/single-text-block.case.js';
@@ -18,6 +19,7 @@ test.describe('tokenize() - content blocks', () => {
     columnLayoutBlockCase,
     columnLayoutImplicitColumnsCase,
     forMacroBlockCase,
+    forMacroBlockWithRangeCase,
     linearTextAccumulationCase,
     textBlockCase
   ] .forEach(testCase => {
