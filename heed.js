@@ -1,88 +1,75 @@
 #!/bin/node
-import express from 'express';
-import expressWs from 'express-ws';
-import childProcess from 'child_process';
-import fs from 'fs';
+import { readFile } from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import { loadPresentation } from './lib/presentation.js';
-import { loadSlide } from './lib/slide.js';
+import { Command, InvalidOptionArgumentError } from 'commander';
 
-const ws = expressWs(express());
-const app = ws.app;
-const router = express.Router();
+import { preparePresentation } from './server/prepare.js';
+import { startServer } from './server/server.js';
 
-const args = process.argv.slice(2);
-const presentationRoot = process.env.PWD + '/';
-
+/**
+ * Locate the root of the heedjs package
+ */
 const heedRoot = path.dirname(fileURLToPath(import.meta.url));
 
-app.use(router);
-app.use(express.static(heedRoot + '/static/'));
+/**
+ * Load the Heed package.json
+ */
+const pkg = JSON.parse(await readFile(path.join(heedRoot, 'package.json')));
 
-app.get('/presentation/presentation.json', async function(req, res, next) {
-  res.send((await loadPresentation('.', { resolve: true })));
-});
+/**
+ * Parse and validate the port number program option
+ */
+const parsePort = (value) => {
+  const port = Number(value);
 
-app.use('/presentation/', express.static(presentationRoot));
-app.use('/speaker/', express.static(heedRoot + '/speaker-static/'));
-app.get('/plugins/:pluginId/:fileName', function(req, res, next) {
-  var pluginDef = fs.readFileSync(`${presentationRoot}/plugins/${req.params.pluginId}/${req.params.fileName}`);
-  res.send(pluginDef);
-});
-
-app.get('/childprocess', function(req, res, next) {
-  let cmd = req.query.cmd;
-  childProcess.exec(cmd);
-  res.sendStatus(200);
-});
-
-app.use(express.static(presentationRoot));
-
-app.get('/context', function(req, res, next) {
-  res.send({
-    directory: process.cwd()
-  });
-});
-
-app.get('/slide/*', async function(req, res, next) {
-  const slide = await loadSlide(presentationRoot, req.params[0], true);
-  if (slide) {
-    res.send(slide);
-  } else {
-    console.log('404 - ' + req.params[0]);
-    res.status(404).send();
+  if (!Number.isInteger(port) || port < 1 || port > 65535) {
+    throw new InvalidOptionArgumentError('Port must be an integer between 1 and 65535');
   }
-});
 
-app.ws('/navigation', function(ws, req) {
-  let channel = ws.getWss('/navigation');
+  return port;
+};
 
-  ws.on('open', req => {
-    console.log('Connect', req);
+/**
+ * Root Commander-command
+ */
+const program = new Command();
+
+/**
+ * Commander-command for starting the Heed Server.
+ */
+program
+  .name('heed')
+  .description('Serve a Heed presentation over HTTP.')
+  .version(pkg.version)
+  .argument('[path]', 'Path to presentation directory', '.')
+  .option('-p, --port <number>', 'HTTP port to serve presentation on', parsePort, 4000)
+  .action(async (pathArg, options) => {
+    try {
+      const presentationRoot = await preparePresentation(pathArg);
+
+      const serverOpts = {
+        port: options.port,
+        presentationRoot,
+        heedRoot,
+        pkg
+      };
+
+      startServer(serverOpts);
+
+    } catch (e) {
+      console.error(`Failed to start Heed: ${e.message}`);
+      if (e.suggestion) {
+        console.error(e.suggestion);
+      }
+      console.log('');
+      process.exit(1);
+    }
   });
 
-  ws.on('close', req => {
-    console.log('Client disconnect');
-    console.log(channel.clients.size + ' connected');
-  });
-
-  ws.on('message', (msg) => {
-    channel.clients.forEach((client) => {
-      client.send(msg);
-    });
-  });
-  console.log(channel.clients.size + ' connected');
-});
-
-let port = 4000;
-let portArg = args.indexOf('-p');
-if (portArg !== -1) {
-  port = parseInt(args[portArg+1]);
-}
-
-app.listen(port, function() {
-  console.log(`Listening on port ${port}`);
-  console.log('Serving presentation from: ', presentationRoot);
-});
+/**
+ * Display Heed version and start the server.
+ */
+console.log(`Heed v${pkg.version}\n`);
+program.parse();
