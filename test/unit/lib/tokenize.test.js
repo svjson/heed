@@ -1,6 +1,7 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 
+import accumulateFromAsideContentCase from './case/accumulate-from-aside-content.case.js';
 import codeBlockCase from './case/code-block.case.js';
 import columnLayoutBlockCase from './case/column-layout-block.case.js';
 import columnLayoutImplicitColumnsCase from './case/column-layout-implicit-columns.case.js';
@@ -12,6 +13,7 @@ import { tokenize } from '../../../lib/tokenize.js';
 test.describe('tokenize() - content blocks', () => {
 
   [
+    accumulateFromAsideContentCase,
     codeBlockCase,
     columnLayoutBlockCase,
     columnLayoutImplicitColumnsCase,

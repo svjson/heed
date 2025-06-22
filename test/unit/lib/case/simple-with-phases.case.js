@@ -1,6 +1,6 @@
 import { readAsset } from '../../../fixture.js';
 
-const description = 'with a phases-aside blocks';
+const description = 'with a phases-aside block';
 
 const heedFile = await readAsset(import.meta.url, './simple-with-phases.heed');
 

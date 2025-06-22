@@ -1,0 +1,26 @@
+-----------------------------------
+title: Accumulate from Aside-blocks
+-----------------------------------
+
+:: %for { %type=html id=html-block{n} }
+%each=n
+%values=1,2,3
+%content=content:mycontent{n}
+--
+
+== content { id=mycontent1 }
+%accumulate.content=cgroup
+<h1>This is a giant header!</h1>
+--
+
+== content { id=mycontent2 }
+%accumulate.content=cgroup
+<div>
+This is a div-tag and its glorious content
+</div>
+--
+
+== content { id=mycontent3 }
+%accumulate.content=cgroup
+<footer>This is a footer!</footer>
+--

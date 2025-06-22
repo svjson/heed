@@ -1,6 +1,7 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 
+import accumulateFromAsideContentCase from './case/accumulate-from-aside-content.case.js';
 import codeBlockCase from './case/code-block.case.js';
 import forMacroBlockCase from './case/for-macro-block.case.js';
 import frontmatterOnlyCase from './case/frontmatter-only.case.js';
@@ -12,6 +13,7 @@ import { parseHeedFile } from '../../../lib/heed-file.js';
 test.describe('parseHeedFile()', () => {
 
   [
+    accumulateFromAsideContentCase,
     codeBlockCase,
     forMacroBlockCase,
     frontmatterOnlyCase,
