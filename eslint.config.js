@@ -14,6 +14,7 @@ export default [
     },
     rules: {
       ...playwright.configs.recommended.rules,
+      'playwright/no-conditional-in-test': 'off',
       'no-empty-functions': 'off',
       'no-empty': 'off',
       semi: ['error', 'always'],
