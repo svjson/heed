@@ -607,10 +607,10 @@ error handling sorted out and just generally modernize things and touch up some 
 
 ## Changelog
 
-### [v0.1.1] - (Next version)
+### [v0.2.0] - 2025-06-22
 - Support for `column-layout` blocks in the heed file format
-- Separation of regular `@`-attributes and `%`-macro attributes
-- Macro block types are now also clearly prefixed as macros (`:: for` --> `:: %for`)
+- (Breaking) Separation of regular `@`-attributes and `%`-macro attributes
+- (Breaking) Macro block types are now also clearly prefixed as macros (`:: for` --> `:: %for`)
 - `%accumulate` macro attribute for accumulating values across multiple blocks
 - `%reveal` frontmatter macro to simplify revealing content phase-by-phase
 - `%content` macro attribute for using content from `== content` aside blocks as actual content. Content wants to be content, apparently.
