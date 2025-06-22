@@ -67,8 +67,8 @@ and comes with a very rudimentary **WebSocket-based speaker notes system**. Batt
 The original version exclusively used JSON files for slides, which quickly turned out be cumbersome and non-premium to work with.
 Embedding HTML or code - or any kind of formatting - flattened into a JSON string is not ideal. Who knew?
 
-For this reason, I invented a fairly simply format specifically for heed, which is the canon format, even though it
-"transpiles" to the JSON format for use in the slide viewer.
+For this reason, I invented a fairly simple format specifically for heed, which is now the canon format format for writing slides.
+It still "transpiles" to the same old JSON format for use in the slide viewer, which it is still well-suited for.
 
 Heed presentations operate directly in the browser, embracing HTML markup and stylesheets rather than abstracting them away. 
 As a slide author, you benefit from and rely on your basic(or advanced) knowledge of these concepts.
