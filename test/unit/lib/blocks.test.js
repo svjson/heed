@@ -5,15 +5,17 @@ import columnLayoutBlockCase from './case/column-layout-block.case.js';
 import columnLayoutImplicitColumnsCase from './case/column-layout-implicit-columns.case.js';
 import forMacroBlockWithRangeCase from './case/for-macro-block-with-range.case.js';
 import forMacroBlockCase from './case/for-macro-block.case.js';
+import revealFrontmatterMacroCase from './case/reveal-frontmatter-macro.case.js';
 import { parseBlocks } from '../../../lib/blocks.js';
 
 test.describe('parseBlocks()', () => {
 
   [
+    columnLayoutBlockCase,
+    columnLayoutImplicitColumnsCase,
     forMacroBlockCase,
     forMacroBlockWithRangeCase,
-    columnLayoutBlockCase,
-    columnLayoutImplicitColumnsCase
+    revealFrontmatterMacroCase
   ].forEach(testCase => {
     test(`Parse ${testCase.parseBlocksDescription ?? testCase.description}`, () => {
       // Given

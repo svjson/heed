@@ -1,0 +1,27 @@
+------------------------------------
+title: Steps toward everlasting joy
+%reveal: all
+%reveal.style: opacity: 1 | 0;
+------------------------------------
+
+:: html { id=bull1 }
+<b>1.</b> Install Emacs
+--
+
+:: html { id=bull2 }
+<b>2.</b> Discover that tinkering with your configuration...
+--
+
+:: html { id=bull2a }
+@style=font-size: 15px;
+<b>a)</b> Sparks joy!
+--
+
+:: html { id=bull2b }
+@style=font-size: 15px;
+<b>b)</b> Never ever (ever) ends...
+--
+
+:: html { id=bull3 }
+<b>3.</b> Everlasting joy has been achieved!
+--

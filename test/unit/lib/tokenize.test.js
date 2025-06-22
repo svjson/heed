@@ -8,6 +8,7 @@ import columnLayoutImplicitColumnsCase from './case/column-layout-implicit-colum
 import forMacroBlockWithRangeCase from './case/for-macro-block-with-range.case.js';
 import forMacroBlockCase from './case/for-macro-block.case.js';
 import linearTextAccumulationCase from './case/linear-text-accumulation.case.js';
+import revealFrontmatterMacroCase from './case/reveal-frontmatter-macro.case.js';
 import textBlockCase from './case/single-text-block.case.js';
 import { tokenize } from '../../../lib/tokenize.js';
 
@@ -21,6 +22,7 @@ test.describe('tokenize() - content blocks', () => {
     forMacroBlockCase,
     forMacroBlockWithRangeCase,
     linearTextAccumulationCase,
+    revealFrontmatterMacroCase,
     textBlockCase
   ] .forEach(testCase => {
     test(`tokenize a ${testCase.tokenizeDescription ?? testCase.description}`, () => {

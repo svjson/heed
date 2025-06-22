@@ -7,6 +7,7 @@ import forMacroBlockWithRangeCase from './case/for-macro-block-with-range.case.j
 import forMacroBlockCase from './case/for-macro-block.case.js';
 import frontmatterOnlyCase from './case/frontmatter-only.case.js';
 import linearTextAccumulationCase from './case/linear-text-accumulation.case.js';
+import revealFrontmatterMacroCase from './case/reveal-frontmatter-macro.case.js';
 import simpleWithPhasesCase from './case/simple-with-phases.case.js';
 import textBlockCase from './case/single-text-block.case.js';
 import { parseHeedFile } from '../../../lib/heed-file.js';
@@ -20,6 +21,7 @@ test.describe('parseHeedFile()', () => {
     forMacroBlockWithRangeCase,
     frontmatterOnlyCase,
     linearTextAccumulationCase,
+    revealFrontmatterMacroCase,
     simpleWithPhasesCase,
     textBlockCase,
   ].forEach(testCase => {
