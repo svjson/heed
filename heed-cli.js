@@ -1,4 +1,5 @@
 #!/bin/node
+import { readFile } from 'fs/promises';
 import path from 'path';
 import process from 'process';
 import { fileURLToPath } from 'url';
@@ -20,17 +21,18 @@ import {
 } from './lib/command/index.js';
 
 const program = new Command();
+const heedRoot = path.dirname(fileURLToPath(import.meta.url));
+const pkg = JSON.parse(await readFile(path.join(heedRoot, 'package.json')));
 
 program.hook('preAction', (_thisCommand, actionCommand) => {
   const opts = actionCommand.opts();
-  opts.heedRoot = path.dirname(fileURLToPath(import.meta.url));
+  opts.heedRoot = heedRoot;
 });
 
 program
   .name('heed-cli')
   .description('Command-line tool for managing Heed presentations')
-  .version('0.1.0');
-
+  .version(pkg.version);
 
 /**
  * "add"-command and subcommands
