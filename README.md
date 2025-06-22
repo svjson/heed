@@ -11,6 +11,7 @@
 Heed is a presentation tool for writing slides as code - leveraging **HTML, CSS, and JavaScript** - that runs directly in the browser. 
 It supports a simplistic plugin architecture for embedding rich content and JavaScript-driven components.
 
+
 ## What is this?
 
 Heed is a slide deck engine that treats **presentations as structured data** and **programmable layouts**. Slides are defined in a 
@@ -18,22 +19,6 @@ custom **.heed file format** or **JSON format** and rendered using a small JavaS
 `html`, `image` and `column-layout`, live demos, and external content embedding. It’s served via a lightweight Express-based backend 
 and comes with a very rudimentary **WebSocket-based speaker notes system**. Batteries are most certainly **not** included.
 
-## Why does this exist?
-
-This project began as a personal tool sometime between 2015–2018, originally designed to support **interactive presentations** about 
-C64 assembly programming. At the time, I was writing a Commodore 64 emulator and debugger in JavaScript, and I needed a way to 
-embed live C64 code, emulator state, and custom UI elements directly into my slides.
-
-Most slide frameworks either didn't support this level of interactivity, or forced me into an opinionated structure that I just
-didn't have the time or mental bandwidth to grok. I needed to produce interactive slides and I needed them now and had not patience
-to battle other people's code to get it to load and manage the lifecycle of my emulator
-
-I've since returned to it now and then when I've needed to produce slides and both liked the simplicity but looked... shall we say...
-less favorable on the rather cumbersome layout-via-JSON and **fragile** presentation definition reading and parsing. 
-
-And so I just had a presentation to make, and while digging up Heed I noticed that it's actually public on Github, so I figure I 
-might as well take an evening or two and polish it and *make my little boo-boo shine* and make producing slides more ergonomic, get 
-error handling sorted out and just generally modernize things and touch up some rather hastily thrown together features.
 
 ## Slide Format
 
@@ -46,7 +31,8 @@ For this reason, I invented a fairly simply format specifically for heed, which 
 Heed presentations operate directly in the browser, embracing HTML markup and stylesheets rather than abstracting them away. 
 As a slide author, you benefit from and rely on your basic(or advanced) knowledge of these concepts.
 
-### .heed files
+
+## .heed files
 
 Heed slide files, .heed, consists of a few types of structured blocks. A <b>frontmatter</b> header block, <b>content blocks</b> and 
 <b>aside blocks</b>, which are all optional. Yes, an empty file is a valid .heed file.
@@ -107,7 +93,7 @@ is why we are using the hack of adding margin to the bullets. This would be an o
 that obviously will make it in at some point.
 
 
-#### The Frontmatter header-block
+### The Frontmatter header-block
 
 The frontmatter block serves a header for the file. There are a small number of properties
 that are recognized by Heed, the most obvious one being `title`.
@@ -122,7 +108,8 @@ title: The Benefits of Cats
 As of right now, Heed provides the style and "layout" for the title, but customizing this
 can also be counted among the obvious features to add with time.
 
-#### Content blocks
+
+### Content blocks
 
 Content blocks follow this syntax, with an `::` opener followed by its type, and is closed
 with `--`.
@@ -144,7 +131,85 @@ specific to the block type may be better suited as `@`-attributes or `%`-macro a
 Included block types are `text`, `html`, `image`, `video`, `table` and `column-layout`.
 
 
-#### Macros
+### Aside blocks
+
+Aside blocks are structurally similar to content blocks, but describe properties or behavior
+of the slide without being actual content.
+
+
+#### `== phases` block
+
+The inline `%phase`-macro attributes in the cat-slide example are functionally equivalent 
+to declaring the following `phases` aside block:
+
+```
+== phases
+!! initial
+
+!! phase1
+#point1 --> opacity: 1;
+#point1 <-- opacity: 0;
+
+!! phase2
+#point2 --> opacity: 1;
+#point2 <-- opacity: 0;
+
+!! phase3
+#point3 --> opacity: 1;
+#point3 <-- opacity: 0;
+```
+
+Heed utilizes "phases" to define transitions and animations as modifications and progress within
+a slide.
+
+To define a phase, use the `!!` syntax. Instructions for actions to be performed during that phase 
+follow this identifier.
+
+The concept is fairly straightforward. In this example, content sections are referred to by their 
+IDs. 
+Use `-->` to specify actions applied when entering a phase, and `<--` to detail actions executed 
+when reverting to the previous step.
+
+For simple phase setups, like making one block appear at a time, inlining `%phase`-macros in the blocks 
+or describing the sequence with a `%reveal`-macro in the frontmatter section is the preferred and less
+verbose way.
+
+
+#### `== content` block
+
+Content blocks can be used to describe block content away from the actual blocks. This comes
+in handy in a number of situations, for example when the content is large and noisy or using
+different content for each block emitted by a `%for`-block macro.
+
+```
+:: %for { %type=html }
+@style=font-size: 30px
+@style=background-color: black;
+@style=color: white;
+%each=n
+%values=1..3
+%phase{n}.style=opacity: 1 | 0;
+%content=content:text{n}
+--
+
+== content { id=text1 }
+A parakeet once composed a symphony entirely out of chirps and squawks, 
+confusing but delighting music critics worldwide.
+--
+
+== content { id=text2 }
+A renowned parakeet bread-slicing contest sparked debates about the world's tiniest 
+butter churner's endurance levels.
+--
+
+== content { id=text3 }
+In an unprecedented event, a parakeet was nominated for mayor, with a promise to make 
+every day a seed buffet holiday.
+--
+```
+
+
+### Macros
 
 Macros and macro-attributes use a `%`-notation, and are pre-defined features that deal with
 common concerns, such as manipulating content blocks and their attributes as the phases of
@@ -153,7 +218,7 @@ a slide is traversed.
 These are generative in their nature, and simply jack into the translation process of 
 .heed-files, turning the into the JSON format consumed by the slide viewer.
 
-##### %for-macro block
+#### `:: %for`-macro block
 
 The `%for`-macro is very similar to a a `for`-loop in any of Ye Olde Programming Languages,
 and produces a block for `%each` of `%values` provided.
@@ -161,42 +226,104 @@ and produces a block for `%each` of `%values` provided.
 The following `%for`-macro block...
 
 ```
-:: %for { %type=image class=decor }
+:: %for { %type=image class=decor id=img{n} }
 %each=n
 %values=1,2,3
 @src=image{n}.png
 @style=position: absolute;
-@style[n=1]=top:20%; left:20%
-@style[n=2]=top:80%; left:44%
-@style[n=3]=top:15%; left:83%
+@style[n=1]=top:20%; left:20%;
+@style[n=2]=top:80%; left:44%;
+@style[n=3]=top:15%; left:83%;
 --
 ```
 ...yields these three concrete `image`-content blocks:
 
 ```
-:: image { class=decor }
+:: image { class=decor id=img1 }
 @src=image1.png
-@style=position: absolute
-@style=top:20%; left:20%
+@style=position: absolute;
+@style=top:20%; left:20%;
 --
 
-:: image { class=decor }
+:: image { class=decor id=img2 }
 @src=image1.png
-@style=position: absolute
-@style=top:80%; left:44%
+@style=position: absolute;
+@style=top:80%; left:44%;
 --
 
-:: image { class=decor }
+:: image { class=decor id=img3 }
 @src=image1.png
-@style=position: absolute
-@style=top:15%; left:83%
+@style=position: absolute;
+@style=top:15%; left:83%;
 --
 ```
 
-This is particularly helpful when adding repetetive content, in that it both allows for
-common definition of the properties and reduces the amount of code required.
+This approach is beneficial when dealing with repetitive content, as it facilitates a 
+standardized definition of properties and reduces code redundancy.
 
-#### %phase-macro attribute
+The `%values` parameter, a comma-separated list, allows the input to be non-numeric and 
+non-sequential. However, if the input values _are_ numeric, using ranges as an alternative 
+is often more efficient. 
+
+Values using a range format can be expressed like so: `%values=1..25`.
+
+
+#### `%reveal` frontmatter-macro
+
+For most slides where content is revealed step-by-step, or in Heed lingo - phase-by-phase,
+this happens in a predictable pattern and can be expressed in the frontmatter section.
+
+For example, the following:
+```
+--------
+%reveal: text1, text2, text3
+%reveal.style: opacity: 1 | 0; transform: scale(1) | scale(0)
+--------
+```
+
+Will generate phases equivalent to:
+
+```
+== phases
+!! initial
+
+!! phase1
+#text1 --> opacity: 1; transform: scale(1); 
+#text1 <-- opacity: 0; transform: scale(0);
+
+!! phase2
+#text2 --> opacity: 1; transform: scale(1);
+#text2 <-- opacity: 0; transform: scale(0);
+
+!! phase3
+#text3 --> opacity: 1; transform: scale(1);
+#text3 <-- opacity: 0; transform: scale(0);
+```
+
+The `%reveal`-property, whose value specifies the id's of the content blocks to generate 
+phase-transitions for, can be expressed in several ways:
+
+| Syntax                | Description                                                        |
+|-----------------------|--------------------------------------------------------------------|
+| `all`                 | Select all blocks                                                  |
+| `text1, text2, text3` | Select only these specific blocks                                  |
+| `...text2`            | Select all blocks from the first block up to and including `text2` |
+| `text2...`            | Reveal `text2` and all following blocks                            |
+| `text2..text4`        | Select `text2`, `text4` and all blocks in between                  |
+
+Several %reveal-groups may be specified, by naming them:
+
+```
+--------
+%reveal[orig]: text1, text3
+%reveal[orig].style: opacity: 1 | 0; transform: translateX(0) | translateX(-100)
+%reveal[translated]: text2, text4
+%reveal[translated].style: opacity: 1 | 0; transform: translateX(0) | translateX(100)
+--------
+```
+
+
+#### `%phase`-macro attribute
 
 The `%phase`-macro is a shorthand for defining phase transitions directly on a content block,
 as opposed to in the `== phases`-aside block.
@@ -211,7 +338,8 @@ if the slide reverts to an earlier phase):
 There is no requirement to define the phase referred to by the macro, as they will be 
 created as needed.
 
-#### %accumulate-macro attribute
+
+#### `%accumulate`-macro attribute
 
 The `%accumulate`-macro is used to include properties from previous blocks in an accumulation
 group.
@@ -245,46 +373,18 @@ gitGraph:
 
 ...and so on.
 
-#### Aside blocks
 
-Aside blocks are structurally similar to content blocks, but describe properties or behavior
-of the slide without being actual content.
+#### `%content`-macro attribute
 
-The inline `%phase`-macro attributes in the cat-slide example are functionally equivalent 
-to the following `phases` aside block:
+This macro is used to simply lift in the content from a `== content` aside block as the
+content of content block in the actual slide layout.
 
-```
-== phases
-!! initial
+An example where this is used together with a `:: %for`-macro can be found in the description
+of the [`== content` aside block](#-content-block).
 
-!! phase1
-#point1 --> opacity: 1;
-#point1 <-- opacity: 0;
 
-!! phase2
-#point2 --> opacity: 1;
-#point2 <-- opacity: 0;
 
-!! phase3
-#point3 --> opacity: 1;
-#point3 <-- opacity: 0;
-```
-
-Heed utilizes "phases" to define transitions and animations as modifications and progress within
-a slide.
-
-To define a phase, use the `!!` syntax. Instructions for actions to be performed during that phase 
-follow this identifier.
-
-The concept is fairly straightforward. In this example, content sections are referred to by their 
-IDs. 
-Use `-->` to specify actions applied when entering a phase, and `<--` to detail actions executed 
-when reverting to the previous step.
-
-For simple phases, like making one block appear at a time, inlining phase directives as attributes
-like in the example is favorable and much less verbose.
-
-### .json files
+## .json files
 
 As mentioned earlier, the .heed files are transpiled to the legacy JSON format for use by the slide viewer,
 but they can also be expressed directly in this format if preferred.
@@ -353,7 +453,7 @@ it still has one thing going for it: At least it's not XML. ¯\\\_(ツ)_/¯
 
 ## Command: heed
 
-This command for serving up a presentation and the speaker notes.
+This command is used for serving up a presentation and the speaker notes over HTTP.
 
 ### Usage:
 
@@ -419,6 +519,7 @@ This creates an empty slide and places it at the back of your slide index.
 
 For the benefit of tooling, all commands accept a `--json` flag that outputs the command result as JSON
 
+
 ## Installation
 
 ### npm
@@ -433,15 +534,34 @@ For the benefit of tooling, all commands accept a `--json` flag that outputs the
  yarn global add heedjs
 ```
 
+
 ## Design goals
 
 - **No heavy frameworks in the browser.** No React, no Vue, no build tools. Just browser-native JavaScript, HTML, and CSS.
-- **Slides as data.** Presentations are defined in a structured JSON or plain text format and rendered dynamically together with their 
-assets.
+- **Slides as data.** Presentations are defined as structured plain text files - either in .heed format or JSON—making them easy to version, diff, and edit in any text editor.
 - **Plugin support.** Extensions can define new layout types, behaviors, and embedded components.
 - **Self-contained.** Everything is served locally with no external dependencies at runtime.
 - **Live demos.** Designed for talks where code, emulation, or simulation needs to run live inside the slides. Or just when slides as 
 code makes sense. Which it always does. ;)
+
+
+## Why does this exist?
+
+This project began as a personal tool sometime between 2015–2018, originally designed to support **interactive presentations** about 
+C64 assembly programming. At the time, I was writing a Commodore 64 emulator and debugger in JavaScript, and I needed a way to 
+embed live C64 code, emulator state, and custom UI elements directly into my slides.
+
+Most slide frameworks either didn't support this level of interactivity, or forced me into an opinionated structure that I just
+didn't have the time or mental bandwidth to grok. I needed to produce interactive slides and I needed them now and had not patience
+to battle other people's code to get it to load and manage the lifecycle of my emulator
+
+I've since returned to it now and then when I've needed to produce slides and both liked the simplicity but looked... shall we say...
+less favorable on the rather cumbersome layout-via-JSON and **fragile** presentation definition reading and parsing. 
+
+And so I just had a presentation to make, and while digging up Heed I noticed that it's actually public on Github, so I figured I
+might as well set some time aside and polish it and *make my little boo-boo shine* and make producing slides more ergonomic, get 
+error handling sorted out and just generally modernize things and touch up some rather hastily thrown together features.
+
 
 ## Changelog
 
@@ -450,6 +570,8 @@ code makes sense. Which it always does. ;)
 - Separation of regular `@`-attributes and `%`-macro attributes
 - Macro block types are now also clearly prefixed as macros (`:: for` --> `:: %for`)
 - `%accumulate` macro attribute for accumulating values across multiple blocks
+- `%reveal` frontmatter macro to simplify revealing content phase-by-phase
+- `%content` macro attribute for using content from `== content` aside blocks as actual content. Content wants to be content, apparently.
 - Improved error-handling of `.heed`-file parsing, including an "Error-slide" for unparseable slides.
 
 ### [v0.1.0] - 2025-06-16
@@ -457,6 +579,7 @@ code makes sense. Which it always does. ;)
 - Supports content block types: `text`, `html`, `image`, `video`, `table`, `column-layout`
 - Plugin-system for adding custom content block types (`mermaid` and `prism` available).
 - Custom `.heed` slide format introduced.
+
 
 ## State of the code
 
@@ -468,11 +591,13 @@ This codebase contains:
 That’s partly by design - Heed was hacked together rather quickly and was always meant to be lightweight and flexible. It worked for 
 my use cases and has served me well in multiple live presentations.
 
+
 ## What’s next?
 
 Maybe nothing - or maybe a full modern rewrite, if the mood strikes. For now, it remains as a snapshot of a very particular approach 
 to building presentation software: one where you can embed an emulator next to your bullet points and tweak the runtime in real time 
 during a talk.
+
 
 ## License
 
