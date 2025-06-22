@@ -11,6 +11,48 @@
 Heed is a presentation tool for writing slides as code - leveraging **HTML, CSS, and JavaScript** - that runs directly in the browser. 
 It supports a simplistic plugin architecture for embedding rich content and JavaScript-driven components.
 
+## Table of contents
+
+<!-- toc -->
+
+- [What is this?](#what-is-this)
+- [Slide Format](#slide-format)
+- [.heed files](#heed-files)
+  * [The Frontmatter header-block](#the-frontmatter-header-block)
+  * [Content blocks](#content-blocks)
+  * [Aside blocks](#aside-blocks)
+    + [`== phases` block](#-phases-block)
+    + [`== content` block](#-content-block)
+  * [Macros](#macros)
+    + [`:: %for`-macro block](#-%25for-macro-block)
+    + [`%reveal` frontmatter-macro](#%25reveal-frontmatter-macro)
+    + [`%phase`-macro attribute](#%25phase-macro-attribute)
+    + [`%accumulate`-macro attribute](#%25accumulate-macro-attribute)
+    + [`%content`-macro attribute](#%25content-macro-attribute)
+- [.json files](#json-files)
+- [Command: heed](#command-heed)
+  * [Usage:](#usage)
+    + [Serving a presentation:](#serving-a-presentation)
+  * [Speaker Notes](#speaker-notes)
+- [Command: heed-cli](#command-heed-cli)
+  * [Usage:](#usage-1)
+    + [Creating a new presentation in the current directory:](#creating-a-new-presentation-in-the-current-directory)
+    + [...or creating it in a target directory, and also creating that if required:](#or-creating-it-in-a-target-directory-and-also-creating-that-if-required)
+    + [Adding a slide](#adding-a-slide)
+  * [Commands](#commands)
+- [Installation](#installation)
+  * [npm](#npm)
+  * [yarn (v1)](#yarn-v1)
+- [Design goals](#design-goals)
+- [Why does this exist?](#why-does-this-exist)
+- [Changelog](#changelog)
+  * [[v0.1.1] - (Next version)](#v011---next-version)
+  * [[v0.1.0] - 2025-06-16](#v010---2025-06-16)
+- [State of the code](#state-of-the-code)
+- [What’s next?](#whats-next)
+- [License](#license)
+
+<!-- tocstop -->
 
 ## What is this?
 

@@ -28,7 +28,8 @@
     "test:io": "playwright test test/io",
     "bump:patch": "npm version patch --no-git-tag-version",
     "bump:minor": "npm version minor --no-git-tag-version",
-    "bump:major": "npm version major --no-git-tag-version"
+    "bump:major": "npm version major --no-git-tag-version",
+    "readme:toc": "markdown-toc -i README.md"
   },
   "files": [
     "heed.js",
@@ -52,6 +53,7 @@
     "@playwright/test": "^1.44.0",
     "eslint": "^9.29.0",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-playwright": "^2.2.0"
+    "eslint-plugin-playwright": "^2.2.0",
+    "markdown-toc": "^1.2.0"
   }
 }
