@@ -85,7 +85,7 @@ For syntax highlighting and some minor helpful features, see [heed-mode.el](http
 
 An example slide that has a title and three points that appear one at a time, could look like this:
 
-<img src="./readme-assets/cat-slide.png" align="right" style="padding-top: 1em;"/>
+<img src="https://raw.githubusercontent.com/svjson/heed/master/readme-assets/cat-slide.png" align="right" style="padding-top: 1em;"/>
 
 ```
 ---
