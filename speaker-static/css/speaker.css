@@ -1,57 +1,130 @@
-
 body {
-    margin: 0;
-    background-color: #888;
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background-color: #f0f0f0;
+  color: #222;
 }
 
+
+/* <mode-toggle-button> */
+.mode-toggle-button {
+  background-color: #4a90e2;
+  text-align: center;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  margin-left: auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s;
+}
+
+.mode-toggle-button:hover {
+  background-color: #357ab8;
+}
+
+/* </mode-toggle-button> */
+/* <nav-tree> */
 #nav-tree {
-    font-size: 25px;
-    box-sizing: border-box;
-    position: fixed;
-    overflow-y: scroll;
-    background-color: #aaa;
-    width: 500px;
-    padding: 32px;
+  font-size: 18px;
+  box-sizing: border-box;
+  position: fixed;
+  overflow-y: auto;
+  background-color: #fff;
+  width: 360px;
+  height: 100vh;
+  padding: 24px;
+  border-right: 1px solid #ccc;
 }
 
 #nav-tree .section {
-    font-weight: bold;
-    padding-top: 16px;
+  font-weight: bold;
+  padding: 4px 8px;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  background-color: rgba(200, 230, 255, 0.3);
+  border-left: 3px solid #4a90e2;
+  border-radius: 4px;
 }
 
+/* <n-t>..<slide> */
 #nav-tree .slide {
-    cursor: pointer;
+  cursor: pointer;
+  padding: 6px 12px;
+  margin-bottom: 4px;
+  background-color: #eaeaea;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+#nav-tree .slide:hover {
+  background-color: #d0d0d0;
 }
 
 #nav-tree .slide.current {
-    font-weight: bold;
-    color: red;
+  font-weight: bold;
+  background-color: #2a2a2a;
+  color: #ccc;
+}
+/* <n-t>..</slide> */
+
+
+/* <n-t>..<phase> */
+#nav-tree .phase {
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 16px;
+  margin-bottom: 2px;
+  padding: 4px 10px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  transition: background-color 0.3s;
 }
 
-#nav-tree .step {
-    font-size: 20px;
-    cursor: pointer;
+#nav-tree .phase:hover {
+  background-color: #ddd;
 }
 
-#nav-tree .step.current {
-    color: red;
+#nav-tree .phase.current {
+  color: #fff;
+  background-color: #4a90e2;
+  font-weight: bold;
 }
+/* <n-t>..</phase */
+/* </nav-tree> */
 
+
+/* <speaker-notes> */
 #speaker-notes {
-    margin-left: 500px;
-    padding: 20px;
+  margin-left: 360px;
+  padding: 32px;
+  background-color: #ddd;
 }
 
 #speaker-notes h3 {
-    padding: 8px;
-    font-size: 40px;
-    background-color: #bbb;
-    margin-bottom: 0;
+  padding: 12px;
+  font-size: 28px;
+  color: #111;
+  background-color: #eaeaea;
+  border: 1px solid #aaa;
+  border-bottom: 0px;
+  border-radius: 8px 8px 0 0;
+  margin-bottom: 0;
 }
 
 #speaker-notes pre {
-    padding: 16px;
-    font-size: 30px;
-    font-family: TeX Gyre Sans;
-    background-color: #ddd;
+  white-space: pre-wrap;
+  margin-top: 0px;
+  padding: 16px;
+  font-size: 18px;
+  border-radius: 0 0 6px 6px;
+  background-color: #f0f0f0;
+  border: 1px solid #aaa;
 }

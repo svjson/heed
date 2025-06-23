@@ -1,5 +1,5 @@
 
-import { SpeakerView } from './view/SpeakerView.js';
+import { SpeakerView, THEMES } from './view/SpeakerView.js';
 import { Presentation } from '../../slide-viewer-static/js/models/index.js';
 import { WebSocketClient } from '../../slide-viewer-static/js/ws/WebSocketClient.js';
 
@@ -12,6 +12,10 @@ import { WebSocketClient } from '../../slide-viewer-static/js/ws/WebSocketClient
  * after an update has been signalled.
  */
 document.addEventListener('DOMContentLoaded', async () => {
+  const savedTheme = localStorage.getItem('heed-speaker-notes-theme') ?? '';
+  const currentTheme = THEMES[savedTheme] ? savedTheme : '';
+  document.body.classList.toggle('theme-dark', currentTheme === 'theme-dark');
+
   const presentation = await Presentation.load({ notes: true });
 
   const wsClient = new WebSocketClient({ actor: 'speaker' });
@@ -20,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const speakerView = new SpeakerView({
     el: document.querySelector('#speaker-container'),
     presentation,
-    navigator: wsClient
+    wsClient
   });
 
   wsClient.on('speaker-notes-updated', () => {

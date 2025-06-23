@@ -631,6 +631,7 @@ error handling sorted out and just generally modernize things and touch up some 
 - Watch presentation for changes on disk and auto-reread content on change
 - Watch heed sources for changes and rebuild webapps/restart server on change
 - Fixed bogus shebangs in "bin" entrypoints.
+- Face-lift & Dark Mode-toggle for Speaker Notes
 
 ### [v0.2.1] - 2025-06-23
 - Serve presentations directly from archives(zip and tarballs)

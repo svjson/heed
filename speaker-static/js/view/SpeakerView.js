@@ -2,13 +2,24 @@
 import { NavTreeView } from './NavTreeView.js';
 import { NotesView } from './NotesView.js';
 
+export const THEMES = {
+  '': {
+    name: 'Light Mode',
+    className: ''
+  },
+  'theme-dark': {
+    name: 'Dark Mode',
+    className: 'theme-dark'
+  }
+};
+
 export class SpeakerView {
   constructor(opts) {
     Object.assign(this, opts);
     this.navTree = new NavTreeView({
       el: this.el.querySelector('#nav-tree'),
       presentation: this.presentation,
-      navigator: this.navigator
+      wsClient: this.wsClient
     });
 
     this.notes = new NotesView({
@@ -16,7 +27,7 @@ export class SpeakerView {
       presentation: this.presentation
     });
 
-    this.navigator.on('navigation', (payload) => {
+    this.wsClient.on('navigation', (payload) => {
       this.navTree.navigateTo(payload);
       this.notes.navigateTo(payload);
     });

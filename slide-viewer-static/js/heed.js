@@ -41,12 +41,9 @@ export const Heed = {
     document.body.appendChild(tag);
   },
 
-  loadResource: function(url) {
-    return new Promise((resolve) => {
-      fetch(url).then(resource => {
-        resource.text().then(resolve);
-      });
-    });
+  loadResource: async (url) => {
+    const resource = await fetch(url);
+    return await resource.text();
   }
 };
 

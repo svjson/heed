@@ -28,6 +28,12 @@ export class NotesView {
 
   navigateTo(payload) {
     let slideEl = this.el.querySelector(`[data-slide-index="${payload.index}"]`);
-    if (slideEl) slideEl.scrollIntoViewIfNeeded();
+    if (slideEl) {
+      slideEl.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest'
+      });
+    }
   }
 }
