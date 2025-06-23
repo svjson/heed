@@ -1,5 +1,6 @@
 import childProcess from 'child_process';
 import fs from 'fs';
+import path from 'path';
 
 import express from 'express';
 
@@ -26,9 +27,14 @@ export const registerRoutes = (app, { presentationRoot, heedRoot }) => {
   });
 
   /**
-   * Serve the static files for the Heed presentation layer
+   * Serve the static files for the Heed presentation viewer
    */
-  app.use(express.static(heedRoot + '/static/'));
+  app.use(express.static(path.join(heedRoot, 'static', 'viewer')));
+
+  /**
+   * Serve the static files for the Speaker-application
+   */
+  app.use('/speaker/', express.static(path.join(heedRoot, 'static', 'speaker')));
 
   /**
    * Serve the static files for the presentation
@@ -75,11 +81,6 @@ export const registerRoutes = (app, { presentationRoot, heedRoot }) => {
     var pluginDef = fs.readFileSync(`${presentationRoot}/plugins/${req.params.pluginId}/${req.params.fileName}`);
     res.send(pluginDef);
   });
-
-  /**
-   * Serve the static files for the Speaker-application
-   */
-  app.use('/speaker/', express.static(heedRoot + '/speaker-static/'));
 
   /**
    * This is a legacy endpoint introduced in the before-times, specifically

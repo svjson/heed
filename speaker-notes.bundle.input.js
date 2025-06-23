@@ -1,0 +1,16 @@
+import './slide-viewer-static/js/heed.js';
+import './speaker-static/js/speaker-bootstrap.js';
+import './speaker-static/js/view/SpeakerView.js';
+import './speaker-static/js/view/NavTreeView.js';
+import './speaker-static/js/view/NotesView.js';
+import './slide-viewer-static/js/models/Presentation.js';
+import './slide-viewer-static/js/models/Plugin.js';
+import './slide-viewer-static/js/view/content/AbstractContentSection.js';
+import './slide-viewer-static/js/models/Section.js';
+import './slide-viewer-static/js/models/Slide.js';
+import './slide-viewer-static/js/models/Plugin.js';
+import './slide-viewer-static/js/registry/ContentSectionRegistry.js';
+import './slide-viewer-static/js/plugins/PluginLoader.js';
+import './slide-viewer-static/js/hooks/Hooks.js';
+import './slide-viewer-static/js/ws/WebSocketNavigator.js';
+import './slide-viewer-static/js/registry/HookRegistry.js';

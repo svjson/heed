@@ -22,6 +22,7 @@
     "heed-cli": "heed-cli.js"
   },
   "scripts": {
+    "build": "node ./scripts/prepare-bundle.js clean && node ./scripts/build.js && node ./scripts/prepare-bundle.js copy-files",
     "lint": "eslint",
     "test": "playwright test",
     "test:unit": "playwright test test/unit",
@@ -29,15 +30,16 @@
     "bump:patch": "npm version patch --no-git-tag-version",
     "bump:minor": "npm version minor --no-git-tag-version",
     "bump:major": "npm version major --no-git-tag-version",
-    "readme:toc": "markdown-toc -i README.md"
+    "readme:toc": "markdown-toc -i README.md",
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "heed.js",
     "heed-cli.js",
     "plugins.json",
     "lib/",
+    "server/",
     "static/",
-    "speaker-static/",
     "LICENSE",
     "README.md"
   ],
@@ -55,6 +57,7 @@
     "eslint": "^9.29.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-playwright": "^2.2.0",
-    "markdown-toc": "^1.2.0"
+    "markdown-toc": "^1.2.0",
+    "vite": "^6.3.5"
   }
 }
