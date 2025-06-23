@@ -4,6 +4,7 @@ import playwright from 'eslint-plugin-playwright';
 export default [
   {
     files: ['**/*.js'],
+    ignores: ['static/**/*.js'],
     plugins: {
       import: importPlugin,
       playwright
@@ -15,6 +16,7 @@ export default [
     rules: {
       ...playwright.configs.recommended.rules,
       'playwright/no-conditional-in-test': 'off',
+      'no-unused-vars': 'error',
       'no-empty-functions': 'off',
       'no-empty': 'off',
       semi: ['error', 'always'],

@@ -22,7 +22,10 @@
     "heed-cli": "heed-cli.js"
   },
   "scripts": {
-    "build": "node ./scripts/prepare-bundle.js clean && node ./scripts/build.js && node ./scripts/prepare-bundle.js copy-files",
+    "build": "npm run build:clean && npm run build:static && npm run build:copy-static",
+    "build:clean": "node ./scripts/prepare-bundle.js clean",
+    "build:static": "node ./scripts/build.js",
+    "build:copy-static": "node ./scripts/prepare-bundle.js copy-files",
     "lint": "eslint",
     "test": "playwright test",
     "test:unit": "playwright test test/unit",
@@ -31,7 +34,7 @@
     "bump:minor": "npm version minor --no-git-tag-version",
     "bump:major": "npm version major --no-git-tag-version",
     "readme:toc": "markdown-toc -i README.md",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run readme:toc && npm run build"
   },
   "files": [
     "heed.js",
