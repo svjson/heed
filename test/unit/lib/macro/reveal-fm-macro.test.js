@@ -172,7 +172,7 @@ test.describe('Frontmatter %reveal-macro', () => {
 
     cases.forEach(({desc, props, expected}) => {
 
-      test(desc, () => {
+      test(`${desc}`, () => {
         // Given
         const slideIr = makeSlideIr(props);
 
