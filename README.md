@@ -607,6 +607,13 @@ error handling sorted out and just generally modernize things and touch up some 
 
 ## Changelog
 
+### [v0.2.1] - 2025-06-23
+- Serve presentations directly from archives(zip and tarballs)
+- Bundling of all JavaScript sources for the slide viewer and speaker notes web applications.
+- Proper handling of CLI arguments for `heed`.
+- Friendlier error messages and graceful startup failures for `heed`.
+- Read version from `package.json` to avoid announcing the wrong version.
+
 ### [v0.2.0] - 2025-06-22
 - Support for `column-layout` blocks in the heed file format
 - (Breaking) Separation of regular `@`-attributes and `%`-macro attributes
