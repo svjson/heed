@@ -43,6 +43,7 @@
   ],
   "dependencies": {
     "commander": "^13.0.0",
+    "env-paths": "^3.0.0",
     "express": "^4.19.2",
     "express-ws": "^5.0.0",
     "follow-redirects": "^1.15.9",

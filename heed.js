@@ -43,15 +43,17 @@ program
   .name('heed')
   .description('Serve a Heed presentation over HTTP.')
   .version(pkg.version)
-  .argument('[path]', 'Path to presentation directory', '.')
+  .argument('[path]', 'Path to presentation directory or archive', '.')
   .option('-p, --port <number>', 'HTTP port to serve presentation on', parsePort, 4000)
   .action(async (pathArg, options) => {
     try {
-      const presentationRoot = await preparePresentation(pathArg);
+      const { presentationRoot, presentationName, archiveFile } = await preparePresentation(pathArg, heedRoot);
 
       const serverOpts = {
         port: options.port,
+        presentationName,
         presentationRoot,
+        archiveFile,
         heedRoot,
         pkg
       };
