@@ -1,4 +1,4 @@
-#!/bin/node
+#!/usr/bin/env node
 import { readFile } from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
