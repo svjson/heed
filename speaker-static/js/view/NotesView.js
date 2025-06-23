@@ -6,6 +6,13 @@ export class NotesView {
     this.renderNotes();
   }
 
+  replacePresentation(presentation) {
+    this.presentation = presentation;
+    this.slides = presentation.getOrderedSlides();
+    this.el.innerHTML = '';
+    this.renderNotes();
+  }
+
   renderNotes() {
     this.slides.forEach((slide, index) => {
       let slideEl = document.createElement('div'),
@@ -16,8 +23,10 @@ export class NotesView {
 
       slideTitle.innerText = slide.name || slide.id;
 
-      if (slide.notes) {
-        preEl.innerHTML = slide.notes;;
+      if (slide.notes?.length) {
+        for (const note of slide.notes) {
+          preEl.textContent = note.content;
+        }
       }
 
       slideEl.appendChild(slideTitle);

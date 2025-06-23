@@ -50,16 +50,14 @@ export class Presentation {
     return this.json.defaults || {};
   }
 
-  load(opts) {
-    if (!opts) opts = {};
+  load(opts = {}) {
     let promises = this.sections.map((sect) => sect.load('sections/', opts));
     promises = promises.concat(this.slides.map((slide) => slide.load('slides/', opts)));
     promises = promises.concat(this.plugins.map((plugin) => plugin.load()));
     return Promise.all(promises);
   }
 
-  static load(opts) {
-    if (!opts) opts = {};
+  static load(opts = {}) {
     return new Promise((resolve, reject) => {
       fetch('/presentation/presentation.json').then(function(pres) {
         pres.json().then((presentation) => {

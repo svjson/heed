@@ -33,6 +33,11 @@ export class SpeakerView {
     });
   }
 
+  replacePresentation(presentation) {
+    this.notes.replacePresentation(presentation);
+    this.navTree.replacePresentation(presentation);
+  }
+
   resize() {
     this.el.style.height = window.innerHeight;
     this.navTree.resize();

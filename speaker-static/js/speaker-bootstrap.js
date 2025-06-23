@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   wsClient.on('presentation-updated', async _event => {
-    speakerView.replacePresentation(await Presentation.load());
+    speakerView.replacePresentation(await Presentation.load({ notes: true }));
   });
 
   window.addEventListener('resize', () => {

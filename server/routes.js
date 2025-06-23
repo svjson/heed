@@ -20,7 +20,7 @@ export const registerRoutes = (app, { presentationRoot, heedRoot }) => {
   /**
    * Route to get the context of the presentation.
    */
-  app.get('/context', function(_req, res, _next) {
+  app.get('/context', (_req, res) => {
     res.send({
       directory: presentationRoot
     });
@@ -49,7 +49,7 @@ export const registerRoutes = (app, { presentationRoot, heedRoot }) => {
    * presentation using a folder layout-strategy rather than a static index,
    * which is why it is not simply served as a static file.
    */
-  app.get('/presentation/presentation.json', async function(_req, res, _next) {
+  app.get('/presentation/presentation.json', async (_, res) => {
     res.send((await loadPresentation(presentationRoot, { resolve: true })));
   });
 
@@ -59,8 +59,11 @@ export const registerRoutes = (app, { presentationRoot, heedRoot }) => {
    * This will parse and compile slides written in .heed syntax, whereas
    * raw JSON slides will just be sent through without inspection.
    */
-  app.get('/slide/*', async function(req, res, _next) {
-    const slide = await loadSlide(presentationRoot, req.params[0], true);
+  app.get('/slide/*', async (req, res) => {
+    const slide = await loadSlide(presentationRoot, req.params[0], {
+      includeNotes: Boolean(req.query?.notes),
+      useErrorSlide: true
+    });
     if (slide) {
       res.send(slide);
     } else {
@@ -77,7 +80,7 @@ export const registerRoutes = (app, { presentationRoot, heedRoot }) => {
   /**
    * Serve plugin-specific files.
    */
-  app.get('/plugins/:pluginId/:fileName', function(req, res, _next) {
+  app.get('/plugins/:pluginId/:fileName', (req, res) => {
     var pluginDef = fs.readFileSync(`${presentationRoot}/plugins/${req.params.pluginId}/${req.params.fileName}`);
     res.send(pluginDef);
   });
@@ -89,7 +92,7 @@ export const registerRoutes = (app, { presentationRoot, heedRoot }) => {
    * network. Yet I typed this up instead of removing it. What's the worst that
    * could happen? Heh.
    */
-  app.get('/childprocess', function(req, res, _next) {
+  app.get('/childprocess', (req, res) => {
     let cmd = req.query.cmd;
     childProcess.exec(cmd);
     res.sendStatus(200);

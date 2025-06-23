@@ -71,10 +71,40 @@ const intermediateExpanded = {
   }]
 };
 
+const jsonSlide = {
+  id: '',
+  name: '',
+  notes: '',
+  type: 'default',
+  contents: [{
+    type: 'image',
+    id: 'block1',
+    source: 'image1.png',
+    styles: {
+      opacity: '1'
+    }
+  }, {
+    type: 'image',
+    id: 'block2',
+    source: 'image2.png',
+    styles: {
+      opacity: '1'
+    }
+  }, {
+    type: 'image',
+    id: 'block3',
+    source: 'image3.png',
+    styles: {
+      opacity: '1'
+    }
+  }]
+};
+
 export default {
   description,
   heedFile,
   tokenized,
   intermediateBlocks,
-  intermediateExpanded
+  intermediateExpanded,
+  jsonSlide
 };

@@ -1,4 +1,5 @@
 import { Heed } from '../heed.js';
+import { PluginLoader } from './../plugins/PluginLoader.js';
 
 export class Plugin {
 
@@ -26,7 +27,7 @@ export class Plugin {
   }
 
   initializePlugin() {
-    return Heed.PluginLoader.loadPlugin(this);
+    return PluginLoader.loadPlugin(this);
   }
 
 }

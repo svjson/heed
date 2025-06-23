@@ -4,10 +4,16 @@ export class NavTreeView {
   constructor(opts) {
     this.wsClient = opts.wsClient;
     Object.assign(this, opts);
-    this.renderModeToggleButton();
     this.slides = this.presentation.getOrderedSlides();
-    this.renderTree();
+    this.render();
     this.el.style.height = window.innerHeight;
+  }
+
+  render() {
+    this.el.innerHTML = '';
+    this.renderModeToggleButton();
+    this.renderTree();
+
     this.el.querySelectorAll('.slide').forEach((slideEl) => {
       slideEl.addEventListener('click', (e) => {
         this.slideClicked(e.currentTarget);
@@ -20,6 +26,12 @@ export class NavTreeView {
     });
   }
 
+  replacePresentation(presentation) {
+    this.presentation = presentation;
+    this.slides = presentation.getOrderedSlides();
+    this.render();
+  }
+
   navigateTo(payload) {
     this.markCurrentSlide(payload.id, payload.index);
     this.markCurrentPhase(payload.id, payload.index, payload.step);
@@ -30,7 +42,7 @@ export class NavTreeView {
   }
 
   slideClicked(slideEl) {
-    let slideId = slideEl.getAttribute('data-slide-id'),
+    const slideId = slideEl.getAttribute('data-slide-id'),
       slideIndex = parseInt(slideEl.getAttribute('data-slide-index'));
     this.clearCurrentPhase();
     this.markCurrentSlide(slideId, slideIndex);
@@ -54,7 +66,7 @@ export class NavTreeView {
 
   markCurrentSlide(slideId, slideIndex) {
     this.clearCurrentSlide();
-    let slideEl = this.el.querySelector(this.slideSelector(slideId, slideIndex));
+    const slideEl = this.el.querySelector(this.slideSelector(slideId, slideIndex));
     this.markCurrent(slideEl);
   }
 
@@ -83,7 +95,7 @@ export class NavTreeView {
 
   markCurrentPhase(slideId, slideIndex, phaseId) {
     this.clearCurrentPhase();
-    let phaseEl = this.el.querySelector(`.phase[data-step-index="${phaseId}"][data-slide-id="${slideId}"][data-slide-index="${slideIndex}"]`);
+    const phaseEl = this.el.querySelector(`.phase[data-step-index="${phaseId}"][data-slide-id="${slideId}"][data-slide-index="${slideIndex}"]`);
 
     if (phaseEl) {
       this.markCurrent(phaseEl);
@@ -122,7 +134,7 @@ export class NavTreeView {
   }
 
   renderSection(section, level) {
-    let sectionEl = document.createElement('div');
+    const sectionEl = document.createElement('div');
     sectionEl.classList.add('section');
     sectionEl.innerText = section.name || section.id;
     this.el.appendChild(sectionEl);
@@ -135,8 +147,8 @@ export class NavTreeView {
   }
 
   renderSlide(slide, level) {
-    let slideEl = document.createElement('div'),
-      slideIndex = this.slides.indexOf(slide);
+    const slideEl = document.createElement('div');
+    const slideIndex = this.slides.indexOf(slide);
 
     slideEl.classList.add('slide');
     slideEl.innerText = slide.name || slide.id;
@@ -154,8 +166,8 @@ export class NavTreeView {
   }
 
   renderPhase(slide, step, stepIndex, depth) {
-    let phaseEl = document.createElement('div'),
-      slideIndex = this.slides.indexOf(slide);
+    const phaseEl = document.createElement('div');
+    const slideIndex = this.slides.indexOf(slide);
 
     phaseEl.classList.add('phase');
     phaseEl.innerText = '- ' + step.id;

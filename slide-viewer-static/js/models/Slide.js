@@ -19,49 +19,46 @@ export class Slide {
     return this.data.type;
   }
 
-  load(path, opts) {
-    if (!opts) opts = {};
+  load(path, opts = {}) {
     this.path = path;
     this.staticPath = '/presentations/' + path;
     if (!this.id) {
       return this.createDefault();
     }
-    return new Promise((resolve) => {
-      let fileName = '/slide/' + this.path + this.id;
-      fetch(fileName).then((res) => {
-        if (res.status !== 200) {
-          throw new Error(`Could not load slide: '${this.path + this.id}`);
+    return new Promise(async (resolve) => {
+      const slidePath = [this.path, this.id].join('/');
+      const queryString = opts.notes ? '?notes=true' : '';
+      const fileName = ['/slide', slidePath].join('/') + queryString;
+
+      const res = await fetch(fileName);
+      if (res.status !== 200) {
+        throw new Error(`Could not load slide: '${slidePath}`);
+      }
+
+      try {
+        const slideData = await res.json();
+        this.data = slideData;
+        if (opts.notes) {
+          this.notes = slideData.notes;
         }
-        res.json().then((slideData) => {
-          this.data = slideData;
-          this.configureHooks();
-          this.configureSteps();
-          if (opts.notes && slideData.notes) {
-            fetch(this.staticPath + slideData.notes).then((res) => {
-              res.text().then((notesText) => {
-                this.notes = notesText;
-                resolve();
-              });
-            });
-          } else {
-            resolve();
-          }
-        }).catch((e) => {
-          console.error(`Error parsing "${fileName}"`);
-          let msg = e.toString();
-          msg = msg.substring(msg.indexOf('position'));
-          let errPos = parseInt(msg.split(' ')[1]);
-          fetch(fileName).then(function (pres) {
-            pres.text().then((text) => {
-              let errMsg = text.substring(0, errPos);
-              errMsg += '---->' + text.charAt(errPos) + '<----';
-              errMsg += text.substring(errPos + 1);
-              console.log(errMsg);
-            });
+        this.configureHooks();
+        this.configureSteps();
+        resolve();
+      } catch (e) {
+        console.error(`Error parsing "${fileName}"`);
+        let msg = e.toString();
+        msg = msg.substring(msg.indexOf('position'));
+        let errPos = parseInt(msg.split(' ')[1]);
+        fetch(fileName).then(function (pres) {
+          pres.text().then((text) => {
+            let errMsg = text.substring(0, errPos);
+            errMsg += '---->' + text.charAt(errPos) + '<----';
+            errMsg += text.substring(errPos + 1);
+            console.log(errMsg);
           });
-          console.error(msg);
         });
-      });
+        console.error(msg);
+      }
     });
   }
 
