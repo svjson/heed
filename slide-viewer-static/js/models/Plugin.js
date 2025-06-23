@@ -8,7 +8,7 @@
     }
 
     load() {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         fetch(`/plugins/${this.pluginId}/plugin.json`).then((resp) => {
           resp.json().then((pluginJson) => {
             pluginJson.requires.js = pluginJson.requires.js || [];

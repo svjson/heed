@@ -9,8 +9,8 @@
 
       let videoEl = document.querySelector('video');
 
-      videoEl.onplay = e => window.isVideoPlaying = true;
-      videoEl.onpause = e => window.isVideoPlaying = false;
+      videoEl.onplay = _event => window.isVideoPlaying = true;
+      videoEl.onpause = _event => window.isVideoPlaying = false;
 
       window.videoListener = e => {
         if (!videoEl) {

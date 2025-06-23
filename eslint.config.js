@@ -16,7 +16,11 @@ export default [
     rules: {
       ...playwright.configs.recommended.rules,
       'playwright/no-conditional-in-test': 'off',
-      'no-unused-vars': 'error',
+      'no-unused-vars': ['error', {
+        argsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+        varsIgnorePattern: '^_'
+      }],
       'no-empty-functions': 'off',
       'no-empty': 'off',
       semi: ['error', 'always'],

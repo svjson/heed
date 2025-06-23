@@ -127,7 +127,7 @@ const preparePresentationArchive = async (absolutePath, heedRoot) => {
       presentationName: presentation.name,
       archiveFile: absolutePath
     };
-  } catch (e) {
+  } catch (_e) {
     rmSync(extractPath, { recursive: true});
     return await preparePresentationArchive(absolutePath, heedRoot);
   }

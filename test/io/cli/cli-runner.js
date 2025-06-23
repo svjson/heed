@@ -3,7 +3,7 @@ import { spawn } from 'child_process';
 import path from 'path';
 
 export const heedCli = async (args, { cwd, env={} } = {}) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const heedCliJs = path.resolve('heed-cli.js');
 
     const proc = spawn(heedCliJs, args, {

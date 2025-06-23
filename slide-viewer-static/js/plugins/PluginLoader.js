@@ -3,7 +3,7 @@
   class PluginLoader {
 
     static loadPlugin(pluginSpec) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         let pluginBase = pluginSpec.json.pluginBase,
           pluginDir = '/plugins/' + pluginSpec.pluginId;
         if (pluginBase) pluginBase = pluginBase.substring(0, pluginBase.length-1);

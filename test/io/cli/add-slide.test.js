@@ -1,10 +1,11 @@
-import { expect } from '@playwright/test';
-import { test, tree } from '../../fixture.js';
 import path from 'path';
+
+import { expect } from '@playwright/test';
 
 import { heedCli } from './cli-runner.js';
 import { createPresentationDotJson } from '../../../lib/presentation.js';
 import { createSlide } from '../../../lib/slide.js';
+import { test, tree } from '../../fixture.js';
 
 test.describe('(in empty dir) heed-cli add slide', () => {
 

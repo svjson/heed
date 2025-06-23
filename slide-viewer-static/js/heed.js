@@ -16,7 +16,7 @@ window.Heed = {
   loadStylesheet: function(url) {
     return this._loadedStylesheets.includes(url)
       ? Promise.resolve()
-      : new Promise((resolve, reject) => {
+      : new Promise((resolve) => {
         const tag = document.createElement('link');
         tag.rel = 'stylesheet';
         tag.href = url;
@@ -31,7 +31,7 @@ window.Heed = {
   loadScript: function(url) {
     return this._loadedScripts.includes(url)
       ? Promise.resolve()
-      : new Promise((resolve, reject) => {
+      : new Promise((resolve) => {
         const tag = document.createElement('script');
         tag.type = 'text/javascript';
         tag.src = url;
@@ -51,7 +51,7 @@ window.Heed = {
   },
 
   loadResource: function(url) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       fetch(url).then(resource => {
         resource.text().then(resolve);
       });

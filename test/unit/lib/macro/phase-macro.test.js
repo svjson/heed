@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-import { extractPhaseDirectives, expandPhaseMacro } from '../../../../lib/macro/phase-macro.js';
+import { extractPhaseDirectives } from '../../../../lib/macro/phase-macro.js';
 
 test.describe('extractPhaseDirectives', () => {
 

@@ -1,10 +1,11 @@
 import path from 'path';
 
 import { expect } from '@playwright/test';
-import { test } from '../../fixture';
+
+import { NumberedSections } from '../../../lib/folder-layout';
 import { createPresentationDotJson } from '../../../lib/presentation';
 import { createSlide } from '../../../lib/slide';
-import { NumberedSections } from '../../../lib/folder-layout';
+import { test } from '../../fixture';
 
 test.describe('NumberedSections', () => {
 

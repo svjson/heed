@@ -26,7 +26,7 @@
       if (!this.id) {
         return this.createDefault();
       }
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         let fileName = '/slide/' + this.path + this.id;
         fetch(fileName).then((res) => {
           if (res.status !== 200) {
