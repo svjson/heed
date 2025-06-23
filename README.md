@@ -16,6 +16,18 @@ It supports a simplistic plugin architecture for embedding rich content and Java
 <!-- toc -->
 
 - [What is this?](#what-is-this)
+- [Installation](#installation)
+  * [npm](#npm)
+  * [yarn (v1)](#yarn-v1)
+- [Command: heed](#command-heed)
+  * [Usage:](#usage)
+    + [Serving presentations](#serving-presentations)
+  * [Speaker Notes](#speaker-notes)
+- [Command: heed-cli](#command-heed-cli)
+  * [Usage:](#usage-1)
+    + [Creating a new presentation](#creating-a-new-presentation)
+    + [Adding a slide](#adding-a-slide)
+  * [Commands](#commands)
 - [Slide Format](#slide-format)
 - [.heed files](#heed-files)
   * [The Frontmatter header-block](#the-frontmatter-header-block)
@@ -30,22 +42,10 @@ It supports a simplistic plugin architecture for embedding rich content and Java
     + [`%accumulate`-macro attribute](#%25accumulate-macro-attribute)
     + [`%content`-macro attribute](#%25content-macro-attribute)
 - [.json files](#json-files)
-- [Command: heed](#command-heed)
-  * [Usage:](#usage)
-    + [Serving a presentation:](#serving-a-presentation)
-  * [Speaker Notes](#speaker-notes)
-- [Command: heed-cli](#command-heed-cli)
-  * [Usage:](#usage-1)
-    + [Creating a new presentation in the current directory:](#creating-a-new-presentation-in-the-current-directory)
-    + [...or creating it in a target directory, and also creating that if required:](#or-creating-it-in-a-target-directory-and-also-creating-that-if-required)
-    + [Adding a slide](#adding-a-slide)
-  * [Commands](#commands)
-- [Installation](#installation)
-  * [npm](#npm)
-  * [yarn (v1)](#yarn-v1)
 - [Design goals](#design-goals)
 - [Why does this exist?](#why-does-this-exist)
 - [Changelog](#changelog)
+  * [[v0.2.2] - (Next version)](#v022---next-version)
   * [[v0.2.1] - 2025-06-23](#v021---2025-06-23)
   * [[v0.2.0] - 2025-06-22](#v020---2025-06-22)
   * [[v0.1.0] - 2025-06-16](#v010---2025-06-16)
@@ -61,6 +61,108 @@ Heed is a slide deck engine that treats **presentations as structured data** and
 custom **.heed file format** or **JSON format** and rendered using a small JavaScript runtime with layout primitives like `text`, 
 `html`, `image` and `column-layout`, live demos, and external content embedding. It’s served via a lightweight Express-based backend 
 and comes with a very rudimentary **WebSocket-based speaker notes system**. Batteries are most certainly **not** included.
+
+## Installation
+
+### npm
+
+```bash
+ npm install -g heedjs
+```
+
+### yarn (v1)
+
+```
+ yarn global add heedjs
+```
+
+## Command: heed
+
+This command is used for serving up a presentation and the speaker notes over HTTP.
+
+### Usage:
+
+#### Serving presentations
+
+**Serving a presentation from folder/presentation.json**
+
+```bash
+$ heed <path/to/presentation>
+```
+
+This will serve the Heed presentation at [http://localhost:4000](http://localhost:4000) and the speaker notes
+at [http://localhost:4000/speaker](http://localhost:4000/speaker).
+
+**Serving a presentation from archive (zip or tarball)**
+
+You can deliver presentations directly from archives without extracting the contents.
+
+```bash
+$ heed ~/Downloads/exotic-cheeses.tgz
+```
+
+| Option                 | Arguments       | Description                                |
+|------------------------|-----------------|--------------------------------------------|
+| `-p`, `--port`         | `<port number>` | Specify port number to run server on       |
+| `-w`, `--show-watches` |                 | Display components under watch on startup  |
+| `-n`, `--no-watches`   |                 | Disable watch and reload on content change |
+
+
+### Speaker Notes
+
+The speaker notes are still in the extremely basic shape they were when initially hobbled together an hour 
+before a presentation (which of course left me with no time to write the actual notes...).
+
+The Speaker Notes UI and the presentation both connect to a WebSocket, allowing them to synchronize the current 
+slide. This ensures that with the presentation displayed on a projector or large screen and the speaker notes on a 
+laptop screen, the notes UI remains up to date with the slide being shown.
+
+## Command: heed-cli
+
+This command is for interacting with the presentation on your file-system, providing scaffolding commands
+like `new`, `add slide` as well as providing features that support [heed-mode](https://github.com/svjson/heed-mode) for Emacs.
+
+
+### Usage:
+
+#### Creating a new presentation
+
+**in the current directory:***
+
+```bash
+$ heed-cli new "I spent a year pretending to be a cow"
+```
+
+**...or creating it in a target directory, and also creating that if required:**
+
+```bash
+$ heed-cli new "I spent a year pretending to be a cow" ./my-year-as-a-cow
+```
+This also creates a first slide with the presentation name under `<presentation root>/slides/front.heed`.
+
+#### Adding a slide
+
+```bash
+$ heed-cli add slide initial-reactions
+```
+
+This creates an empty slide and places it at the back of your slide index.
+
+### Commands
+
+| Command           | Arguments     | Optional               | Description                                                           |
+|-------------------|---------------|------------------------|-----------------------------------------------------------------------|
+| `add plugin`      | (plugin name) | <path/url>             | Add a plugin to the presentation                                      |
+| `add slide`       | (slide id)    | (path/context)         | Add a slide to the presentation                                       |
+| `install plugins` |               |                        | Install configured plugins that are not present in the plugins folder |
+| `link plugin`     | (plugin name) | (path)                 | (For plugin development) Add a plugin by symlink                      |
+| `new`             | (title/name)  | (path)                 | Create/Initialize a new presentation                                  |
+| `pack`            | (path)        | --type [tar, tgz, zip] | Create a distributable archive from the presentation folder           |
+| `remove plugin`   | (plugin name) |                        | Remove/uninstall a plugin from this presentation                      |
+| `show index`      |               | (path)                 | Show the presentation slide index                                     |
+| `show root`       |               | (path)                 | Locate the presentation root folder at <path>(implcitly ./)           |
+
+For the benefit of tooling, all commands accept a `--json` flag that outputs the command result as JSON
 
 
 ## Slide Format
@@ -493,89 +595,6 @@ The same slide expressed as JSON would look like this:
 
 Despite being cumbersome and less ergonomic to edit as well as being less expressive than the .heed format,
 it still has one thing going for it: At least it's not XML. ¯\\\_(ツ)_/¯
-
-## Command: heed
-
-This command is used for serving up a presentation and the speaker notes over HTTP.
-
-### Usage:
-
-#### Serving a presentation:
-
-```bash
-$ heed <path/to/presentation>
-```
-
-This will serve the Heed presentation at [http://localhost:4000](http://localhost:4000) and the speaker notes
-at [http://localhost:4000/speaker](http://localhost:4000/speaker).
-
-### Speaker Notes
-
-The speaker notes are still in the extremely basic shape they were when initially hobbled together an hour 
-before a presentation (which of course left me with no time to write the actual notes...).
-
-The Speaker Notes UI and the presentation both connect to a WebSocket, allowing them to synchronize the current 
-slide. This ensures that with the presentation displayed on a projector or large screen and the speaker notes on a 
-laptop screen, the notes UI remains up to date with the slide being shown.
-
-## Command: heed-cli
-
-This command is for interacting with the presentation on your file-system, providing scaffolding commands
-like `new`, `add slide` as well as providing features that support [heed-mode](https://github.com/svjson/heed-mode) for Emacs.
-
-### Usage:
-
-#### Creating a new presentation in the current directory:
-
-```bash
-$ heed-cli new "I spent a year pretending to be a cow"
-```
-
-#### ...or creating it in a target directory, and also creating that if required:
-
-```bash
-$ heed-cli new "I spent a year pretending to be a cow" ./my-year-as-a-cow
-```
-This also creates a first slide with the presentation name under `<presentation root>/slides/front.heed`.
-
-#### Adding a slide
-
-```bash
-$ heed-cli add slide initial-reactions
-```
-
-This creates an empty slide and places it at the back of your slide index.
-
-### Commands
-
-| Command           | Arguments     | Optional               | Description                                                           |
-|-------------------|---------------|------------------------|-----------------------------------------------------------------------|
-| `add plugin`      | (plugin name) | <path/url>             | Add a plugin to the presentation                                      |
-| `add slide`       | (slide id)    | (path/context)         | Add a slide to the presentation                                       |
-| `install plugins` |               |                        | Install configured plugins that are not present in the plugins folder |
-| `link plugin`     | (plugin name) | (path)                 | (For plugin development) Add a plugin by symlink                      |
-| `new`             | (title/name)  | (path)                 | Create/Initialize a new presentation                                  |
-| `pack`            | (path)        | --type [tar, tgz, zip] | Create a distributable archive from the presentation folder           |
-| `remove plugin`   | (plugin name) |                        | Remove/uninstall a plugin from this presentation                      |
-| `show index`      |               | (path)                 | Show the presentation slide index                                     |
-| `show root`       |               | (path)                 | Locate the presentation root folder at <path>(implcitly ./)           |
-
-For the benefit of tooling, all commands accept a `--json` flag that outputs the command result as JSON
-
-
-## Installation
-
-### npm
-
-```bash
- npm install -g heedjs
-```
-
-### yarn (v1)
-
-```
- yarn global add heedjs
-```
 
 
 ## Design goals
