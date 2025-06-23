@@ -10,7 +10,7 @@ export class WebSocketNavigator {
 
   connect() {
     return new Promise((resolve, reject) => {
-      this.connection = new WebSocket(`ws://${document.location.host}/navigation`);
+      this.connection = new WebSocket(`ws://${document.location.host}/`);
       this.connection.onerror = (err) => {
         console.error('WebSocket error', err);
         reject(err);

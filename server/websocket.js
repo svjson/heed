@@ -8,7 +8,7 @@ export const registerWebsocket = (app, getWss) => {
 
   const server = getWss();
 
-  app.ws('/navigation', (ws, _req) => {
+  app.ws('/', (ws, _req) => {
     console.log('Client connected');
     console.log(server.clients.size + ' connected');
 
