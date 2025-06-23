@@ -1,23 +1,37 @@
 
-import { WebSocketNavigator } from '../../slide-viewer-static/js/ws/WebSocketNavigator.js';
+import { SpeakerView } from './view/SpeakerView.js';
+import { Presentation } from '../../slide-viewer-static/js/models/index.js';
+import { WebSocketClient } from '../../slide-viewer-static/js/ws/WebSocketClient.js';
 
-window.Speaker = {
+/**
+ * Bootstrapper listener that loads the presentation and sets up
+ * a WS connection with server once the browser has signalled that
+ * the DOM is ready.
+ *
+ * Also triggers a reload of the presentation and/or webapp files
+ * after an update has been signalled.
+ */
+document.addEventListener('DOMContentLoaded', async () => {
+  const presentation = await Presentation.load({ notes: true });
 
-};
+  const wsClient = new WebSocketClient({ actor: 'speaker' });
+  await wsClient.connect();
 
-document.addEventListener('DOMContentLoaded', function() {
-  Heed.Presentation.load({ notes: true }).then((instance) => {
-    let navigator = new WebSocketNavigator({ actor: 'speaker' });
-    navigator.connect().then(() => {
-      let speakerView = new Speaker.SpeakerView({
-        el: document.querySelector('#speaker-container'),
-        presentation: instance,
-        navigator: navigator
-      });
+  const speakerView = new SpeakerView({
+    el: document.querySelector('#speaker-container'),
+    presentation,
+    navigator: wsClient
+  });
 
-      window.addEventListener('resize', () => {
-        speakerView.resize();
-      });
-    });
+  wsClient.on('speaker-notes-updated', () => {
+    window.location.reload();
+  });
+
+  wsClient.on('presentation-updated', async _event => {
+    speakerView.replacePresentation(await Presentation.load());
+  });
+
+  window.addEventListener('resize', () => {
+    speakerView.resize();
   });
 });

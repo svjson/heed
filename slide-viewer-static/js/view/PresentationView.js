@@ -1,4 +1,3 @@
-
 import { Heed } from '../heed.js';
 import { DefaultSlideView } from './DefaultSlideView.js';
 
@@ -38,10 +37,25 @@ export class PresentationView {
     });
   }
 
+  replacePresentation(presentation) {
+    this.presentation = presentation;
+    this.slides = this.presentation.getOrderedSlides();
+
+    // FIXME: Load/reload stylesheets if applicable
+
+    // FIXME: Find current slide by id/name/etc, not index
+    // Slides may have been added/deleted
+    const currentPhase = this.slideView?.currentStep ?? 0;
+    this.showSlide(this.slideIndex, currentPhase);
+  }
+
   showSlide(slideIndex, step) {
+    const slideChanged = slideIndex !== this.slideIndex;
     this.slideIndex = slideIndex;
     this.currentSlide = this.slides[slideIndex];
-    history.pushState({}, null, '#' + slideIndex);
+    if (slideChanged) {
+      history.pushState({}, null, '#' + slideIndex);
+    }
 
     let slideView = null;
 

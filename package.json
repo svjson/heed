@@ -39,6 +39,7 @@
   "files": [
     "heed.js",
     "heed-cli.js",
+    "heed-server.js",
     "plugins.json",
     "lib/",
     "server/",
@@ -47,6 +48,7 @@
     "README.md"
   ],
   "dependencies": {
+    "chokidar": "^4.0.3",
     "commander": "^13.0.0",
     "env-paths": "^3.0.0",
     "express": "^4.19.2",

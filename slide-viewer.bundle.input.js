@@ -20,5 +20,5 @@ import './slide-viewer-static/js/models/Presentation.js';
 import './slide-viewer-static/js/models/Plugin.js';
 import './slide-viewer-static/js/models/Section.js';
 import './slide-viewer-static/js/models/Slide.js';
-import './slide-viewer-static/js/ws/WebSocketNavigator.js';
+import './slide-viewer-static/js/ws/WebSocketClient.js';
 import './slide-viewer-static/js/plugins/PluginLoader.js';

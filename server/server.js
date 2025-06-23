@@ -2,6 +2,7 @@ import express from 'express';
 import expressWs from 'express-ws';
 
 import { registerRoutes } from './routes.js';
+import { initWatcher } from './watch.js';
 import { registerWebsocket } from './websocket.js';
 
 /**
@@ -17,9 +18,28 @@ import { registerWebsocket } from './websocket.js';
 export const startServer = (opts) => {
   const { app, getWss } = expressWs(express());
 
-  const { port, presentationRoot, presentationName, archiveFile } = opts;
+  const {
+    archiveFile,
+    heedRoot,
+    port,
+    presentationRoot,
+    presentationName,
+    showWatches,
+    watch
+  } = opts;
   registerWebsocket(app, getWss);
   registerRoutes(app, opts);
+
+  let watches = [];
+  if (watch) {
+    watches = initWatcher({
+      getWss,
+      heedRoot,
+      isArchive: Boolean(archiveFile),
+      presentationName,
+      presentationRoot
+    });
+  }
 
   app.listen(port, function() {
     console.log(`Listening on port ${port}`);
@@ -29,6 +49,9 @@ export const startServer = (opts) => {
       console.log(`Cache dir: '${presentationRoot}'`);
     } else {
       console.log(`From directory: ${presentationRoot}`);
+    }
+    if (showWatches && watches.length) {
+      console.log(`Watching for changes in: ${watches.join(', ')}`);
     }
     console.log('');
     console.log('Press Ctrl-C to exit.');

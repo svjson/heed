@@ -12,5 +12,5 @@ import './slide-viewer-static/js/models/Plugin.js';
 import './slide-viewer-static/js/registry/ContentSectionRegistry.js';
 import './slide-viewer-static/js/plugins/PluginLoader.js';
 import './slide-viewer-static/js/hooks/Hooks.js';
-import './slide-viewer-static/js/ws/WebSocketNavigator.js';
+import './slide-viewer-static/js/ws/WebSocketClient.js';
 import './slide-viewer-static/js/registry/HookRegistry.js';

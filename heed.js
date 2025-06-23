@@ -1,77 +1,87 @@
 #!/usr/bin/env node
-import { readFile } from 'fs/promises';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-import { Command, InvalidOptionArgumentError } from 'commander';
-
-import { preparePresentation } from './server/prepare.js';
-import { startServer } from './server/server.js';
 
 /**
- * Locate the root of the heedjs package
+ * This script is the entry point for the Heed server, and acts as a process
+ * launcher, or wrapper. This enables the Heed server to be restarted gracefully
+ * by request of the server itself, without the need for external tools like
+ * nodemon or pm2.
+ *
+ * It simply delegates all incoming arguments to the Heed server script,
+ * making both heed and the user none the wiser.
+ *
+ * This is intended to be run from the command line, and will spawn a
+ * Heed server process using the current Node.js executable.
+ * It will also handle restarting the Heed server if it exits with code 86,
+ * which is a custom exit code indicating that the server should be restarted.
+ */
+import { spawn } from 'child_process';
+import path from 'path';
+import process from 'process';
+import { fileURLToPath } from 'url';
+
+/**
+ * Custom exit code used to signal that the Heed server should be restarted.
+ */
+const RESTART_EXIT_CODE = 86;
+
+/**
+ * The root directory of the Heed project, derived from the current file's URL.
+ * This is used to locate the Heed server script.
  */
 const heedRoot = path.dirname(fileURLToPath(import.meta.url));
 
 /**
- * Load the Heed package.json
+ * The Node.js executable path, which will be used to spawn the Heed server.
+ * In case it is launched by other means than `node` begin available on the
+ * path, we are re-using `process.argv[0]` which usually contains the full
+ * absolute path to the binary.
  */
-const pkg = JSON.parse(await readFile(path.join(heedRoot, 'package.json')));
+const proc = process.argv[0];
 
 /**
- * Parse and validate the port number program option
+ * The argument list is built from the rest of `process.argv`, skipping `node`
+ * and the element referring to this script, which we instead replace with
+ * the Heed server script.
  */
-const parsePort = (value) => {
-  const port = Number(value);
+const args = [path.join(heedRoot, 'heed-server.js'), ...process.argv.slice(2)];
 
-  if (!Number.isInteger(port) || port < 1 || port > 65535) {
-    throw new InvalidOptionArgumentError('Port must be an integer between 1 and 65535');
+/**
+ * Variable holding te currently running Heed process, if any.
+ */
+let heedProcess = null;
+
+/**
+ * Spawn the Heed server and watch for process termination. As long as the Heed
+ * Server exits with exit code `RESTART_EXIT_CODE` it means the server itself has
+ * requested a restart, and we will keep re-launching it.
+ */
+const spawnHeed = () => {
+  try {
+    heedProcess = spawn(proc, args, {
+      stdio: 'inherit',
+      env: process.env,
+      cwd: process.cwd(),
+    });
+  } catch (e) {
+    console.log(typeof e);
+    console.log(e.prototype);
   }
 
-  return port;
+  heedProcess.on('exit', (code) => {
+    if (code === 1) {
+      console.log('[heed] Startup failure.');
+      setTimeout(spawnHeed, 2000);
+    } else if (code !== RESTART_EXIT_CODE) {
+      process.exit(code);
+    } else {
+      console.log('[heed] Restarting...');
+      console.log('');
+      spawnHeed();
+    }
+  });
 };
 
 /**
- * Root Commander-command
+ * Start the Heed Server.
  */
-const program = new Command();
-
-/**
- * Commander-command for starting the Heed Server.
- */
-program
-  .name('heed')
-  .description('Serve a Heed presentation over HTTP.')
-  .version(pkg.version)
-  .argument('[path]', 'Path to presentation directory or archive', '.')
-  .option('-p, --port <number>', 'HTTP port to serve presentation on', parsePort, 4000)
-  .action(async (pathArg, options) => {
-    try {
-      const { presentationRoot, presentationName, archiveFile } = await preparePresentation(pathArg, heedRoot);
-
-      const serverOpts = {
-        port: options.port,
-        presentationName,
-        presentationRoot,
-        archiveFile,
-        heedRoot,
-        pkg
-      };
-
-      startServer(serverOpts);
-
-    } catch (e) {
-      console.error(`Failed to start Heed: ${e.message}`);
-      if (e.suggestion) {
-        console.error(e.suggestion);
-      }
-      console.log('');
-      process.exit(1);
-    }
-  });
-
-/**
- * Display Heed version and start the server.
- */
-console.log(`Heed v${pkg.version}\n`);
-program.parse();
+spawnHeed();

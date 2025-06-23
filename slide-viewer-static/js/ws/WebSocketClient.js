@@ -1,9 +1,8 @@
+import { guid } from '../heed.js';
 
-import { Heed } from '../heed.js';
-
-export class WebSocketNavigator {
+export class WebSocketClient {
   constructor(opts) {
-    this.clientId = Heed.guid();
+    this.clientId = guid();
     Object.assign(this, opts);
     this.listeners = {};
   }
@@ -38,6 +37,8 @@ export class WebSocketNavigator {
     if (message.clientId === this.clientId) return;
     if (message.command === 'navigate') {
       this.fire('navigation', message.slide);
+    } else if (message.event) {
+      this.fire(message.event, message);
     }
   }
 

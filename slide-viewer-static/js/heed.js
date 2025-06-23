@@ -1,17 +1,8 @@
-const Heed = {
+export const Heed = {
 
   plugins: {},
   _loadedScripts: [],
   _loadedStylesheets: [],
-
-  guid: function() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-  },
 
   loadStylesheet: function(url) {
     return this._loadedStylesheets.includes(url)
@@ -59,6 +50,18 @@ const Heed = {
   }
 };
 
-window.Heed = Heed;
+/**
+ * Ubiquitous pseudo-GUID pinched from these here Internets.
+ * Its origin is uncertain, but definitely popularized via StackOverflow and gists
+ * by Brian Donovan(Broofa).
+ */
+export const guid = () => {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+};
 
-export { Heed };
+window.Heed = Heed;

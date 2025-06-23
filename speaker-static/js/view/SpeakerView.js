@@ -1,31 +1,30 @@
-(function() {
 
-  class SpeakerView {
-    constructor(opts) {
-      Object.assign(this, opts);
-      this.navTree = new Speaker.NavTreeView({
-        el: this.el.querySelector('#nav-tree'),
-        presentation: this.presentation,
-        navigator: this.navigator
-      });
+import { NavTreeView } from './NavTreeView.js';
+import { NotesView } from './NotesView.js';
 
-      this.notes = new Speaker.NotesView({
-        el: this.el.querySelector('#speaker-notes'),
-        presentation: this.presentation
-      });
+export class SpeakerView {
+  constructor(opts) {
+    Object.assign(this, opts);
+    this.navTree = new NavTreeView({
+      el: this.el.querySelector('#nav-tree'),
+      presentation: this.presentation,
+      navigator: this.navigator
+    });
 
-      this.navigator.on('navigation', (payload) => {
-        this.navTree.navigateTo(payload);
-        this.notes.navigateTo(payload);
-      });
-    }
+    this.notes = new NotesView({
+      el: this.el.querySelector('#speaker-notes'),
+      presentation: this.presentation
+    });
 
-    resize() {
-      this.el.style.height = window.innerHeight;
-      this.navTree.resize();
-    }
+    this.navigator.on('navigation', (payload) => {
+      this.navTree.navigateTo(payload);
+      this.notes.navigateTo(payload);
+    });
   }
 
-  Speaker.SpeakerView = SpeakerView;
+  resize() {
+    this.el.style.height = window.innerHeight;
+    this.navTree.resize();
+  }
+}
 
-})();
