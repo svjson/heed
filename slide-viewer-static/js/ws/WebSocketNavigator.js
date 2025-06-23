@@ -10,12 +10,19 @@
     connect() {
       return new Promise((resolve, reject) => {
         this.connection = new WebSocket(`ws://${document.location.host}/navigation`);
+        this.connection.onerror = (err) => {
+          console.error('WebSocket error', err);
+          reject(err);
+        };
         this.connection.onopen = () => {
           this.connection.onmessage = (msg) => {
             this.receiveMessage(JSON.parse(msg.data));
           };
           this.sendMessage({ command: 'register', actor: this.actor});
           resolve();
+        };
+        this.connection.onclose = (event) => {
+          console.warn('WebSocket connection closed', event);
         };
       });
     }

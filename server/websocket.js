@@ -4,10 +4,13 @@
  *
  * Not touched since the before-times.
  */
-export const registerWebsocket = (app) => {
+export const registerWebsocket = (app, getWss) => {
 
-  app.ws('/navigation', function(ws, _req) {
-    let channel = ws.getWss('/navigation');
+  const server = getWss();
+
+  app.ws('/navigation', (ws, _req) => {
+    console.log('Client connected');
+    console.log(server.clients.size + ' connected');
 
     ws.on('open', req => {
       console.log('Connect', req);
@@ -15,16 +18,14 @@ export const registerWebsocket = (app) => {
 
     ws.on('close', _ => {
       console.log('Client disconnect');
-      console.log(channel.clients.size + ' connected');
+      console.log(server.clients.size + ' connected');
     });
 
-    ws.on('message', (msg) => {
-      channel.clients.forEach((client) => {
+    ws.on('message', msg => {
+      server.clients.forEach((client) => {
         client.send(msg);
       });
     });
 
-    console.log(channel.clients.size + ' connected');
   });
-
 };

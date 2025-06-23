@@ -15,14 +15,11 @@ import { registerWebsocket } from './websocket.js';
  * @param {Object} opts - Options for the server.
  */
 export const startServer = (opts) => {
-  const ws = expressWs(express());
-  const app = ws.app;
-  const router = express.Router();
-  app.use(router);
+  const { app, getWss } = expressWs(express());
 
   const { port, presentationRoot, presentationName, archiveFile } = opts;
+  registerWebsocket(app, getWss);
   registerRoutes(app, opts);
-  registerWebsocket(app);
 
   app.listen(port, function() {
     console.log(`Listening on port ${port}`);
