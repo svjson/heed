@@ -1,4 +1,4 @@
-window.Heed = {
+const Heed = {
 
   plugins: {},
   _loadedScripts: [],
@@ -58,3 +58,7 @@ window.Heed = {
     });
   }
 };
+
+window.Heed = Heed;
+
+export { Heed };

@@ -1,20 +1,20 @@
-(function() {
 
-  var slideTypes = {};
+import { Heed } from '../heed.js';
 
-  class SlideTypeRegistry {
+export class SlideTypeRegistry {
 
-    static registerSlideType(typeId, slideClass) {
-      slideTypes[typeId] = slideClass;
-    }
+  static slideTypes = {};
 
-    static resolveSlideType(typeId) {
-      let slideType = slideTypes[typeId];
-      if (!slideType) return slideTypes['default'];
-      return slideType;
-    }
+  static registerSlideType(typeId, slideClass) {
+    this.slideTypes[typeId] = slideClass;
   }
 
-  window.Heed.SlideTypeRegistry = SlideTypeRegistry;
+  static resolveSlideType(typeId) {
+    let slideType = this.slideTypes[typeId];
+    if (!slideType) return this.slideTypes['default'];
+    return slideType;
+  }
+}
 
-})();
+Heed.SlideTypeRegistry = SlideTypeRegistry;
+

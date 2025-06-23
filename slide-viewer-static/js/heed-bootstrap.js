@@ -1,3 +1,5 @@
+import { PresentationView } from './view/PresentationView.js';
+import { WebSocketNavigator } from './ws/WebSocketNavigator.js';
 
 document.addEventListener('DOMContentLoaded', function() {
   fetch('/context').then(function(ctxResp) {
@@ -10,9 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
             .applyHook());
 
         Promise.all(promises).then(() => {
-          const navigator = new Heed.WebSocketNavigator({ actor: 'presentation' });
+          const navigator = new WebSocketNavigator({ actor: 'presentation' });
           navigator.connect().then(() => {
-            const mainView = new Heed.PresentationView({
+            Heed.mainView = new PresentationView({
               presentation: instance,
               navigator: navigator
             });
