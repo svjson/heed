@@ -35,6 +35,7 @@ It supports a simplistic plugin architecture for embedding rich content and Java
   * [Aside blocks](#aside-blocks)
     + [`== phases` block](#-phases-block)
     + [`== content` block](#-content-block)
+    + [`== notes` block](#-notes-block)
   * [Macros](#macros)
     + [`:: %for`-macro block](#-%25for-macro-block)
     + [`%reveal` frontmatter-macro](#%25reveal-frontmatter-macro)
@@ -353,6 +354,21 @@ every day a seed buffet holiday.
 --
 ```
 
+#### `== notes` block
+
+Notes blocks can be used to write speaker notes directly in `.heed` slide files (as opposed
+to linking from separate files in the frontmatter section).
+
+```
+== notes
+You've got this. Breathe. In and out.
+You know the subject.
+And remember - violence is never the answer.
+--
+```
+
+Notes written in these blocks are not visible in the main presentation, but appear in the 
+the separate [Speaker Notes view](#speaker-notes).
 
 ### Macros
 
@@ -628,10 +644,12 @@ error handling sorted out and just generally modernize things and touch up some 
 ## Changelog
 
 ### [v0.2.2] - (Next version)
-- Watch presentation for changes on disk and auto-reread content on change
+- Watch presentation for changes on disk and auto-reload content on change
 - Watch heed sources for changes and rebuild webapps/restart server on change
 - Fixed bogus shebangs in "bin" entrypoints.
 - Face-lift & Dark Mode-toggle for Speaker Notes
+- Moved collection of speaker notes from browser to server
+- Support `== notes` aside blocks to provide speaker notes directly in `.heed` slide files
 
 ### [v0.2.1] - 2025-06-23
 - Serve presentations directly from archives(zip and tarballs)

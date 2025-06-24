@@ -10,6 +10,7 @@ import linearTextAccumulationCase from './case/linear-text-accumulation.case.js'
 import revealFrontmatterMacroCase from './case/reveal-frontmatter-macro.case.js';
 import simpleWithPhasesCase from './case/simple-with-phases.case.js';
 import textBlockCase from './case/single-text-block.case.js';
+import slideWithNotesAsideBlockCase from './case/slide-with-notes-aside-block.case.js';
 import { parseHeedFile } from '../../../lib/heed-file.js';
 
 test.describe('parseHeedFile()', () => {
@@ -23,6 +24,7 @@ test.describe('parseHeedFile()', () => {
     linearTextAccumulationCase,
     revealFrontmatterMacroCase,
     simpleWithPhasesCase,
+    slideWithNotesAsideBlockCase,
     textBlockCase,
   ].forEach(testCase => {
     test(`parse .heed-file with ${testCase.parseHeedFileDescription ?? testCase.description}`, async () => {

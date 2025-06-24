@@ -5,6 +5,7 @@ import { test, expect } from '@playwright/test';
 import { loadSlide } from '../../../lib/slide';
 import forMacroBlockCase from '../../unit/lib/case/for-macro-block.case';
 import slideWithBrokenNotesRefCase from '../../unit/lib/case/slide-with-broken-notes-ref.case.js';
+import slideWithNotesAsideBlockCase from '../../unit/lib/case/slide-with-notes-aside-block.case.js';
 import slideWithNotesRefCase from '../../unit/lib/case/slide-with-notes-ref.case.js';
 
 test.describe('loadSlide()', () => {
@@ -69,4 +70,33 @@ test.describe('loadSlide()', () => {
         }]
       });
     });
+
+  test(
+    'load .heed-slide with notes aside-block and { includeNotes: true }',
+    async () => {
+      // Given
+      const presentationRoot = path.resolve('test');
+      const slidePath = path.join(...'unit/lib/case/slide-with-notes-aside-block'.split('/'));
+
+      // When
+      const slide = await loadSlide(presentationRoot, slidePath, { includeNotes: true });
+
+      // Then
+      expect(slide).toEqual({
+        ...slideWithNotesAsideBlockCase.jsonSlide,
+        notes: [{
+          type: 'text',
+          source: 'Slide',
+          content: [
+            'Points to drive home:',
+            '- Regular crypto scams are becoming less and less lucrative.',
+            '- Most people stop listening immediately when they hear "block chain".',
+            '- Everybody likes toast',
+            '- Toast is the new crypto scam.'
+          ].join('\n')
+        }]
+      });
+
+    }
+  );
 });

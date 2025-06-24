@@ -10,6 +10,7 @@ import forMacroBlockCase from './case/for-macro-block.case.js';
 import linearTextAccumulationCase from './case/linear-text-accumulation.case.js';
 import revealFrontmatterMacroCase from './case/reveal-frontmatter-macro.case.js';
 import textBlockCase from './case/single-text-block.case.js';
+import slideWithNotesAsideBlockCase from './case/slide-with-notes-aside-block.case.js';
 import { tokenize } from '../../../lib/tokenize.js';
 
 test.describe('tokenize() - content blocks', () => {
@@ -23,6 +24,7 @@ test.describe('tokenize() - content blocks', () => {
     forMacroBlockWithRangeCase,
     linearTextAccumulationCase,
     revealFrontmatterMacroCase,
+    slideWithNotesAsideBlockCase,
     textBlockCase
   ] .forEach(testCase => {
     test(`tokenize a ${testCase.tokenizeDescription ?? testCase.description}`, () => {
