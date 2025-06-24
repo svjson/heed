@@ -51,26 +51,41 @@ const args = [path.join(heedRoot, 'heed-server.js'), ...process.argv.slice(2)];
 let heedProcess = null;
 
 /**
+ * Flag indicating whether the Heed server has started successfully.
+ *
+ * This is used to determine if the server should be restarted
+ * after a startup failure - if startup fails during restart following a
+ * successful attempt, this means a faulty source change which we can
+ * expect to recover from by retrying.
+ */
+let hasStartedSuccessfully = false;
+
+/**
  * Spawn the Heed server and watch for process termination. As long as the Heed
  * Server exits with exit code `RESTART_EXIT_CODE` it means the server itself has
  * requested a restart, and we will keep re-launching it.
  */
 const spawnHeed = () => {
-  try {
-    heedProcess = spawn(proc, args, {
-      stdio: 'inherit',
-      env: process.env,
-      cwd: process.cwd(),
-    });
-  } catch (e) {
-    console.log(typeof e);
-    console.log(e.prototype);
-  }
+  heedProcess = spawn(proc, args, {
+    env: process.env,
+    cwd: process.cwd(),
+    stdio: ['inherit', 'pipe', 'inherit']
+  });
+
+  heedProcess.stdout.on('data', (out) => {
+    const chunk = out.toString();
+    process.stdout.write(chunk);
+    if (chunk.includes('Listening on port')) {
+      hasStartedSuccessfully = true;
+    }
+  });
 
   heedProcess.on('exit', (code) => {
     if (code === 1) {
-      console.log('[heed] Startup failure.');
-      setTimeout(spawnHeed, 2000);
+      if (hasStartedSuccessfully) {
+        console.log('[heed] Startup failure.');
+        setTimeout(spawnHeed, 2000);
+      }
     } else if (code !== RESTART_EXIT_CODE) {
       process.exit(code);
     } else {
