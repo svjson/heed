@@ -46,7 +46,7 @@ It supports a simplistic plugin architecture for embedding rich content and Java
 - [Design goals](#design-goals)
 - [Why does this exist?](#why-does-this-exist)
 - [Changelog](#changelog)
-  * [[v0.2.2] - (Next version)](#v022---next-version)
+  * [[v0.2.2] - 2025-06-24](#v022---2025-06-24)
   * [[v0.2.1] - 2025-06-23](#v021---2025-06-23)
   * [[v0.2.0] - 2025-06-22](#v020---2025-06-22)
   * [[v0.1.0] - 2025-06-16](#v010---2025-06-16)
@@ -643,7 +643,7 @@ error handling sorted out and just generally modernize things and touch up some 
 
 ## Changelog
 
-### [v0.2.2] - (Next version)
+### [v0.2.2] - 2025-06-24
 - Watch presentation for changes on disk and auto-reload content on change
 - Watch heed sources for changes and rebuild webapps/restart server on change
 - Fixed bogus shebangs in "bin" entrypoints.
