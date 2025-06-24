@@ -16,9 +16,11 @@ const initializePresentation = async () => {
 
   const instance = await Presentation.load();
   const hooks = Heed.HookRegistry.resolveByType('init');
-  await hooks.map(hookId => Heed.Hooks
-    .createHook(hookId, { presentation: instance })
-    .applyHook());
+  await Promise.all(
+    hooks.map(hookId => Heed.Hooks
+      .createHook(hookId, { presentation: instance })
+      .applyHook())
+  );
 
   return instance;
 };

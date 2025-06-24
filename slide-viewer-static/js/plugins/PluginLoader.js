@@ -7,7 +7,6 @@ export class PluginLoader {
     return new Promise((resolve) => {
       let pluginBase = pluginSpec.json.pluginBase;
       const pluginDir = '/plugins/' + pluginSpec.pluginId;
-      console.log(pluginBase, pluginDir);
       if (pluginBase) pluginBase = pluginBase.substring(0, pluginBase.length - 1);
       window[`${pluginSpec.pluginId}Base`] = pluginBase;
       window.Heed.plugins[pluginSpec.pluginId] = pluginSpec;
