@@ -28,7 +28,7 @@ const verifyDirectory = async (relativeRoot) => {
 
   if (presentationRoot === null) {
     throw new HeedServerError(
-      `presentation.json not found in '${absolutePath}'.`,
+      `presentation.json not found in '${relativeRoot}'.`,
       'Check your path and make sure that a presentation exists in the specified location.'
     );
   }

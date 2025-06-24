@@ -7,14 +7,14 @@
  * nodemon or pm2.
  *
  * It simply delegates all incoming arguments to the Heed server script,
- * making both heed and the user none the wiser.
+ * which is forked off, making both heed and the user none the wiser.
  *
- * This is intended to be run from the command line, and will spawn a
+ * This is intended to be run from the command line, and will fork off a
  * Heed server process using the current Node.js executable.
  * It will also handle restarting the Heed server if it exits with code 86,
  * which is a custom exit code indicating that the server should be restarted.
  */
-import { spawn } from 'child_process';
+import { fork } from 'child_process';
 import path from 'path';
 import process from 'process';
 import { fileURLToPath } from 'url';
@@ -31,19 +31,16 @@ const RESTART_EXIT_CODE = 86;
 const heedRoot = path.dirname(fileURLToPath(import.meta.url));
 
 /**
- * The Node.js executable path, which will be used to spawn the Heed server.
- * In case it is launched by other means than `node` begin available on the
- * path, we are re-using `process.argv[0]` which usually contains the full
- * absolute path to the binary.
+ * The full path to the forked server process.
  */
-const proc = process.argv[0];
+const proc = path.join(heedRoot, 'heed-server.js');
 
 /**
  * The argument list is built from the rest of `process.argv`, skipping `node`
  * and the element referring to this script, which we instead replace with
- * the Heed server script.
+ * the Heed server script - the `proc` cariable.
  */
-const args = [path.join(heedRoot, 'heed-server.js'), ...process.argv.slice(2)];
+const args = process.argv.slice(2);
 
 /**
  * Variable holding te currently running Heed process, if any.
@@ -66,33 +63,35 @@ let hasStartedSuccessfully = false;
  * requested a restart, and we will keep re-launching it.
  */
 const spawnHeed = () => {
-  heedProcess = spawn(proc, args, {
+  heedProcess = fork(proc, args, {
     env: process.env,
     cwd: process.cwd(),
-    stdio: ['inherit', 'pipe', 'inherit']
   });
 
-  heedProcess.stdout.on('data', (out) => {
-    const chunk = out.toString();
-    process.stdout.write(chunk);
-    if (chunk.includes('Listening on port')) {
+  heedProcess.on('message', msg => {
+    if (msg?.type === 'ready') {
       hasStartedSuccessfully = true;
     }
   });
 
   heedProcess.on('exit', (code) => {
-    if (code === 1) {
-      if (hasStartedSuccessfully) {
-        console.log('[heed] Startup failure.');
-        setTimeout(spawnHeed, 2000);
-      }
-    } else if (code !== RESTART_EXIT_CODE) {
-      process.exit(code);
-    } else {
-      console.log('[heed] Restarting...');
-      console.log('');
-      spawnHeed();
+    if (code === 1 && !hasStartedSuccessfully) {
+      process.exit(1);
     }
+
+    if (code === 1 && hasStartedSuccessfully) {
+      console.log('[heed] Restart failure. Retrying...');
+      setTimeout(spawnHeed, 2000);
+      return;
+    }
+
+    if (code !== RESTART_EXIT_CODE) {
+      process.exit(code);
+    }
+
+    console.log('[heed] Restarting...');
+    console.log('');
+    spawnHeed();
   });
 };
 

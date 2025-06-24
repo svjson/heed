@@ -42,6 +42,9 @@ export const startServer = (opts) => {
   }
 
   app.listen(port, () => {
+    if (process.send) {
+      process.send({ type: 'ready' });
+    }
     console.log(`Listening on port ${port}`);
     console.log(`Serving presentation '${presentationName}'`);
     if (archiveFile) {
