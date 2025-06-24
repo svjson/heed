@@ -46,6 +46,7 @@ It supports a simplistic plugin architecture for embedding rich content and Java
 - [Design goals](#design-goals)
 - [Why does this exist?](#why-does-this-exist)
 - [Changelog](#changelog)
+  * [[v0.2.3] - (Next version)](#v023---next-version)
   * [[v0.2.2] - 2025-06-24](#v022---2025-06-24)
   * [[v0.2.1] - 2025-06-23](#v021---2025-06-23)
   * [[v0.2.0] - 2025-06-22](#v020---2025-06-22)
@@ -642,6 +643,9 @@ error handling sorted out and just generally modernize things and touch up some 
 
 
 ## Changelog
+
+### [v0.2.3] - (Next version)
+- Resolved issue where init hooks were not correctly awaited, causing plugins to attempt to render before initialization.
 
 ### [v0.2.2] - 2025-06-24
 - Watch presentation for changes on disk and auto-reload content on change
