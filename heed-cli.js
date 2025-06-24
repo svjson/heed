@@ -118,7 +118,6 @@ linkCommand
  * "new" command
  * 
  */
-
 program
   .command('new [presentationName] [presentationPath]')
   .description('Create a new presentation in the current or provided folder.')
@@ -136,6 +135,7 @@ program
 
 /**
  * "pack" command
+ * 
  */
 program
   .command('pack [presentationPath]')
