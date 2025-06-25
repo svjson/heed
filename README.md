@@ -646,8 +646,11 @@ error handling sorted out and just generally modernize things and touch up some 
 
 ### [v0.2.3] - (Next version)
 - Resolved issue where init hooks were not correctly awaited, causing plugins to attempt to render before initialization.
+- More robust package manager resolution
 - Honor blank lines in the content of aside blocks
 - Fork server process rather than spawn, to allow sending of messages and ensuring stdout/stderr order
+- Show generated error slide if a slide fails to load
+
 
 ### [v0.2.2] - 2025-06-24
 - Watch presentation for changes on disk and auto-reload content on change

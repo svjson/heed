@@ -23,7 +23,7 @@ export class Slide {
     this.path = path;
     this.staticPath = '/presentations/' + path;
     if (!this.id) {
-      return this.createDefault();
+      return this.produceFallbackSlide();
     }
     return new Promise(async (resolve) => {
       const slidePath = [this.path, this.id].join('/');
@@ -32,7 +32,11 @@ export class Slide {
 
       const res = await fetch(fileName);
       if (res.status !== 200) {
-        throw new Error(`Could not load slide: '${slidePath}`);
+        resolve(this.produceFallbackSlide({
+          title: 'Slide missing!',
+          content: `Could not load slide: '${slidePath}'`,
+          error: true
+        }));
       }
 
       try {
@@ -91,11 +95,24 @@ export class Slide {
     }
   }
 
-  createDefault() {
+  produceFallbackSlide(opts = { title: 'No Title' }) {
+    const { title, content } = opts;
+
     this.data = {
       type: 'default',
-      title: this.name || 'No Title'
+      title: this.name || title,
+      contents: []
     };
+
+    if (content) {
+      this.data.contents.push({
+        type: 'html',
+        html: content,
+        styles: {
+          fontSize: '40px'
+        }
+      });
+    }
 
     Object.assign(this.data, this.json);
 
