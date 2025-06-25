@@ -17,8 +17,6 @@ It supports a simplistic plugin architecture for embedding rich content and Java
 
 - [What is this?](#what-is-this)
 - [Installation](#installation)
-  * [npm](#npm)
-  * [yarn (v1)](#yarn-v1)
 - [Command: heed](#command-heed)
   * [Usage:](#usage)
     + [Serving presentations](#serving-presentations)
@@ -46,7 +44,7 @@ It supports a simplistic plugin architecture for embedding rich content and Java
 - [Design goals](#design-goals)
 - [Why does this exist?](#why-does-this-exist)
 - [Changelog](#changelog)
-  * [[v0.2.3] - (Next version)](#v023---next-version)
+  * [[v0.2.3] - 2025-06-25](#v023---2025-06-25)
   * [[v0.2.2] - 2025-06-24](#v022---2025-06-24)
   * [[v0.2.1] - 2025-06-23](#v021---2025-06-23)
   * [[v0.2.0] - 2025-06-22](#v020---2025-06-22)
@@ -66,13 +64,13 @@ and comes with a very rudimentary **WebSocket-based speaker notes system**. Batt
 
 ## Installation
 
-### npm
+**npm**
 
 ```bash
  npm install -g heedjs
 ```
 
-### yarn (v1)
+**yarn (v1)**
 
 ```
  yarn global add heedjs
@@ -644,7 +642,7 @@ error handling sorted out and just generally modernize things and touch up some 
 
 ## Changelog
 
-### [v0.2.3] - (Next version)
+### [v0.2.3] - 2025-06-25
 - Resolved issue where init hooks were not correctly awaited, causing plugins to attempt to render before initialization.
 - More robust package manager resolution
 - Honor blank lines in the content of aside blocks
