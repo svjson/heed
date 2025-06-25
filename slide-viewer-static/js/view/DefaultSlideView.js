@@ -112,7 +112,7 @@ export class DefaultSlideView {
     }
 
     setTimeout(() => {
-      this.slide.fire('afterrender');
+      this.slide.emit('afterrender');
     }, 5);
 
     el.appendChild(slideEl);

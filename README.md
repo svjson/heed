@@ -651,6 +651,8 @@ error handling sorted out and just generally modernize things and touch up some 
 - Fork server process rather than spawn, to allow sending of messages and ensuring stdout/stderr order
 - Show generated error slide if a slide fails to load
 - Added `--silent-ws` flag to `heed`.
+- Auto-reconnect dropped Web Socket connections in Slide Viewer and Speaker Notes
+- WebSocket communication is now done in terms of "commands" sent _from_ clients and "events" sent _to_ clients.
 
 ### [v0.2.2] - 2025-06-24
 - Watch presentation for changes on disk and auto-reload content on change

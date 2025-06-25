@@ -1,16 +1,14 @@
+import { EventEmitter } from '../EventEmitter.js';
 import { Heed, makeUri } from '../heed.js';
 
-export class Slide {
+export class Slide extends EventEmitter {
   constructor(json) {
+    super();
     this.json = json;
     this.name = json.name;
     this.id = json.id;
     this.hooks = {};
     this.namespace = {};
-    this.events = {
-      'afterrender': []
-    };
-
     this.startStep = json.startStep;
     this.endStep = json.endStep;
   }
@@ -121,13 +119,7 @@ export class Slide {
   }
 
   onAfterRender(fn) {
-    this.events.afterrender.push(fn);
-  }
-
-  fire(event) {
-    this.events[event].forEach((fn) => {
-      fn();
-    });
+    this.on('afterrender', fn);
   }
 }
 

@@ -1,10 +1,11 @@
+import { EventEmitter } from '../EventEmitter.js';
 import { guid } from '../heed.js';
 
-export class WebSocketClient {
+export class WebSocketClient extends EventEmitter {
   constructor(opts) {
+    super();
     this.clientId = guid();
     this.reconnectAttempt = null;
-    this.listeners = {};
     Object.assign(this, opts);
   }
 
@@ -12,7 +13,7 @@ export class WebSocketClient {
     return new Promise((resolve, reject) => {
       this.connection = new WebSocket(`ws://${document.location.host}/`);
       this.connection.onerror = (err) => {
-        console.error('[ws] WebSocket error', err);
+        console.error(`[ws] WebSocket error ${err.currentTarget?.url}`);
         reject(err);
       };
       this.connection.onopen = () => {
@@ -57,24 +58,10 @@ export class WebSocketClient {
   }
 
   receiveMessage(message) {
-    if (message.clientId === this.clientId) return;
-    if (message.command === 'navigate') {
-      this.fire('navigation', message.slide);
-    } else if (message.event) {
-      this.fire(message.event, message);
+    if (message?.source?.clientId === this.clientId) return;
+    if (message?.event) {
+      this.emit(message.event, message);
     }
-  }
-
-  fire(eventName, payload) {
-    if (!this.listeners[eventName]) return;
-    this.listeners[eventName].forEach((handler) => {
-      handler(payload);
-    });
-  }
-
-  on(eventName, handler) {
-    if (!this.listeners[eventName]) this.listeners[eventName] = [];
-    this.listeners[eventName].push(handler);
   }
 
   sendMessage(message) {

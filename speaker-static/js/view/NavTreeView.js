@@ -1,7 +1,9 @@
 import { THEMES } from './SpeakerView';
+import { EventEmitter } from '../../../slide-viewer-static/js/EventEmitter';
 
-export class NavTreeView {
+export class NavTreeView extends EventEmitter {
   constructor(opts) {
+    super();
     this.wsClient = opts.wsClient;
     Object.assign(this, opts);
     this.slides = this.presentation.getOrderedSlides();
@@ -32,9 +34,12 @@ export class NavTreeView {
     this.render();
   }
 
-  navigateTo(payload) {
-    this.markCurrentSlide(payload.id, payload.index);
-    this.markCurrentPhase(payload.id, payload.index, payload.step);
+  /**
+   * Update the UI Component to reflect an externally performed navigation
+   */
+  navigateTo(slide) {
+    this.markCurrentSlide(slide.id, slide.index);
+    this.markCurrentPhase(slide.id, slide.index, slide.step);
   }
 
   slideSelector(slideId, slideIndex) {
@@ -46,7 +51,7 @@ export class NavTreeView {
       slideIndex = parseInt(slideEl.getAttribute('data-slide-index'));
     this.clearCurrentPhase();
     this.markCurrentSlide(slideId, slideIndex);
-    this.wsClient.navigate({
+    this.emit('manual-navigation', {
       slide: {
         id: slideId,
         index: slideIndex,

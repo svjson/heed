@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const mainView = new PresentationView({
     presentation: await initializePresentation(),
-    navigator: wsClient
+    wsClient: wsClient
   });
 
   wsClient.on('presentation-updated', async _event => {

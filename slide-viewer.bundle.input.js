@@ -1,4 +1,5 @@
 import './slide-viewer-static/js/heed.js';
+import './slide-viewer-static/js/EventEmitter.js';
 import './slide-viewer-static/js/heed-bootstrap.js';
 import './slide-viewer-static/js/registry/SlideTypeRegistry.js';
 import './slide-viewer-static/js/registry/HookRegistry.js';

@@ -6,10 +6,10 @@ export class PresentationView {
     this.presentation = config.presentation;
     this.slides = this.presentation.getOrderedSlides();
     this.el = document.querySelector('#slide-container');
-    this.navigator = config.navigator;
+    this.wsClient = config.wsClient;
 
-    let parts = document.location.href.split('#'),
-      slideIndex = parts[1] ? parseInt(parts[1]) : 0;
+    const parts = document.location.href.split('#');
+    const slideIndex = parts[1] ? parseInt(parts[1]) : 0;
     this.showSlide(slideIndex);
 
     if (this.presentation.css) {
@@ -32,8 +32,11 @@ export class PresentationView {
       }
     });
 
-    this.navigator.on('navigation', (payload) => {
-      this.showSlide(payload.index, payload.step);
+    this.wsClient.on('navigation', event => {
+      const slide = event?.payload?.slide;
+      if (slide) {
+        this.showSlide(slide.index, slide.step, { silent: true });
+      }
     });
   }
 
@@ -49,7 +52,20 @@ export class PresentationView {
     this.showSlide(this.slideIndex, currentPhase);
   }
 
-  showSlide(slideIndex, step) {
+  /**
+   * Navigate to a specific slide and phase.
+   *
+   * To cancel reporting/propagation of this navigation, the
+   * `silent`-option can be provided. This is relevant when the
+   * navigation is done as reaction to a navigation event and we
+   * don't want to produce another navigation event.
+   *
+   * @param {number} slideIndex - The index of the slide to show.
+   * @param {number} phase - The phase within the slide to show.
+   * @param {Object} options - Optional parameters.
+   * @param {boolean} options.silent - If true, suppresses navigation reporting.
+   */
+  showSlide(slideIndex, phase, { silent } = { silent: false}) {
     const slideChanged = slideIndex !== this.slideIndex;
     this.slideIndex = slideIndex;
     this.currentSlide = this.slides[slideIndex];
@@ -62,7 +78,7 @@ export class PresentationView {
     switch (this.currentSlide.getType()) {
     case 'default':
     default:
-      slideView = new DefaultSlideView(this.currentSlide, step);
+      slideView = new DefaultSlideView(this.currentSlide, phase);
       break;
     }
     if (this.slideView) {
@@ -70,9 +86,11 @@ export class PresentationView {
     }
     this.slideView = slideView;
 
-    this.reportNavigation();
+    if (!silent) {
+      this.reportNavigation();
+    }
 
-    let preHooks = [];
+    const preHooks = [];
     this.currentSlide.getHooks('preRender').forEach((hook) => {
       preHooks.push(hook.applyHook());
     });
@@ -85,7 +103,7 @@ export class PresentationView {
   }
 
   reportNavigation() {
-    this.navigator.navigate({
+    this.wsClient.navigate({
       slide: {
         id: this.currentSlide.id,
         index: this.slideIndex,
