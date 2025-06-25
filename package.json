@@ -28,13 +28,14 @@
     "build:copy-static": "node ./scripts/prepare-bundle.js copy-files",
     "lint": "eslint",
     "test": "playwright test",
+    "test:setup": "playwright install",
     "test:unit": "playwright test test/unit",
+    "test:slide-viewer": "playwright test test/io/slide-viewer",
     "test:io": "playwright test test/io",
     "bump:patch": "npm version patch --no-git-tag-version",
     "bump:minor": "npm version minor --no-git-tag-version",
     "bump:major": "npm version major --no-git-tag-version",
     "readme:toc": "markdown-toc -i README.md",
-    "dev:install": "playwright install",
     "prepublishOnly": "npm run readme:toc && npm run lint && npm run test && npm run build"
   },
   "files": [
