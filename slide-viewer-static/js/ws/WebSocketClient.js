@@ -3,28 +3,51 @@ import { guid } from '../heed.js';
 export class WebSocketClient {
   constructor(opts) {
     this.clientId = guid();
-    Object.assign(this, opts);
+    this.reconnectAttempt = null;
     this.listeners = {};
+    Object.assign(this, opts);
   }
 
   connect() {
     return new Promise((resolve, reject) => {
       this.connection = new WebSocket(`ws://${document.location.host}/`);
       this.connection.onerror = (err) => {
-        console.error('WebSocket error', err);
+        console.error('[ws] WebSocket error', err);
         reject(err);
       };
       this.connection.onopen = () => {
         this.connection.onmessage = (msg) => {
           this.receiveMessage(JSON.parse(msg.data));
         };
-        this.sendMessage({ command: 'register', actor: this.actor });
+        this.sendMessage({
+          command: 'register',
+          clientId: this.clientId,
+          actor: this.actor
+        });
+        console.log('[ws] Connected');
         resolve();
       };
       this.connection.onclose = (event) => {
-        console.warn('WebSocket connection closed', event);
+        console.warn('[ws] WebSocket connection closed', event);
+        this.reconnect(true);
       };
     });
+  }
+
+  reconnect(retry) {
+    if (this.connection.readyState === WebSocket.OPEN || this.reconnectAttempt) {
+      return;
+    }
+    console.log('[ws] Reconnecting...');
+    this.connect()
+      .catch(() => {
+        if (retry) {
+          this.reconnectAttempt = setTimeout(() => {
+            this.reconnectAttempt = null;
+            this.reconnect(retry);
+          }, 500);
+        }
+      });
   }
 
   navigate(payload) {
