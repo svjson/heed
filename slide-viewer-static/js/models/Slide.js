@@ -1,4 +1,4 @@
-import { Heed } from '../heed.js';
+import { Heed, makeUri } from '../heed.js';
 
 export class Slide {
   constructor(json) {
@@ -26,9 +26,9 @@ export class Slide {
       return this.produceFallbackSlide();
     }
     return new Promise(async (resolve) => {
-      const slidePath = [this.path, this.id].join('/');
+      const slidePath = makeUri(this.path, this.id);
       const queryString = opts.notes ? '?notes=true' : '';
-      const fileName = ['/slide', slidePath].join('/') + queryString;
+      const fileName = makeUri('/slide', slidePath) + queryString;
 
       const res = await fetch(fileName);
       if (res.status !== 200) {

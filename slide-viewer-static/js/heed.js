@@ -48,6 +48,27 @@ export const Heed = {
 };
 
 /**
+ * Build an URI from path parts, trimming any trailing slashes
+ * to avoid double slashes if any part contains a slash.
+ *
+ * @param {Array} parts - The path parts to join. If no array is provided,
+ *                        the arguments are used as an array.
+ * @return {string} - The joined URI.
+ */
+export function makeUri(parts) {
+  if (!Array.isArray(parts)) {
+    parts = Array.from(arguments);
+  }
+  if (parts.length == 1) return parts[0];
+  return [
+    parts[0].replace(/\/+$/,''),
+    ...parts.slice(1)
+      .map(s => s.replace(/^\/+|\/+$/g, ''))
+      .filter(Boolean)
+  ].join('/');
+};
+
+/**
  * Ubiquitous pseudo-GUID pinched from these here Internets.
  * Its origin is uncertain, but definitely popularized via StackOverflow and gists
  * by Brian Donovan(Broofa).
