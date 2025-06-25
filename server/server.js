@@ -25,9 +25,10 @@ export const startServer = (opts) => {
     presentationRoot,
     presentationName,
     showWatches,
+    silentWs,
     watch
   } = opts;
-  registerWebsocket(app, getWss);
+  registerWebsocket(app, getWss, silentWs);
   registerRoutes(app, opts);
 
   let watches = [];

@@ -37,6 +37,7 @@ export class Slide {
           content: `Could not load slide: '${slidePath}'`,
           error: true
         }));
+        return;
       }
 
       try {

@@ -650,7 +650,7 @@ error handling sorted out and just generally modernize things and touch up some 
 - Honor blank lines in the content of aside blocks
 - Fork server process rather than spawn, to allow sending of messages and ensuring stdout/stderr order
 - Show generated error slide if a slide fails to load
-
+- Added `--silent-ws` flag to `heed`.
 
 ### [v0.2.2] - 2025-06-24
 - Watch presentation for changes on disk and auto-reload content on change

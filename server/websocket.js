@@ -1,24 +1,44 @@
+
 /**
- * Register up the websocket server and endpoints used
- * to keep the Speaker-application in sync with the presentation.
+ * Make a logging function for WebSocket state changes,
+ * which is no op for `silent=true`
  *
- * Not touched since the before-times.
+ * @param {boolean} silent - If true, no logging will be done.
+ * @return {Function} - A logging function that logs messages to the
+ *                      console (or not).
  */
-export const registerWebsocket = (app, getWss) => {
+const makeWebSocketLogger = (silent) => {
+  return silent
+    ? () => {}
+    : (message) => {
+      console.log(`[ws] ${message}`);
+    };
+};
+
+/**
+ * Register the websocket server and endpoints used to keep
+ * the Speaker-application in sync with the presentation.
+ *
+ * @param {Object} app - The Express application instance.
+ * @param {Function} getWss - Function to get the WebSocket server instance.
+ */
+export const registerWebsocket = (app, getWss, silentLog) => {
 
   const server = getWss();
+  const wsLog = makeWebSocketLogger(silentLog);
 
   app.ws('/', (ws, _req) => {
-    console.log('Client connected');
-    console.log(server.clients.size + ' connected');
+    wsLog('Client connected');
+    wsLog(`${server.clients.size} connected`);
 
     ws.on('open', req => {
-      console.log('Connect', req);
+      console.log(req);
+      wsLog('Connect', req);
     });
 
     ws.on('close', _ => {
-      console.log('Client disconnect');
-      console.log(server.clients.size + ' connected');
+      wsLog('Client disconnect');
+      wsLog(`${server.clients.size} connected`);
     });
 
     ws.on('message', msg => {

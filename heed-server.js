@@ -47,6 +47,7 @@ program
   .option('-p, --port <number>', 'HTTP port to serve presentation on', parsePort, 4000)
   .option('-n, --no-watch', 'Disable file watching/auto-reload.', true)
   .option('-w, --show-watches', 'Display components under watch.', false)
+  .option('-s, --silent-ws', 'Disable websocket logging', false)
   .action(async (pathArg, options) => {
     try {
       const { presentationRoot, presentationName, archiveFile } = await preparePresentation(pathArg, heedRoot);
@@ -59,6 +60,7 @@ program
         archiveFile,
         heedRoot,
         pkg,
+        silentWs: options.silentWs,
         showWatches: options.showWatches
       };
 
