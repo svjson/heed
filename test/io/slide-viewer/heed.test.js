@@ -19,7 +19,7 @@ test.describe('Heed module functions', () => {
     await page?.close();
   });
 
-  test.describe('hashIndex', async () => {
+  test.describe('hashIndex', () => {
 
     const hashIndex = async () => await page.evaluate((_) => window.hashIndex());
 

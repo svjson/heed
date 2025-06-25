@@ -43,8 +43,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     wsClient: wsClient
   });
 
-  wsClient.on('presentation-updated', async _event => {
-    mainView.replacePresentation(await initializePresentation());
+  wsClient.on('presentation-updated', async event => {
+
+    const updatedCss = [];
+    const updatedGeneric = [];
+    event.subjects.forEach(file => {
+      const styleEl = document.querySelectorAll(`link[href^="${file.path}"]`)[0];
+      if (file.type === 'change' &&
+        styleEl &&
+        styleEl.getAttribute('href').split('?')[0] === file.path) {
+        updatedCss.push({ file, el: styleEl });
+      } else {
+        updatedGeneric.push(file);
+      }
+    });
+
+    if (updatedGeneric.length) {
+      mainView.replacePresentation(await initializePresentation());
+    }
+
+    updatedCss.forEach(({ file, el }) => {
+      el.setAttribute('href', `${file.path}?t=${Date.now()}`);
+    });
   });
 
   wsClient.on('slide-viewer-updated', async () => {

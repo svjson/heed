@@ -48,6 +48,7 @@ const isHeedDevMode = (heedRoot) => {
  */
 const watchAndTrigger = ({
   paths,
+  trimRoot,
   delay = 1000,
   coalesceDelay = 500,
   queueEvents = false,
@@ -74,7 +75,10 @@ const watchAndTrigger = ({
 
   watch(paths, { ignoreInitial: true }).on('all', (eventName, filePath) => {
     if (queueEvents) {
-      eventQueue.push({ type: eventName, path: filePath });
+      const reportPath = trimRoot && filePath.startsWith(trimRoot)
+        ? filePath.substring(trimRoot.length).replace(/^\/+/, '')
+        : filePath;
+      eventQueue.push({ type: eventName, path: reportPath });
     }
     trigger();
   });
@@ -227,6 +231,7 @@ export const initWatcher = (opts) => {
     /** Watch presentation sources */
     watchAndTrigger({
       paths: presentationRoot,
+      trimRoot: presentationRoot,
       queueEvents: true,
       onTrigger: (eventQueue) => {
         console.log('[presentation] Presentation files updated...');
