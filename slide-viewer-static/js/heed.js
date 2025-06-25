@@ -48,6 +48,21 @@ export const Heed = {
 };
 
 /**
+ * Get the slide index from the URL hash index.
+ *
+ * This is used to determine which slide to show
+ * when the presentation is loaded.
+ *
+ * The index defaults to 0 if no hash is present.
+ *
+ * @return {number} - The slide index from the hash.
+ */
+export const hashIndex = () => {
+  const parsed = parseInt(document.location.href.split('#')[1]);
+  return isNaN(parsed) ? 0 : parsed;
+};
+
+/**
  * Build an URI from path parts, trimming any trailing slashes
  * to avoid double slashes if any part contains a slash.
  *

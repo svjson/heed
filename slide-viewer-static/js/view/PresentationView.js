@@ -1,4 +1,4 @@
-import { Heed } from '../heed.js';
+import { Heed, hashIndex } from '../heed.js';
 import { DefaultSlideView } from './DefaultSlideView.js';
 
 export class PresentationView {
@@ -8,8 +8,7 @@ export class PresentationView {
     this.el = document.querySelector('#slide-container');
     this.wsClient = config.wsClient;
 
-    const parts = document.location.href.split('#');
-    const slideIndex = parts[1] ? parseInt(parts[1]) : 0;
+    const slideIndex = hashIndex();
     this.showSlide(slideIndex);
 
     if (this.presentation.css) {
@@ -66,6 +65,9 @@ export class PresentationView {
    * @param {boolean} options.silent - If true, suppresses navigation reporting.
    */
   showSlide(slideIndex, phase, { silent } = { silent: false}) {
+    slideIndex = slideIndex >= this.slides.length
+      ? this.slides.length-1
+      : slideIndex;
     const slideChanged = slideIndex !== this.slideIndex;
     this.slideIndex = slideIndex;
     this.currentSlide = this.slides[slideIndex];

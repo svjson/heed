@@ -19,6 +19,25 @@ test.describe('Heed module functions', () => {
     await page?.close();
   });
 
+  test.describe('hashIndex', async () => {
+
+    const hashIndex = async () => await page.evaluate((_) => window.hashIndex());
+
+    [
+      ['', 0],
+      ['#8', 8],
+      ['#10', 10],
+      ['#blubb', 0]
+    ].forEach(([hash, index]) => {
+      test(`parse index from '${hash}'`, async () => {
+        await page.evaluate(
+          (hash) => window.location.hash = hash,
+          hash);
+        expect(await hashIndex()).toEqual(index);
+      });
+    });
+
+  });
 
   test.describe('makeUri', () => {
 
