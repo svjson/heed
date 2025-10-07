@@ -1,5 +1,12 @@
 import fs from 'fs';
-import { readFile, readdir, rm, stat } from 'fs/promises';
+import {
+  mkdir,
+  readFile,
+  readdir,
+  rm,
+  stat,
+  writeFile
+} from 'fs/promises';
 import http from 'http';
 import { tmpdir } from 'os';
 import path from 'path';
@@ -10,6 +17,7 @@ import { test as pwTest, expect } from '@playwright/test';
 import mime from 'mime-types';
 
 import { parseFrontmatter } from '../lib/heed-file';
+import { createSlide } from '../lib/slide';
 
 /**
  * Read test asset into a string
@@ -129,6 +137,67 @@ export async function tree(dir) {
 
   return result;
 }
+
+/**
+ * Create a temp dir and then create a directory structure according to the
+ * lipsy tree respresentation in `tree`.
+ *
+ * @param {Array} tree - A lispy tree representation of the directory structure.
+ * @return {Promise<Object>} - An object containing the created directory,
+ *                             the original tree structure, and a function to remove the
+ *                             created directory.
+ */
+export const makeTmpDirTree = async (tree) => {
+  const dir = fs.mkdtempSync(path.join(tmpdir(), 'heed-tree-'));
+  await makeTree(dir, tree);
+  return {
+    tree: tree,
+    dir: dir,
+    remove: async () => await rm(dir, { recursive: true, force: true })
+  };
+};
+
+/**
+ * Create a directory structure according to a lispy tree representation of the
+ * given directory.
+ */
+export const makeTree = async (dir, tree) => {
+  for (const entry of tree) {
+    if (typeof entry === 'string') {
+      if (entry.trim() === '') {
+        throw new Error('Invalid file name - test setup failed');
+      }
+      await writeFile(path.join(dir, entry), 'dummy', 'utf-8');
+    } else if (Array.isArray(entry)) {
+      if (entry.length === 0) {
+        throw new Error('Invalid directory entry - test setup failed');
+      }
+      const [dirName, entries] = entry;
+      if (!dirName) {
+        throw new Error(`Invalid directory entry: ${entry} (${dir}) - test setup failed`);
+      }
+      const directory = (path.join(dir, dirName));
+      await mkdir(directory);
+      await makeTree(directory, entries);
+    } else if (typeof entry === 'object' && entry.fileName) {
+      const { fileName, content, presentation, slide } = entry;
+      if (presentation) {
+        await createPresentationDotJson(dir, presentation);
+      } else if (slide) {
+        if (!fileName) {
+          throw new Error('No fileName provided for slide - test setup failed');
+        }
+        if (typeof slide === 'string') {
+          await createSlide(path.join(dir, fileName), { title: slide });
+        } else if (typeof slide === 'object') {
+          await createSlide(path.join(dir, fileName), slide);
+        }
+      } else {
+        await writeFile(path.join(dir, fileName), content || 'dummy', 'utf-8');
+      }
+    }
+  }
+};
 
 /**
  * Read the presentation.json from `dir`, no questions asked. No names taken.
