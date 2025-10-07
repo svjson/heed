@@ -10,7 +10,7 @@ let remove = null;
 
 test.describe('folder-layout', () => {
   test.describe('resolveDirContext()', () => {
-    test.describe('in multi-section presentation', async () => {
+    test.describe('in multi-section presentation', () => {
       test.beforeAll(async () => {
         const tmpTree = await makeTmpDirTree(presentationTree_infiniteInsights);
 

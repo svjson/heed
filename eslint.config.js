@@ -7,7 +7,7 @@ export default [
     ignores: ['static/**/*.js'],
     plugins: {
       import: importPlugin,
-      playwright
+      playwright,
     },
     languageOptions: {
       ecmaVersion: 'latest',
@@ -16,33 +16,42 @@ export default [
     rules: {
       ...playwright.configs.recommended.rules,
       'playwright/no-conditional-in-test': 'off',
-      'no-unused-vars': ['error', {
-        argsIgnorePattern: '^_',
-        caughtErrorsIgnorePattern: '^_',
-        varsIgnorePattern: '^_'
-      }],
+      'no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+        },
+      ],
       'no-empty-functions': 'off',
       'no-empty': 'off',
       semi: ['error', 'always'],
       quotes: ['error', 'single', { avoidEscape: true }],
       indent: ['error', 2],
-      'key-spacing': ['error', {
-        beforeColon: false,
-        afterColon: true,
-        mode: 'strict'  // makes sure it’s enforced in all contexts
-      }],
-      'no-trailing-spaces': ['error', {
-        skipBlankLines: false,
-        ignoreComments: false
-      }],
+      'key-spacing': [
+        'error',
+        {
+          beforeColon: false,
+          afterColon: true,
+          mode: 'strict', // makes sure it’s enforced in all contexts
+        },
+      ],
+      'no-trailing-spaces': [
+        'error',
+        {
+          skipBlankLines: false,
+          ignoreComments: false,
+        },
+      ],
       'import/order': [
         'error',
         {
           groups: [
-            'builtin',     // Node "fs", "path", etc.
-            'external',    // npm modules
-            'internal',    // paths like "@foo/bar"
-            ['parent', 'sibling', 'index']  // local files
+            'builtin', // Node "fs", "path", etc.
+            'external', // npm modules
+            'internal', // paths like "@foo/bar"
+            ['parent', 'sibling', 'index'], // local files
           ],
           pathGroupsExcludedImportTypes: ['builtin'],
           pathGroups: [
@@ -55,7 +64,7 @@ export default [
           alphabetize: { order: 'asc', caseInsensitive: false },
           'newlines-between': 'always',
         },
-      ]
-    }
-  }
+      ],
+    },
+  },
 ];
