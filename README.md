@@ -44,6 +44,7 @@ It supports a simplistic plugin architecture for embedding rich content and Java
 - [Design goals](#design-goals)
 - [Why does this exist?](#why-does-this-exist)
 - [Changelog](#changelog)
+  * [[v0.2.6] - 2025-10-09](#v026---2025-10-09)
   * [[v0.2.3] - 2025-06-25](#v023---2025-06-25)
   * [[v0.2.2] - 2025-06-24](#v022---2025-06-24)
   * [[v0.2.1] - 2025-06-23](#v021---2025-06-23)
