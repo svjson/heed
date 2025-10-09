@@ -8,8 +8,8 @@ import { Command, Option } from 'commander';
 
 import {
   runCommand,
-
   addPlugin,
+  addSection,
   addSlide,
   linkPlugin,
   newPresentation,
@@ -17,7 +17,7 @@ import {
   removePlugin,
   showIndex,
   showRoot,
-  installPlugins
+  installPlugins,
 } from './lib/command/index.js';
 
 const program = new Command();
@@ -36,9 +36,32 @@ program
 
 /**
  * "add"-command and subcommands
- * 
+ *
  */
 const addCommand = program.command('add');
+
+addCommand
+  .command('section [sectionId] [path]')
+  .description('Add a section to the presentation')
+  .option('-i, --index', 'Add/insert at index in the target context')
+  .option('--json', 'Outut result as JSON')
+  .action(async (sectionId, contextPath = '.', options) => {
+    await runCommand({
+      cmd: addSection,
+      cmdArgs: [
+        { __type: 'root-required', value: contextPath },
+        { __type: 'presentation-file' },
+        {
+          __type: 'string',
+          __name: 'Section ID',
+          __required: true,
+          value: sectionId,
+        },
+        { __type: 'content-dir', value: contextPath },
+      ],
+      cmdOpts: options,
+    });
+  });
 
 addCommand
   .command('slide [slideId] [path]')
@@ -50,10 +73,15 @@ addCommand
       cmdArgs: [
         { __type: 'root-required', value: contextPath },
         { __type: 'presentation-file' },
-        { __type: 'string', __name: 'Slide ID', __required: true, value: slideId },
-        { __type: 'context-dir', value: contextPath }
+        {
+          __type: 'string',
+          __name: 'Slide ID',
+          __required: true,
+          value: slideId,
+        },
+        { __type: 'context-dir', value: contextPath },
       ],
-      cmdOpts: options
+      cmdOpts: options,
     });
   });
 
@@ -66,16 +94,21 @@ addCommand
       cmd: addPlugin,
       cmdArgs: [
         { __type: 'root-required', value: '.' },
-        { __type: 'string', __name: 'Plugin name', __required: true, value: pluginName },
-        source
+        {
+          __type: 'string',
+          __name: 'Plugin name',
+          __required: true,
+          value: pluginName,
+        },
+        source,
       ],
-      cmdOpts: options
+      cmdOpts: options,
     });
   });
 
 /**
  * "install"-command and subcommands
- * 
+ *
  */
 const installCommand = program.command('install');
 
@@ -85,16 +118,14 @@ installCommand
   .action(async (options) => {
     await runCommand({
       cmd: installPlugins,
-      cmdArgs: [
-        { __type: 'root-required', value: '.' },
-      ],
-      cmdOpts: options
+      cmdArgs: [{ __type: 'root-required', value: '.' }],
+      cmdOpts: options,
     });
   });
 
 /**
  * "link"-command and subcommands
- * 
+ *
  */
 const linkCommand = program.command('link');
 
@@ -107,16 +138,21 @@ linkCommand
       cmd: linkPlugin,
       cmdArgs: [
         { __type: 'root-required', value: '.' },
-        { __type: 'string', __name: 'Plugin name', __required: true, value: pluginName },
-        source
+        {
+          __type: 'string',
+          __name: 'Plugin name',
+          __required: true,
+          value: pluginName,
+        },
+        source,
       ],
-      cmdOpts: options
+      cmdOpts: options,
     });
   });
 
 /**
  * "new" command
- * 
+ *
  */
 program
   .command('new [presentationName] [presentationPath]')
@@ -126,36 +162,41 @@ program
     await runCommand({
       cmd: newPresentation,
       cmdArgs: [
-        { __type: 'string', __name: 'Presentation name', __required: true, value: presentationName},
-        presentationPath
+        {
+          __type: 'string',
+          __name: 'Presentation name',
+          __required: true,
+          value: presentationName,
+        },
+        presentationPath,
       ],
-      cmdOpts: options
+      cmdOpts: options,
     });
   });
 
 /**
  * "pack" command
- * 
+ *
  */
 program
   .command('pack [presentationPath]')
   .description('Pack/compress the presentation into a distributable archive.')
   .option('--json', 'Output result as JSON.')
-  .addOption(new Option('-t, --type [type]').choices(['zip', 'tar', 'tgz']).default('tgz'))
-  .action(async (presentationPath='.', options) => {
+  .addOption(
+    new Option('-t, --type [type]')
+      .choices(['zip', 'tar', 'tgz'])
+      .default('tgz'),
+  )
+  .action(async (presentationPath = '.', options) => {
     await runCommand({
       cmd: pack,
-      cmdArgs: [
-        { __type: 'root-required', value: presentationPath },
-        options
-      ]
+      cmdArgs: [{ __type: 'root-required', value: presentationPath }, options],
     });
   });
 
-
 /**
  * "remove"-command and subcommands
- * 
+ *
  */
 
 const removeCommand = program.command('remove');
@@ -169,15 +210,20 @@ removeCommand
       cmd: removePlugin,
       cmdArgs: [
         { __type: 'root-required', value: '.' },
-        { __type: 'string', __name: 'Plugin name', __required: true, value: pluginName }
+        {
+          __type: 'string',
+          __name: 'Plugin name',
+          __required: true,
+          value: pluginName,
+        },
       ],
-      cmdOpts: options
+      cmdOpts: options,
     });
   });
 
 /**
  * "show" command and subcommands
- * 
+ *
  */
 
 const showCommand = program.command('show');
@@ -191,9 +237,9 @@ showCommand
       cmd: showIndex,
       cmdArgs: [
         { __type: 'root-required', value: presentationPath },
-        { __type: 'presentation-file' }
+        { __type: 'presentation-file' },
       ],
-      cmdOpts: options
+      cmdOpts: options,
     });
   });
 
@@ -209,7 +255,5 @@ showCommand
     });
   });
 
-
 /** Parse arguments and run command */
 program.parse(process.argv);
-

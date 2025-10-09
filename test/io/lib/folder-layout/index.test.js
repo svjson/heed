@@ -23,18 +23,39 @@ test.describe('folder-layout', () => {
       });
 
       [
-        { path: '.', expected: { type: 'root', thread: [] } },
-        { path: './assets', expected: { type: 'root', thread: [] } },
-        { path: './sections', expected: { type: 'root', thread: [] } },
-        { path: '', expected: { type: 'root', thread: [] } },
-        { path: 'assets', expected: { type: 'root', thread: [] } },
-        { path: 'sections', expected: { type: 'root', thread: [] } },
-        { path: `${dir}`, expected: { type: 'root', thread: [] } },
-        { path: `${dir}/assets`, expected: { type: 'root', thread: [] } },
-        { path: `${dir}/sections`, expected: { type: 'root', thread: [] } },
+        { path: '.', expected: { type: 'root', path: '', thread: [] } },
+        { path: './assets', expected: { type: 'root', path: '', thread: [] } },
+        {
+          path: './sections',
+          expected: { type: 'root', path: '', thread: [] },
+        },
+        { path: '', expected: { type: 'root', path: '', thread: [] } },
+        { path: 'assets', expected: { type: 'root', path: '', thread: [] } },
+        { path: 'sections', expected: { type: 'root', path: '', thread: [] } },
+        { path: `${dir}`, expected: { type: 'root', path: '', thread: [] } },
+        {
+          path: `${dir}/assets`,
+          expected: { type: 'root', path: '', thread: [] },
+        },
+        {
+          path: `${dir}/sections`,
+          expected: { type: 'root', path: '', thread: [] },
+        },
         {
           path: './sections/01-intro',
-          expected: { type: 'section', thread: ['sections', '01-intro'] },
+          expected: {
+            type: 'section',
+            path: 'sections/01-intro',
+            thread: ['sections', '01-intro'],
+          },
+        },
+        {
+          path: 'sections/01-intro',
+          expected: {
+            type: 'section',
+            path: 'sections/01-intro',
+            thread: ['sections', '01-intro'],
+          },
         },
       ].forEach(({ path: queryPath, expected }) => {
         test(`${queryPath}`, async () => {
