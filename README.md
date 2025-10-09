@@ -153,6 +153,7 @@ This creates an empty slide and places it at the back of your slide index.
 | Command           | Arguments     | Optional               | Description                                                           |
 |-------------------|---------------|------------------------|-----------------------------------------------------------------------|
 | `add plugin`      | (plugin name) | <path/url>             | Add a plugin to the presentation                                      |
+| `add section`     | (section id)  | <path/context>         | Add a section to the presentation                                     |
 | `add slide`       | (slide id)    | (path/context)         | Add a slide to the presentation                                       |
 | `install plugins` |               |                        | Install configured plugins that are not present in the plugins folder |
 | `link plugin`     | (plugin name) | (path)                 | (For plugin development) Add a plugin by symlink                      |
@@ -641,6 +642,11 @@ error handling sorted out and just generally modernize things and touch up some 
 
 
 ## Changelog
+
+### [v0.2.6] - 2025-10-09
+- Hot-reload Slide Viewer on CSS change
+- Keep current slide index in bounds on reload after presentation has changed on disk
+- `add section` command for `heed-cli`
 
 ### [v0.2.3] - 2025-06-25
 - Resolved issue where init hooks were not correctly awaited, causing plugins to attempt to render before initialization.
