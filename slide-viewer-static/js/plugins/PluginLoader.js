@@ -1,19 +1,16 @@
-
 import { Heed } from '../heed.js';
 
 export class PluginLoader {
-
   static loadPlugin(pluginSpec) {
     return new Promise((resolve) => {
-      let pluginBase = pluginSpec.json.pluginBase;
+      const pluginBase = pluginSpec.json.pluginBase?.replace(/\/$/, '');
       const pluginDir = '/plugins/' + pluginSpec.pluginId;
-      if (pluginBase) pluginBase = pluginBase.substring(0, pluginBase.length - 1);
       window[`${pluginSpec.pluginId}Base`] = pluginBase;
       window.Heed.plugins[pluginSpec.pluginId] = pluginSpec;
 
-      var promises = [];
+      const promises = [];
 
-      let jsPromises = [];
+      const jsPromises = [];
       pluginSpec.json.requires.js.forEach(async (scr) => {
         jsPromises.push(Heed.loadResource(pluginBase + '/' + scr));
       });
@@ -28,19 +25,23 @@ export class PluginLoader {
 
       Object.keys(pluginSpec.json.provides).forEach((objectType) => {
         Object.keys(pluginSpec.json.provides[objectType]).forEach((compId) => {
-          var p = Heed.loadScript('/plugins/' + pluginSpec.pluginId + '/' + pluginSpec.json.provides[objectType][compId].src);
+          const p = Heed.loadScript(
+            '/plugins/' +
+              pluginSpec.pluginId +
+              '/' +
+              pluginSpec.json.provides[objectType][compId].src,
+          );
           promises.push(p);
         });
       });
 
-      Promise.all(jsPromises).then(scripts => {
+      Promise.all(jsPromises).then((scripts) => {
         Heed.appendScript(scripts.join('\n\n'));
 
         Promise.all(promises).then(() => {
           resolve();
         });
       });
-
     });
   }
 }
