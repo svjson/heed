@@ -15,14 +15,17 @@ import { loadSlide } from '../lib/slide.js';
  * @param {string} options.presentationRoot - The root directory of the presentation.
  * @param {string} options.heedRoot - The root directory of the Heed package.
  */
-export const registerRoutes = (app, { presentationRoot, heedRoot }) => {
-
+export const registerRoutes = (
+  app,
+  presentationProvider,
+  { presentationRoot, heedRoot },
+) => {
   /**
    * Route to get the context of the presentation.
    */
   app.get('/context', (_req, res) => {
     res.send({
-      directory: presentationRoot
+      directory: presentationRoot,
     });
   });
 
@@ -34,7 +37,10 @@ export const registerRoutes = (app, { presentationRoot, heedRoot }) => {
   /**
    * Serve the static files for the Speaker-application
    */
-  app.use('/speaker/', express.static(path.join(heedRoot, 'static', 'speaker')));
+  app.use(
+    '/speaker/',
+    express.static(path.join(heedRoot, 'static', 'speaker')),
+  );
 
   /**
    * Serve the static files for the presentation
@@ -50,12 +56,7 @@ export const registerRoutes = (app, { presentationRoot, heedRoot }) => {
    * which is why it is not simply served as a static file.
    */
   app.get('/presentation/presentation.json', async (_, res) => {
-    res.send(
-      await loadPresentation(presentationRoot, {
-        resolve: true,
-        loadPluginDefs: true,
-      }),
-    );
+    res.send(presentationProvider.presentation);
   });
 
   /**
@@ -66,8 +67,9 @@ export const registerRoutes = (app, { presentationRoot, heedRoot }) => {
    */
   app.get('/slide/*', async (req, res) => {
     const slide = await loadSlide(presentationRoot, req.params[0], {
+      presentation: presentationProvider.presentation,
       includeNotes: Boolean(req.query?.notes),
-      useErrorSlide: true
+      useErrorSlide: true,
     });
     if (slide) {
       res.send(slide);
@@ -86,7 +88,9 @@ export const registerRoutes = (app, { presentationRoot, heedRoot }) => {
    * Serve plugin-specific files.
    */
   app.get('/plugins/:pluginId/:fileName', (req, res) => {
-    var pluginDef = fs.readFileSync(`${presentationRoot}/plugins/${req.params.pluginId}/${req.params.fileName}`);
+    var pluginDef = fs.readFileSync(
+      `${presentationRoot}/plugins/${req.params.pluginId}/${req.params.fileName}`,
+    );
     res.send(pluginDef);
   });
 
@@ -102,5 +106,4 @@ export const registerRoutes = (app, { presentationRoot, heedRoot }) => {
     childProcess.exec(cmd);
     res.sendStatus(200);
   });
-
 };

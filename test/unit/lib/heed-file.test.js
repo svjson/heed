@@ -14,7 +14,6 @@ import slideWithNotesAsideBlockCase from './case/slide-with-notes-aside-block.ca
 import { parseHeedFile } from '../../../lib/heed-file.js';
 
 test.describe('parseHeedFile()', () => {
-
   [
     accumulateFromAsideContentCase,
     codeBlockCase,
@@ -26,18 +25,18 @@ test.describe('parseHeedFile()', () => {
     simpleWithPhasesCase,
     slideWithNotesAsideBlockCase,
     textBlockCase,
-  ].forEach(testCase => {
+  ].forEach((testCase) => {
     test(`parse .heed-file with ${testCase.parseHeedFileDescription ?? testCase.description}`, async () => {
       // Given
       const fileData = testCase.heedFile;
 
       // When
-      const ir = parseHeedFile(fileData);
+      const ir = parseHeedFile(fileData, null);
 
       // Then
-      expect(ir).toEqual(testCase.intermediateExpanded ?? testCase.intermediate);
+      expect(ir).toEqual(
+        testCase.intermediateExpanded ?? testCase.intermediate,
+      );
     });
-
   });
-
 });

@@ -4,6 +4,7 @@ import expressWs from 'express-ws';
 import { registerRoutes } from './routes.js';
 import { initWatcher } from './watch.js';
 import { registerWebsocket } from './websocket.js';
+import { loadPresentation } from '../lib/presentation.js';
 
 /**
  * Starts the Heed server with the provided options.
@@ -15,7 +16,7 @@ import { registerWebsocket } from './websocket.js';
  *
  * @param {Object} opts - Options for the server.
  */
-export const startServer = (opts) => {
+export const startServer = async (opts) => {
   const { app, getWss } = expressWs(express());
 
   const {
@@ -26,21 +27,40 @@ export const startServer = (opts) => {
     presentationName,
     showWatches,
     silentWs,
-    watch
+    watch,
   } = opts;
-  registerWebsocket(app, getWss, silentWs);
-  registerRoutes(app, opts);
-
   let watches = [];
+
+  const presentationProvider = {
+    presentation: null,
+    load: async () => {
+      presentationProvider.presentation = await loadPresentation(
+        presentationRoot,
+        {
+          resolve: true,
+          loadPluginDefs: true,
+        },
+      );
+    },
+  };
+
+  await presentationProvider.load();
+
   if (watch) {
     watches = initWatcher({
       getWss,
       heedRoot,
       isArchive: Boolean(archiveFile),
       presentationName,
-      presentationRoot
+      presentationRoot,
+      onPresentationUpdated: async () => {
+        await presentationProvider.load();
+      },
     });
   }
+
+  registerWebsocket(app, getWss, silentWs);
+  registerRoutes(app, presentationProvider, opts);
 
   app.listen(port, () => {
     if (process.send) {

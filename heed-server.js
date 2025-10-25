@@ -25,7 +25,9 @@ const parsePort = (value) => {
   const port = Number(value);
 
   if (!Number.isInteger(port) || port < 1 || port > 65535) {
-    throw new InvalidOptionArgumentError('Port must be an integer between 1 and 65535');
+    throw new InvalidOptionArgumentError(
+      'Port must be an integer between 1 and 65535',
+    );
   }
 
   return port;
@@ -44,13 +46,19 @@ program
   .description('Serve a Heed presentation over HTTP.')
   .version(pkg.version)
   .argument('[path]', 'Path to presentation directory or archive', '.')
-  .option('-p, --port <number>', 'HTTP port to serve presentation on', parsePort, 4000)
+  .option(
+    '-p, --port <number>',
+    'HTTP port to serve presentation on',
+    parsePort,
+    4000,
+  )
   .option('-n, --no-watch', 'Disable file watching/auto-reload.', true)
   .option('-w, --show-watches', 'Display components under watch.', false)
   .option('-s, --silent-ws', 'Disable websocket logging', false)
   .action(async (pathArg, options) => {
     try {
-      const { presentationRoot, presentationName, archiveFile } = await preparePresentation(pathArg, heedRoot);
+      const { presentationRoot, presentationName, archiveFile } =
+        await preparePresentation(pathArg, heedRoot);
 
       const serverOpts = {
         port: options.port,
@@ -61,11 +69,10 @@ program
         heedRoot,
         pkg,
         silentWs: options.silentWs,
-        showWatches: options.showWatches
+        showWatches: options.showWatches,
       };
 
-      startServer(serverOpts);
-
+      await startServer(serverOpts);
     } catch (e) {
       console.error(`Failed to start Heed: ${e.message}`);
       if (e.suggestion) {
