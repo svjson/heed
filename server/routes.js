@@ -50,7 +50,12 @@ export const registerRoutes = (app, { presentationRoot, heedRoot }) => {
    * which is why it is not simply served as a static file.
    */
   app.get('/presentation/presentation.json', async (_, res) => {
-    res.send((await loadPresentation(presentationRoot, { resolve: true })));
+    res.send(
+      await loadPresentation(presentationRoot, {
+        resolve: true,
+        loadPluginDefs: true,
+      }),
+    );
   });
 
   /**
