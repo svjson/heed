@@ -17,6 +17,10 @@ export class Slide extends EventEmitter {
     return this.data.type;
   }
 
+  getCustomType(typeName, typeId) {
+    return this.data?.custom?.[typeName]?.[typeId];
+  }
+
   load(path, opts = {}) {
     this.path = path;
     this.staticPath = '/presentations/' + path;
