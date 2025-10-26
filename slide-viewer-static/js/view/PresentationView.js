@@ -15,7 +15,7 @@ export class PresentationView {
       Heed.loadStylesheet(this.presentation.css);
     }
 
-    document.addEventListener('keydown', e => {
+    document.addEventListener('keydown', (e) => {
       if (e.code === 'ArrowRight') {
         if (e.ctrlKey) {
           this.nextSlide();
@@ -31,7 +31,7 @@ export class PresentationView {
       }
     });
 
-    this.wsClient.on('navigation', event => {
+    this.wsClient.on('navigation', (event) => {
       const slide = event?.payload?.slide;
       if (slide) {
         this.showSlide(slide.index, slide.step, { silent: true });
@@ -64,10 +64,9 @@ export class PresentationView {
    * @param {Object} options - Optional parameters.
    * @param {boolean} options.silent - If true, suppresses navigation reporting.
    */
-  showSlide(slideIndex, phase, { silent } = { silent: false}) {
-    slideIndex = slideIndex >= this.slides.length
-      ? this.slides.length-1
-      : slideIndex;
+  showSlide(slideIndex, phase, { silent } = { silent: false }) {
+    slideIndex =
+      slideIndex >= this.slides.length ? this.slides.length - 1 : slideIndex;
     const slideChanged = slideIndex !== this.slideIndex;
     this.slideIndex = slideIndex;
     this.currentSlide = this.slides[slideIndex];
@@ -109,8 +108,8 @@ export class PresentationView {
       slide: {
         id: this.currentSlide.id,
         index: this.slideIndex,
-        step: this.slideView.currentStep
-      }
+        step: this.slideView.currentStep,
+      },
     });
   }
 
@@ -143,7 +142,6 @@ export class PresentationView {
       this.showSlide(this.slideIndex - 1);
     }
   }
-
 }
 
 Heed.PresentationView = PresentationView;

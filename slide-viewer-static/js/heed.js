@@ -1,3 +1,9 @@
+/**
+ * Main handle for the Heed Slider Viewer Web Application.
+ *
+ * Responsible for dynamic loading of scripts, stylesheets
+ * and resources.
+ */
 export const Heed = {
   plugins: {},
   _loadedScripts: [],
@@ -7,35 +13,35 @@ export const Heed = {
     return this._loadedStylesheets.includes(url)
       ? Promise.resolve()
       : new Promise((resolve) => {
-        const tag = document.createElement('link');
-        tag.rel = 'stylesheet';
-        tag.href = url;
-        tag.onload = function () {
-          resolve();
-        };
-        document.querySelector('head').appendChild(tag);
-        this._loadedStylesheets.push(url);
-      });
+          const tag = document.createElement("link");
+          tag.rel = "stylesheet";
+          tag.href = url;
+          tag.onload = function () {
+            resolve();
+          };
+          document.querySelector("head").appendChild(tag);
+          this._loadedStylesheets.push(url);
+        });
   },
 
   loadScript: function (url) {
     return this._loadedScripts.includes(url)
       ? Promise.resolve()
       : new Promise((resolve) => {
-        const tag = document.createElement('script');
-        tag.type = 'text/javascript';
-        tag.src = url;
-        tag.onload = function () {
-          resolve();
-        };
-        document.body.appendChild(tag);
-        this._loadedScripts.push(url);
-      });
+          const tag = document.createElement("script");
+          tag.type = "text/javascript";
+          tag.src = url;
+          tag.onload = function () {
+            resolve();
+          };
+          document.body.appendChild(tag);
+          this._loadedScripts.push(url);
+        });
   },
 
   appendScript: function (script) {
-    const tag = document.createElement('script');
-    tag.type = 'text/javascript';
+    const tag = document.createElement("script");
+    tag.type = "text/javascript";
     tag.innerHTML = script;
     document.body.appendChild(tag);
   },
@@ -57,7 +63,7 @@ export const Heed = {
  * @return {number} - The slide index from the hash.
  */
 export const hashIndex = () => {
-  const parsed = parseInt(document.location.href.split('#')[1]);
+  const parsed = parseInt(document.location.href.split("#")[1]);
   return isNaN(parsed) ? 0 : parsed;
 };
 
@@ -75,12 +81,12 @@ export function makeUri(parts) {
   }
   if (parts.length == 1) return parts[0];
   return [
-    parts[0].replace(/\/+$/, ''),
+    parts[0].replace(/\/+$/, ""),
     ...parts
       .slice(1)
-      .map((s) => s.replace(/^\/+|\/+$/g, ''))
+      .map((s) => s.replace(/^\/+|\/+$/g, ""))
       .filter(Boolean),
-  ].join('/');
+  ].join("/");
 }
 
 /**
@@ -97,13 +103,13 @@ export const guid = () => {
   return (
     s4() +
     s4() +
-    '-' +
+    "-" +
     s4() +
-    '-' +
+    "-" +
     s4() +
-    '-' +
+    "-" +
     s4() +
-    '-' +
+    "-" +
     s4() +
     s4() +
     s4()

@@ -30,11 +30,13 @@ export class Slide extends EventEmitter {
 
       const res = await fetch(fileName);
       if (res.status !== 200) {
-        resolve(this.produceFallbackSlide({
-          title: 'Slide missing!',
-          content: `Could not load slide: '${slidePath}'`,
-          error: true
-        }));
+        resolve(
+          this.produceFallbackSlide({
+            title: 'Slide missing!',
+            content: `Could not load slide: '${slidePath}'`,
+            error: true,
+          }),
+        );
         return;
       }
 
@@ -77,7 +79,11 @@ export class Slide extends EventEmitter {
     Object.keys(this.data.hooks).forEach((hookType) => {
       let hooksOfType = [];
       Object.keys(this.data.hooks[hookType]).forEach((hookId) => {
-        let hook = Heed.Hooks.createHook(hookId, this.data.hooks[hookType][hookId], this);
+        let hook = Heed.Hooks.createHook(
+          hookId,
+          this.data.hooks[hookType][hookId],
+          this,
+        );
         hooksOfType.push(hook);
       });
       this.hooks[hookType] = hooksOfType;
@@ -100,7 +106,7 @@ export class Slide extends EventEmitter {
     this.data = {
       type: 'default',
       title: this.name || title,
-      contents: []
+      contents: [],
     };
 
     if (content) {
@@ -108,8 +114,8 @@ export class Slide extends EventEmitter {
         type: 'html',
         html: content,
         styles: {
-          fontSize: '40px'
-        }
+          fontSize: '40px',
+        },
       });
     }
 
