@@ -4,7 +4,6 @@ import path from 'path';
 
 import express from 'express';
 
-import { loadPresentation } from '../lib/presentation.js';
 import { loadSlide } from '../lib/slide.js';
 
 /*
