@@ -1,3 +1,4 @@
+
 # Heed
 
 [![npm version](https://img.shields.io/npm/v/heedjs.svg)](https://www.npmjs.com/package/heedjs)
@@ -83,9 +84,7 @@ This command is used for serving up a presentation and the speaker notes over HT
 
 ### Usage:
 
-#### Serving presentations
-
-**Serving a presentation from folder/presentation.json**
+#### Serving a presentations from disk/folder
 
 ```bash
 $ heed <path/to/presentation>
@@ -94,13 +93,17 @@ $ heed <path/to/presentation>
 This will serve the Heed presentation at [http://localhost:4000](http://localhost:4000) and the speaker notes
 at [http://localhost:4000/speaker](http://localhost:4000/speaker).
 
-**Serving a presentation from archive (zip or tarball)**
+#### Serving a presentations from zip/tarball
 
 You can deliver presentations directly from archives without extracting the contents.
 
 ```bash
 $ heed ~/Downloads/exotic-cheeses.tgz
+$ heed https://somewhere/exotic-cheeses.tgz
 ```
+
+
+#### Arguments
 
 | Option                 | Arguments       | Description                                |
 |------------------------|-----------------|--------------------------------------------|
@@ -643,6 +646,10 @@ error handling sorted out and just generally modernize things and touch up some 
 
 
 ## Changelog
+
+### [v0.2.7] - 2025-10-09
+- Serve archived presentations directly from web URL with `heed`.
+- postRender hook bugfix
 
 ### [v0.2.6] - 2025-10-09
 - Hot-reload Slide Viewer on CSS change
