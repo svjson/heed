@@ -1,6 +1,6 @@
-
 import { Heed } from '../heed.js';
 import { SlideTypeRegistry } from '../registry/SlideTypeRegistry.js';
+import { ContentSectionFactory } from './content/ContentSectionFactory.js';
 
 export class DefaultSlideView {
   constructor(slide, step) {
@@ -10,7 +10,7 @@ export class DefaultSlideView {
   }
 
   hasMoreSteps() {
-    return this.currentStep !== this.slide.endStep;;
+    return this.currentStep !== this.slide.endStep;
   }
 
   hasPreviousSteps() {
@@ -35,7 +35,10 @@ export class DefaultSlideView {
         let sectionTransition = step.transitions[sectionId],
           targetEl = this.slide.namespace[sectionId];
         if (!targetEl) {
-          console.error(`Section '${sectionId}' not in namespace: `, this.slide.namespace);
+          console.error(
+            `Section '${sectionId}' not in namespace: `,
+            this.slide.namespace,
+          );
           return;
         }
         Object.assign(targetEl.style, sectionTransition[dir]);
@@ -56,7 +59,7 @@ export class DefaultSlideView {
     let config = JSON.parse(JSON.stringify(defaults)),
       appearance = Object.assign(
         config.appearance || {},
-        this.slideData.appearance || {}
+        this.slideData.appearance || {},
       ),
       style = '';
 
@@ -65,9 +68,11 @@ export class DefaultSlideView {
         style += `background: url('${this.slide.path}${appearance.backgroundImage}') no-repeat center; `;
         style += 'background-size: cover; ';
       }
-    } else if (appearance.background) style += `background: ${appearance.background}; `;
+    } else if (appearance.background)
+      style += `background: ${appearance.background}; `;
     if (appearance.padding) style += `padding: ${appearance.padding}; `;
-    if (appearance.paddingTop) style += `padding-top: ${appearance.paddingTop}; `;
+    if (appearance.paddingTop)
+      style += `padding-top: ${appearance.paddingTop}; `;
     if (appearance.color) style += `color: ${appearance.color}; `;
     if (appearance.fontSize) style += `font-size: ${appearance.fontSize}`;
 
@@ -91,7 +96,6 @@ export class DefaultSlideView {
     Object.assign(h1.style, titleStyles);
 
     if (title == null || title == undefined) {
-
     } else if (!title) {
       h1.innerHTML = '&nbsp;';
     } else {
@@ -100,12 +104,11 @@ export class DefaultSlideView {
     if (h1.innerText) h1.classList.add('title');
     slideEl.appendChild(h1);
 
-
     if (this.slideData.contents) {
       this.slideData.contents.forEach((contentSection) => {
-        let sectionEl = Heed.ContentSectionFactory.buildSection({
+        let sectionEl = ContentSectionFactory.buildSection({
           section: contentSection,
-          slide: this.slide
+          slide: this.slide,
         });
         slideEl.appendChild(sectionEl);
       });
@@ -131,7 +134,6 @@ export class DefaultSlideView {
       hook.applyHook();
     });
   }
-
 }
 
 Heed.DefaultSlideView = DefaultSlideView;

@@ -98,7 +98,7 @@ export class PresentationView {
     Promise.all(preHooks).then(() => {
       this.slideView.show(this.el, this.presentation.getDefaults());
       this.currentSlide.getHooks('postRender').forEach((hook) => {
-        hook.applyHook();
+        queueMicrotask(() => hook.applyHook());
       });
     });
   }
