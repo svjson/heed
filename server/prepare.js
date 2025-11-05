@@ -7,8 +7,17 @@ import envPaths from 'env-paths';
 
 import { HeedServerError } from './error.js';
 import { extractArchive, isArchive } from '../lib/archive.js';
+import {
+  downloadFile,
+  isUrl,
+  prepareDownloadDirectory,
+} from '../lib/download.js';
 import { installPlugins } from '../lib/plugin.js';
-import { findRoot, findRootRecursive, loadPresentation } from '../lib/presentation.js';
+import {
+  findRoot,
+  findRootRecursive,
+  loadPresentation,
+} from '../lib/presentation.js';
 
 /**
  * Prepare the presentation by locating the root directory and loading the
@@ -29,7 +38,7 @@ const verifyDirectory = async (relativeRoot) => {
   if (presentationRoot === null) {
     throw new HeedServerError(
       `presentation.json not found in '${relativeRoot}'.`,
-      'Check your path and make sure that a presentation exists in the specified location.'
+      'Check your path and make sure that a presentation exists in the specified location.',
     );
   }
 
@@ -37,12 +46,12 @@ const verifyDirectory = async (relativeRoot) => {
     const presentation = await loadPresentation(presentationRoot);
     return {
       presentationName: presentation.name,
-      presentationRoot
+      presentationRoot,
     };
   } catch (e) {
     throw new HeedServerError(
       e.message,
-      'Check your presentation.json and correct any syntax errors.'
+      'Check your presentation.json and correct any syntax errors.',
     );
   }
 };
@@ -69,7 +78,7 @@ const verifyDirectory = async (relativeRoot) => {
  * @return {Promise<Object>} - A promise that resolves to an object containing
  */
 const preparePresentationArchive = async (absolutePath, heedRoot) => {
-  const heedPaths = envPaths('heedjs', { suffix: ''});
+  const heedPaths = envPaths('heedjs', { suffix: '' });
   const hash = crypto.createHash('sha1').update(absolutePath).digest('hex');
   const cacheRoot = path.join(heedPaths.cache, 'archives');
   const extractPath = path.join(cacheRoot, hash);
@@ -95,7 +104,7 @@ const preparePresentationArchive = async (absolutePath, heedRoot) => {
         rmSync(extractPath, { recursive: true });
         throw new HeedServerError(
           `Could not find a valid presentation in archive '${absolutePath}'`,
-          'Ensure the archive contains a Heed-compatible presentation (e.g. with a presentation.json)'
+          'Ensure the archive contains a Heed-compatible presentation (e.g. with a presentation.json)',
         );
       }
 
@@ -106,15 +115,13 @@ const preparePresentationArchive = async (absolutePath, heedRoot) => {
       return {
         presentationRoot: presentationRoot,
         presentationName: presentation.name,
-        archiveFile: absolutePath
+        archiveFile: absolutePath,
       };
     } catch (e) {
       if (e instanceof HeedServerError) {
         throw e;
       }
-      throw new HeedServerError(
-        `Unable to serve presentation archive: ${e}`
-      );
+      throw new HeedServerError(`Unable to serve presentation archive: ${e}`);
     }
   }
 
@@ -125,20 +132,36 @@ const preparePresentationArchive = async (absolutePath, heedRoot) => {
     return {
       presentationRoot: presentationRoot,
       presentationName: presentation.name,
-      archiveFile: absolutePath
+      archiveFile: absolutePath,
     };
   } catch (_e) {
-    rmSync(extractPath, { recursive: true});
+    rmSync(extractPath, { recursive: true });
     return await preparePresentationArchive(absolutePath, heedRoot);
   }
+};
+
+const ensurePresentationTarget = async (urlOrPath) => {
+  if (isUrl(urlOrPath)) {
+    const downloadDir = await prepareDownloadDirectory();
+    return path.resolve(await downloadFile(urlOrPath, downloadDir));
+  }
+
+  if (!existsSync(urlOrPath)) {
+    throw new HeedServerError(
+      `The path '${absolutePath}' does not exist.`,
+      'Check your path and make sure that a presentation exists in the specified location.',
+    );
+  }
+
+  return path.resolve(urlOrPath);
 };
 
 /**
  * Prepare the presentation by locating the root directory or extracting
  * the archive file pointed to by `relativeRoot`.
  *
- * @param {string} relativeRoot - The relative or user-specified path to the
- *                                presentation directory or archive file.
+ * @param {string} urlOrPath - An url or the relative or user-specified path to the
+ *                             presentation directory or archive file.
  * @param {string} heedRoot  - The root directory for the heedjs package.
  * @return {Promise<Object>} - A promise that resolves to an object containing
  *                             the presentation root directory and, if applicable,
@@ -147,19 +170,13 @@ const preparePresentationArchive = async (absolutePath, heedRoot) => {
  *                             is not a supported archive file, or if the archive file
  *                             does not contain a valid presentation.
  */
-export const preparePresentation = async (relativeRoot, heedRoot) => {
-  const absolutePath = path.resolve(relativeRoot);
-  if (!existsSync(absolutePath)) {
-    throw new HeedServerError(
-      `The path '${absolutePath}' does not exist.`,
-      'Check your path and make sure that a presentation exists in the specified location.'
-    );
-  }
+export const preparePresentation = async (urlOrPath, heedRoot) => {
+  const absolutePath = await ensurePresentationTarget(urlOrPath);
 
   const pathStat = statSync(absolutePath);
 
   if (pathStat.isDirectory()) {
-    return await verifyDirectory(relativeRoot);
+    return await verifyDirectory(absolutePath);
   }
 
   if (pathStat.isFile()) {
@@ -175,7 +192,6 @@ export const preparePresentation = async (relativeRoot, heedRoot) => {
 
   throw new HeedServerError(
     `Cannot serve '${absolutePath}'.`,
-    'If the file is an archive-file, make sure it is of a supported format and with a known extension (.zip, .tar, .tgz, .tar.gz)'
+    'If the file is an archive-file, make sure it is of a supported format and with a known extension (.zip, .tar, .tgz, .tar.gz)',
   );
 };
-
