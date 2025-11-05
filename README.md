@@ -1,4 +1,3 @@
-
 # Heed
 
 [![npm version](https://img.shields.io/npm/v/heedjs.svg)](https://www.npmjs.com/package/heedjs)
@@ -20,7 +19,9 @@ It supports a simplistic plugin architecture for embedding rich content and Java
 - [Installation](#installation)
 - [Command: heed](#command-heed)
   * [Usage:](#usage)
-    + [Serving presentations](#serving-presentations)
+    + [Serving a presentations from disk/folder](#serving-a-presentations-from-diskfolder)
+    + [Serving a presentations from zip/tarball](#serving-a-presentations-from-ziptarball)
+    + [Arguments](#arguments)
   * [Speaker Notes](#speaker-notes)
 - [Command: heed-cli](#command-heed-cli)
   * [Usage:](#usage-1)
@@ -45,6 +46,7 @@ It supports a simplistic plugin architecture for embedding rich content and Java
 - [Design goals](#design-goals)
 - [Why does this exist?](#why-does-this-exist)
 - [Changelog](#changelog)
+  * [[v0.2.7] - 2025-10-09](#v027---2025-10-09)
   * [[v0.2.6] - 2025-10-09](#v026---2025-10-09)
   * [[v0.2.3] - 2025-06-25](#v023---2025-06-25)
   * [[v0.2.2] - 2025-06-24](#v022---2025-06-24)
